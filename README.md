@@ -1,4 +1,4 @@
 ARC-Library
 ===========
 
-Anil&#39;s Reusable Code Library
+The ARC library is a collection of code accumulated over the years
