@@ -34,13 +34,13 @@ And every function belonging to a module conforms to this other pattern:
 module_name_xy_function_name_ab
 ```
 
-Where `ab` is an optional suffix which describes a characteristic of the specific algorithm impelemntation. It can be one of the following:
+Where `ab` is an optional suffix which describes a characteristic of the underlying algorithm implemntation. It can be one of the following:
 
 | Suffix | Meaning                                 | Description  |
 | :---:  | --------------------------------------- | ------------ |
-| `mt`   | <b>M</b>ulti-<b>T</b>hreaded            | A function is said to be thread-safe if it can be called from more than one thread at the same time. |
-| `i`    | <b>I</b>terative                        |  |
-| `r`    | <b>R</b>ecursive                        |  |
+| `mt`   | <b>M</b>ulti-<b>T</b>hreaded            | An algorithm is said to be multi-threaded if it uses more than one thread to perform the desired computation. |
+| `i`    | <b>I</b>terative                        | An algorithm is said to be iterative if it performs the desired computation through iterative constructs. |
+| `r`    | <b>R</b>ecursive                        | An algorithm is said to be recursive if it performs the desired computation through direct or indirect calls to itself. |
 
 
 
