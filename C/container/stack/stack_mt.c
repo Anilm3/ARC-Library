@@ -17,7 +17,8 @@ struct stack_mt_node
 {
     void *data;
     struct stack_mt_node *next;
-};// __attribute__((packed)); ;
+};
+// __attribute__((packed)); ;
 
 
 struct stack_mt
@@ -25,7 +26,8 @@ struct stack_mt
     int size;
     struct stack_mt_node *head;
     pthread_mutex_t mutex;
-};// __attribute__((packed)); ;
+};
+// __attribute__((packed)); ;
 
 
 struct stack_mt * stack_mt_create()
