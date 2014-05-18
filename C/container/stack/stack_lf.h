@@ -7,8 +7,8 @@
 *                                                                               *
 *********************************************************************************/
 
-#ifndef ARC_STACK_LOCK_FREE
-#define ARC_STACK_LOCK_FREE
+#ifndef ARC_STACK_LF_H_
+#define ARC_STACK_LF_H_
 
 struct stack_lf_node;
 
@@ -30,4 +30,4 @@ int stack_lf_size(struct stack_lf *);
 void stack_lf_clear(struct stack_lf *);
 void stack_lf_clear_data(struct stack_lf *);
 
-#endif // ARC_STACK_LOCK_FREE
+#endif // ARC_STACK_LF_H_
