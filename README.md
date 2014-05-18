@@ -8,7 +8,7 @@ Every module name or function conforms to the following pattern:
 ```
 module_name_xy
 ```
-`xy`
+Where `xy` is an optional suffix which can be any of the following:
 
 
 | Suffix | Meaning       | Description  |
