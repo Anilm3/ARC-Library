@@ -3,6 +3,10 @@ ARC-Library
 
 The ARC library is a collection of code accumulated over the years, nothing more, nothing less.
 
+```
+module_name_xy
+```
+
 | Suffix | Meaning | Description  |
 | :---: | --- | --- |
 | `r` | Reentrant | A function is said to be reentrant if it can be interrupted and called again before the previous execution has ended. |
