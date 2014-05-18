@@ -18,9 +18,9 @@ Where `xy` is an optional suffix which can be one of the following:
 
 | Suffix | Meaning                 | Description  |
 | :---:  | ----------------------- | ------------ |
-| `sr`   | **S**ignal **R**eentrant          |  |
-| `tr`   | **T**hread **R**eentrant          |  |
-| `ts`   | **T**hread & **S**ignal Reentrant | A function which is both thread-safe and reentrant. |
+| `sr`   | <b>S</b>ignal <b>R</b>eentrant          |  |
+| `tr`   | <b>T</b>hread <b>R</b>eentrant          |  |
+| `ts`   | <b>T</b>hread & <b>S</b>ignal Reentrant | A function which is both thread-safe and reentrant. |
 | `lf`   | Lock-free                         | A lock-free data structure implements thread-safety and reentrancy without the use of locks. |
 | `mt`   | Multi-threaded                    | A function is said to be thread-safe if it can be called from more than one thread at the same time. |
 | `i`    | Iterative                         |  |
