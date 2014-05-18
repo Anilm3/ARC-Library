@@ -26,8 +26,13 @@ Where `xy` is an optional suffix which can be one of the following:
 | `tr`   | <b>T</b>hread <b>R</b>eentrant          |  |
 | `ts`   | <b>T</b>hread & <b>S</b>ignal Reentrant | A function which is both thread-safe and reentrant. |
 | `lf`   | <b>L</b>ock-<b>F</b>ree                 | A lock-free data structure implements thread-safety and reentrancy without the use of locks. |
-| `mt`   | Multi-threaded                          | A function is said to be thread-safe if it can be called from more than one thread at the same time. |
-| `i`    | Iterative                               |  |
+
+
+| Suffix | Meaning                                 | Description  |
+| :---:  | --------------------------------------- | ------------ |
+| `mt`   | <b>M</b>ulti-<b>T</b>hreaded                          | A function is said to be thread-safe if it can be called from more than one thread at the same time. |
+| `i`    | <b>I</b>terative                               |  |
+| `r`    | <b>R</b>ecursive                               |  |
 
 
 A function is said to be reentrant if it can be interrupted and called again before the previous execution has ended.
