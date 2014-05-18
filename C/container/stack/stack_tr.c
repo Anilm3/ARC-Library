@@ -11,28 +11,28 @@
 #include <stdio.h>
 #include <pthread.h>
 
-#include "stack_mt.h"
+#include "stack_tr.h"
 
-struct stack_mt_node
+struct stack_tr_node
 {
     void *data;
-    struct stack_mt_node *next;
+    struct stack_tr_node *next;
 };
 // __attribute__((packed)); ;
 
 
-struct stack_mt
+struct stack_tr
 {
     int size;
-    struct stack_mt_node *head;
+    struct stack_tr_node *head;
     pthread_mutex_t mutex;
 };
 // __attribute__((packed)); ;
 
 
-struct stack_mt * stack_mt_create()
+struct stack_tr * stack_tr_create()
 {
-    struct stack_mt * stack_p = malloc(sizeof(struct stack_mt));
+    struct stack_tr * stack_p = malloc(sizeof(struct stack_tr));
 
     if (stack_p != NULL)
     {
@@ -45,24 +45,24 @@ struct stack_mt * stack_mt_create()
     return stack_p;
 }
 
-void stack_mt_destroy(struct stack_mt *stack_p)
+void stack_tr_destroy(struct stack_tr *stack_p)
 {
     pthread_mutex_destroy(&stack_p->mutex);
 
-    stack_mt_clear(stack_p);
+    stack_tr_clear(stack_p);
 
     free(stack_p);
 }
 
 
-int stack_mt_size(struct stack_mt *stack_p)
+int stack_tr_size(struct stack_tr *stack_p)
 {
     return stack_p->size;
 }
 
-void stack_mt_clear(struct stack_mt *stack_p)
+void stack_tr_clear(struct stack_tr *stack_p)
 {
-    struct stack_mt_node *aux_p, *node_p = stack_p->head;
+    struct stack_tr_node *aux_p, *node_p = stack_p->head;
 
     while (node_p != NULL)
     {
@@ -76,7 +76,7 @@ void stack_mt_clear(struct stack_mt *stack_p)
     stack_p->head = NULL;
 }
 
-int stack_mt_empty(struct stack_mt *stack_p)
+int stack_tr_empty(struct stack_tr *stack_p)
 {
     pthread_mutex_lock(&stack_p->mutex);
     
@@ -87,9 +87,9 @@ int stack_mt_empty(struct stack_mt *stack_p)
     return retval;
 }
 
-void stack_mt_push(struct stack_mt *stack_p, void *data_p)
+void stack_tr_push(struct stack_tr *stack_p, void *data_p)
 {
-    struct stack_mt_node *node_p = malloc(sizeof(struct stack_mt_node));
+    struct stack_tr_node *node_p = malloc(sizeof(struct stack_tr_node));
     
     node_p->data = data_p;
 
@@ -104,11 +104,11 @@ void stack_mt_push(struct stack_mt *stack_p, void *data_p)
 }
 
 
-void * stack_mt_pop(struct stack_mt *stack_p)
+void * stack_tr_pop(struct stack_tr *stack_p)
 {
     void * data_p = NULL;
 
-    struct stack_mt_node *node_p ;
+    struct stack_tr_node *node_p ;
 
     pthread_mutex_lock(&stack_p->mutex);
 
