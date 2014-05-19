@@ -21,7 +21,7 @@ Where `xy` is an optional suffix, describing the behaviour of the module under c
 
 | Suffix | Meaning                                 | Description  |
 | :---:  | --------------------------------------- | ------------ |
-| `ts`   | <b>T</b>hread-Safe      | A data structure which implements thread-safety by using conventional locks. |
+| `ts`   | <b>T</b>hread-<b>S</b>afe      | A data structure which implements thread-safety by using conventional locks. |
 | `lf`   | <b>L</b>ock-<b>F</b>ree | A data structure which implements thread-safety without the use of locks. |
 
 
@@ -52,9 +52,9 @@ Where `ab` is an optional suffix which describes a characteristic of the underly
 | `r`    | <b>R</b>ecursive                        | An algorithm is said to be recursive if it performs the desired computation through direct or indirect calls to itself. |
 
 
-Notes on thread-safety and reentrancy:
+### Notes on thread-safety and reentrancy
 
-A function is said to be signal reentrant (async-signal safe or simply reentrant) if it can be interrupted and called again before the previous execution has ended. 
-A function is said to be thread reentrant or thread-safe if it can be called from more than one thread at the same time.
+* A function is said to be signal reentrant (async-signal safe or simply reentrant) if it can be interrupted and called again before the previous execution has ended. 
+* A function is said to be thread reentrant or thread-safe if it can be called from more than one thread at the same time.
 
 
