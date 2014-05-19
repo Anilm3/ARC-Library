@@ -19,13 +19,10 @@ library::xy::module_name
 
 Where `xy` is an optional suffix, describing the behaviour of the module under concurrent, parallel and interruptible environment. It can be one of the following:
 
-
 | Suffix | Meaning                                 | Description  |
 | :---:  | --------------------------------------- | ------------ |
-| `sr`   | <b>S</b>ignal <b>R</b>eentrant          | A function is said to be signal reentrant (async-signal safe or simply reentrant) if it can be interrupted and called again before the previous execution has ended. |
-| `tr`   | <b>T</b>hread <b>R</b>eentrant          | A function is said to be thread reentrant or thread-safe if it can be called from more than one thread at the same time. |
-| `ts`   | <b>T</b>hread & <b>S</b>ignal Reentrant | A function which is both thread-safe and reentrant. |
-| `lf`   | <b>L</b>ock-<b>F</b>ree                 | A lock-free data structure implements thread-safety and reentrancy without the use of locks. |
+| `ts`   | <b>T</b>hread-Safe      | A data structure which implements thread-safety by using conventional locks. |
+| `lf`   | <b>L</b>ock-<b>F</b>ree | A data structure which implements thread-safety without the use of locks. |
 
 
 Every independent function conforms to the following pattern:
@@ -55,5 +52,9 @@ Where `ab` is an optional suffix which describes a characteristic of the underly
 | `r`    | <b>R</b>ecursive                        | An algorithm is said to be recursive if it performs the desired computation through direct or indirect calls to itself. |
 
 
+Notes on thread-safety and reentrancy:
+
+A function is said to be signal reentrant (async-signal safe or simply reentrant) if it can be interrupted and called again before the previous execution has ended. 
+A function is said to be thread reentrant or thread-safe if it can be called from more than one thread at the same time.
 
 

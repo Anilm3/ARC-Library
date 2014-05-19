@@ -21,7 +21,6 @@ struct stack_lf_node;
  */
 struct stack_lf;
 
-
 /**
  *
  * Allocates the required memory for a new stack
