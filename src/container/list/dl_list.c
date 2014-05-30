@@ -88,3 +88,15 @@ int dl_list_empty(struct dl_list * list )
 }
 
 /******************************************************************************/
+
+struct dl_list_node * dl_list_begin(struct dl_list * list)
+{
+    if (list == NULL)
+    {
+        return NULL;
+    }
+
+    return list->front;
+}
+
+/******************************************************************************/
