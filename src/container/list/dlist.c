@@ -8,19 +8,19 @@
 *******************************************************************************/
 
 #include <string.h>
-#include <arc/container/list/dl_list.h>
+#include <arc/container/list/dlist.h>
 
-struct dl_list_node
+struct arc_dlist_node
 {
-    struct dl_list_node *next;
-    struct dl_list_node *previous;
+    struct arc_dlist_node *next;
+    struct arc_dlist_node *previous;
     void *data;
 };
 
-struct dl_list
+struct arc_dlist
 {
-    struct dl_list_node *front;
-    struct dl_list_node *back;
+    struct arc_dlist_node *front;
+    struct arc_dlist_node *back;
     int size;
     size_t data_size;
     size_t node_size;
@@ -28,9 +28,9 @@ struct dl_list
 
 /******************************************************************************/
 
-struct dl_list * dl_list_create(size_t data_size)
+struct arc_dlist * arc_dlist_create(size_t data_size)
 {
-    struct dl_list * list = (struct dl_list *)malloc(sizeof(struct dl_list));
+    struct arc_dlist * list = (struct arc_dlist *)malloc(sizeof(struct arc_dlist));
 
     if (list == NULL)
     {
@@ -41,14 +41,14 @@ struct dl_list * dl_list_create(size_t data_size)
     list->back = NULL;
     list->size = 0;
     list->data_size = data_size;
-    list->node_size = list->data_size + sizeof(struct dl_list_node);
+    list->node_size = list->data_size + sizeof(struct arc_dlist_node);
     
     return list;
 }
 
 /******************************************************************************/
 
-void dl_list_destroy(struct dl_list * list)
+void arc_dlist_destroy(struct arc_dlist * list)
 {
     if (list == NULL)
     {
@@ -57,7 +57,7 @@ void dl_list_destroy(struct dl_list * list)
 
     // while (list->front != NULL)
     // {
-    //     dl_list_pop_front(list);
+    //     arc_dlist_pop_front(list);
     // }
 
     free(list);
@@ -65,7 +65,7 @@ void dl_list_destroy(struct dl_list * list)
 
 /******************************************************************************/
 
-int dl_list_size(struct dl_list * list )
+int arc_dlist_size(struct arc_dlist * list )
 {
     if (list == NULL)
     {
@@ -77,7 +77,7 @@ int dl_list_size(struct dl_list * list )
 
 /******************************************************************************/
 
-int dl_list_empty(struct dl_list * list )
+int arc_dlist_empty(struct arc_dlist * list )
 {
     if (list == NULL)
     {
@@ -89,7 +89,7 @@ int dl_list_empty(struct dl_list * list )
 
 /******************************************************************************/
 
-struct dl_list_node * dl_list_begin(struct dl_list * list)
+struct arc_dlist_node * arc_dlist_begin(struct arc_dlist * list)
 {
     if (list == NULL)
     {
