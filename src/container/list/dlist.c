@@ -55,10 +55,10 @@ void arc_dlist_destroy(struct arc_dlist * list)
         return;
     }
 
-    // while (list->front != NULL)
-    // {
-    //     arc_dlist_pop_front(list);
-    // }
+    while (list->front != NULL)
+    {
+        arc_dlist_pop_front(list);
+    }
 
     free(list);
 }
@@ -85,6 +85,101 @@ int arc_dlist_empty(struct arc_dlist * list )
     }
     
     return list->size == 0; 
+}
+
+/******************************************************************************/
+
+void arc_dlist_clear(struct arc_dlist * list)
+{
+    if (list == NULL)
+    {
+        return;
+    }
+
+    while (list->front != NULL)
+    {
+        arc_dlist_pop_front(list);
+    }
+}
+
+/******************************************************************************/
+
+void * arc_dlist_front(struct arc_dlist * list)
+{
+    if (list == NULL || list->front == NULL)
+    {
+        return NULL;
+    }
+
+    return list->front->data;
+}
+
+/******************************************************************************/
+
+void arc_dlist_pop_front(struct arc_dlist * list)
+{
+    struct arc_dlist_node *node;
+
+    if (list == NULL || list->front == NULL)
+    {
+        return;
+    }
+    
+    node = list->front;
+
+    list->size--;
+    list->front = node->next;
+
+    if (list->front == NULL)
+    {
+        list->back = NULL;
+    }
+    else
+    {
+        list->back->previous = NULL;
+    }
+
+    free(node);
+}
+
+/******************************************************************************/
+
+int arc_dlist_push_front(struct arc_dlist * list, void * data)
+{
+    struct arc_dlist_node *node;
+
+    if (list == NULL)
+    {
+        return -1;    
+    }
+    
+    node = (struct arc_dlist_node *)malloc(list->node_size);
+
+    if (node == NULL)
+    {
+        return -1;
+    }
+
+    node->data = (void *)(((char *)&node->data) + sizeof(void*));
+    memcpy(node->data, data, list->data_size);
+
+    node->next = list->front;
+    node->previous = NULL;
+
+    if (list->front == NULL)
+    {
+        list->back = node;
+    }
+    else
+    {
+        list->front->previous = node;
+    }
+
+    list->front = node;
+
+    list->size++;
+
+    return 0;
 }
 
 /******************************************************************************/

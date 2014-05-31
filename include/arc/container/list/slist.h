@@ -38,7 +38,7 @@ void arc_slist_clear(arc_slist_t list);
 /**
  *
  */
-void *arc_slist_front(arc_slist_t list);
+void * arc_slist_front(arc_slist_t list);
 /**
  *
  */
@@ -46,8 +46,7 @@ void arc_slist_pop_front(arc_slist_t list);
 /**
  *
  */
-int arc_slist_push_front(arc_slist_t list, 
-                       void * data);
+int arc_slist_push_front(arc_slist_t list, void * data);
 /**
  *
  */
@@ -61,8 +60,7 @@ int arc_slist_insert_after(arc_slist_t list,
 /**
  *
  */
-int arc_slist_erase_after(arc_slist_t list, 
-                        arc_slist_iterator_t it);
+int arc_slist_erase_after(arc_slist_t list, arc_slist_iterator_t it);
 /**
  *
  */

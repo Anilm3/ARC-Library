@@ -63,7 +63,7 @@ void arc_slist_destroy(struct arc_slist * list)
 
 /******************************************************************************/
 
-int arc_slist_size(struct arc_slist * list )
+int arc_slist_size(struct arc_slist * list)
 {
     if (list == NULL)
     {
@@ -75,7 +75,7 @@ int arc_slist_size(struct arc_slist * list )
 
 /******************************************************************************/
 
-int arc_slist_empty(struct arc_slist * list )
+int arc_slist_empty(struct arc_slist * list)
 {
     if (list == NULL)
     {
@@ -87,7 +87,22 @@ int arc_slist_empty(struct arc_slist * list )
 
 /******************************************************************************/
 
-void *arc_slist_front(struct arc_slist * list )
+void arc_slist_clear(struct arc_slist * list)
+{
+    if (list == NULL)
+    {
+        return;
+    }
+
+    while (list->front != NULL)
+    {
+        arc_slist_pop_front(list);
+    }
+}
+
+/******************************************************************************/
+
+void * arc_slist_front(struct arc_slist * list)
 {
     if (list == NULL || list->front == NULL)
     {
@@ -99,7 +114,7 @@ void *arc_slist_front(struct arc_slist * list )
 
 /******************************************************************************/
 
-void arc_slist_pop_front(struct arc_slist * list )
+void arc_slist_pop_front(struct arc_slist * list)
 {
     struct arc_slist_node *node;
 
@@ -118,8 +133,7 @@ void arc_slist_pop_front(struct arc_slist * list )
 
 /******************************************************************************/
 
-int arc_slist_push_front(struct arc_slist * list , 
-                       void *data)
+int arc_slist_push_front(struct arc_slist * list , void *data)
 {
     struct arc_slist_node *node;
 
@@ -145,21 +159,6 @@ int arc_slist_push_front(struct arc_slist * list ,
     list->size++;
 
     return 0;
-}
-
-/******************************************************************************/
-
-void arc_slist_clear(struct arc_slist * list )
-{
-    if (list == NULL)
-    {
-        return;
-    }
-
-    while (list->front != NULL)
-    {
-        arc_slist_pop_front(list);
-    }
 }
 
 /******************************************************************************/
@@ -207,8 +206,7 @@ int arc_slist_insert_after(struct arc_slist * list,
 
 /******************************************************************************/
 
-int arc_slist_erase_after(struct arc_slist * list, 
-                        struct arc_slist_node * it)
+int arc_slist_erase_after(struct arc_slist * list, struct arc_slist_node * it)
 {
     if (list == NULL || it == NULL)
     {

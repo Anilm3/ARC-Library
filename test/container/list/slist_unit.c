@@ -6,12 +6,12 @@ int main()
     int i;
     arc_slist_t list = arc_slist_create(sizeof(int));
 
-    for (i = 0; i < 20; i++)
+    for (i = 0; i < 20000; i++)
     {
         arc_slist_push_front(list, (void *)&i);
     }
 
-    i = 19;
+    i = 19999;
     while(!arc_slist_empty(list))
     {
         if (*((int *)arc_slist_front(list)) != i--)

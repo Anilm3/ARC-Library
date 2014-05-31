@@ -31,5 +31,25 @@ int arc_dlist_size(arc_dlist_t list);
  *
  */
 int arc_dlist_empty(arc_dlist_t list);
+/**
+ *
+ */
+void arc_dlist_clear(arc_dlist_t list);
+/**
+ *
+ */
+void * arc_dlist_front(arc_dlist_t list);
+/**
+ *
+ */
+void arc_dlist_pop_front(arc_dlist_t list);
+/**
+ *
+ */
+int arc_dlist_push_front(arc_dlist_t list, void * data);
+/**
+ *
+ */
+arc_dlist_iterator_t arc_dlist_begin(arc_dlist_t list);
 
 #endif
