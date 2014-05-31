@@ -1,9 +1,9 @@
-sp 		:= $(sp).x
+sp := $(sp).x
 dirstack_$(sp)	:= $(d)
-d		:= $(dir)
+d := $(dir)
 
 dir := $(d)/container
 include $(dir)/module.mk
 
-d		:= $(dirstack_$(sp))
-sp		:= $(basename $(sp))
+d := $(dirstack_$(sp))
+sp := $(basename $(sp))

@@ -1,11 +1,11 @@
-sp      := $(sp).x
-dirstack_$(sp)  := $(d)
-d       := $(dir)
+sp := $(sp).x
+dirstack_$(sp) := $(d)
+d := $(dir)
 
 dir := $(d)/list
 include $(dir)/module.mk
 
-d       := $(dirstack_$(sp))
-sp      := $(basename $(sp))
+d := $(dirstack_$(sp))
+sp := $(basename $(sp))
 
 

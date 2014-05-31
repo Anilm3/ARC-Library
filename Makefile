@@ -5,24 +5,26 @@ CFLAGS       = -fPIC
 DEBUGFLAGS   = -O0 -D _DEBUG
 RELEASEFLAGS = -O2 -D NDEBUG -fwhole-program
 LDFLAGS      = -shared
+LIB_DIR = lib
 
-TARGET  = lib/arc.so
+OBJECTS := 
 
-# save_dir =	sp := $(sp).x \
-# 			dirstack_$(sp)  := $(d) \
-# 			d := $(dir)
-
-# restore_dir =	d := $(dirstack_$(sp)) \
-# 				sp := $(basename $(sp))
+TARGET := $(LIB_DIR)/arc.so
 
 vpath %.h include
 
+print-%:
+	@echo '$*=$($*)'
 
 $(TARGET):
-	$(CC) $(FLAGS) $(CFLAGS) $(RELEASEFLAGS) $^ -o $(TARGET) $(OBJECTS) $(LDFLAGS)
+	$(CC) $(FLAGS) $(CFLAGS) $(RELEASEFLAGS) $^ -o $(TARGET) $(LDFLAGS)
 
 %.o: %.c
 	 $(CXX) -c -I include $(CFLAGS) $< -o $@
+
+clean:
+	rm $(TARGET) $(OBJECTS)
+
 
 dir	:= src
 include $(dir)/module.mk
