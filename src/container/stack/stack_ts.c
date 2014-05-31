@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <pthread.h>
 
-#include "stack_ts.h"
+#include <arc/container/stack/stack_ts.h>
 
 struct stack_ts_node
 {
@@ -32,7 +32,7 @@ struct stack_ts
 
 struct stack_ts * stack_ts_create()
 {
-    struct stack_ts * stack_p = malloc(sizeof(struct stack_ts));
+    struct stack_ts * stack_p = (struct stack_ts *)malloc(sizeof(struct stack_ts));
 
     if (stack_p != NULL)
     {
@@ -89,7 +89,7 @@ int stack_ts_empty(struct stack_ts *stack_p)
 
 void stack_ts_push(struct stack_ts *stack_p, void *data_p)
 {
-    struct stack_ts_node *node_p = malloc(sizeof(struct stack_ts_node));
+    struct stack_ts_node *node_p = (struct stack_ts_node *)malloc(sizeof(struct stack_ts_node));
     
     node_p->data = data_p;
 

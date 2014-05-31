@@ -7,10 +7,9 @@
 *                                                                               *
 *********************************************************************************/
 
-
-#include "stack_lf.h"
-#include "stdlib.h"
-#include "stdio.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <arc/container/stack/stack_lf.h>
 
 struct stack_lf_node
 {
@@ -27,7 +26,7 @@ struct stack_lf
 
 struct stack_lf * stack_lf_create()
 {
-    struct stack_lf * stack_p = malloc(sizeof(struct stack_lf));
+    struct stack_lf * stack_p = (struct stack_lf *)malloc(sizeof(struct stack_lf));
 
     if (stack_p != NULL)
     {
@@ -127,7 +126,7 @@ void stack_lf_push(struct stack_lf *stack_p, void *data_p)
 {
     int stack_size;
     struct stack_lf_node *old_head;
-    struct stack_lf_node *node_p = malloc(sizeof(struct stack_lf_node));
+    struct stack_lf_node *node_p = (struct stack_lf_node *)malloc(sizeof(struct stack_lf_node));
     
     node_p->data = data_p;
     node_p->next = stack_p->head;
