@@ -136,7 +136,7 @@ void arc_dlist_pop_front(struct arc_dlist * list)
     }
     else
     {
-        list->back->previous = NULL;
+        list->front->previous = NULL;
     }
 
     free(node);
@@ -182,6 +182,87 @@ int arc_dlist_push_front(struct arc_dlist * list, void * data)
     return 0;
 }
 
+
+/******************************************************************************/
+
+void * arc_dlist_back(struct arc_dlist * list)
+{
+    if (list == NULL || list->back == NULL)
+    {
+        return NULL;
+    }
+
+    return list->back->data;
+}
+
+/******************************************************************************/
+
+void arc_dlist_pop_back(struct arc_dlist * list)
+{
+    struct arc_dlist_node *node;
+
+    if (list == NULL || list->back == NULL)
+    {
+        return;
+    }
+    
+    node = list->back;
+
+    list->size--;
+    list->back = node->previous;
+
+    if (list->back == NULL)
+    {
+        list->front = NULL;
+    }
+    else
+    {
+        list->back->next = NULL;
+    }
+
+    free(node);
+}
+
+/******************************************************************************/
+
+int arc_dlist_push_back(struct arc_dlist * list, void * data)
+{
+    struct arc_dlist_node *node;
+
+    if (list == NULL)
+    {
+        return -1;    
+    }
+    
+    node = (struct arc_dlist_node *)malloc(list->node_size);
+
+    if (node == NULL)
+    {
+        return -1;
+    }
+
+    node->data = (void *)(((char *)&node->data) + sizeof(void*));
+    memcpy(node->data, data, list->data_size);
+
+    node->next = NULL;
+    node->previous = list->back;
+
+    if (list->back == NULL)
+    {
+        list->front = node;
+    }
+    else
+    {
+        list->back->next = node;
+    }
+
+    list->back = node;
+
+    list->size++;
+
+    return 0;
+}
+
 /******************************************************************************/
 
 struct arc_dlist_node * arc_dlist_begin(struct arc_dlist * list)
@@ -192,6 +273,18 @@ struct arc_dlist_node * arc_dlist_begin(struct arc_dlist * list)
     }
 
     return list->front;
+}
+
+/******************************************************************************/
+
+struct arc_dlist_node * arc_dlist_end(struct arc_dlist * list)
+{
+    if (list == NULL)
+    {
+        return NULL;
+    }
+
+    return list->back;
 }
 
 /******************************************************************************/

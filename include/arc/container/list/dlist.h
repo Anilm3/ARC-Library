@@ -50,6 +50,22 @@ int arc_dlist_push_front(arc_dlist_t list, void * data);
 /**
  *
  */
+void * arc_dlist_back(arc_dlist_t list);
+/**
+ *
+ */
+void arc_dlist_pop_back(arc_dlist_t list);
+/**
+ *
+ */
+int arc_dlist_push_back(arc_dlist_t list, void * data);
+/**
+ *
+ */
 arc_dlist_iterator_t arc_dlist_begin(arc_dlist_t list);
+/**
+ *
+ */
+arc_dlist_iterator_t arc_dlist_end(arc_dlist_t list);
 
 #endif
