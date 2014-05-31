@@ -3,6 +3,20 @@ ARC-Library
 
 The ARC library is a collection of code accumulated over the years, nothing more, nothing less.
 
+Build System
+----
+
+Since creating this library is meant to be a fun time for me, as well as organizing all the code I had to be used in other projects, I decided to go for a non-recursive make build system.  I really enjoy working with Make directly as it gives you much more control over the build system and it forces you to fully understand and realize how the compilation of each component is being done and how the compiler and linker really work.
+
+I worked a few days on it and reached a state where the system compiled but it didn't really feel right. I started investigating and reading a bit more in order to understand how I could improve my Makefiles so as to reduce the boilerplate code on each intermediate makefile and make the inclusion of dependencies, executables, libraries, etc, a bit more generic. After some work, I have to admit it was a lot of fun, but I realized that the non-recursive make approach was making me focus more on the build system than on the code.
+
+So for now I've decided to do a fast switch to CMake, which requires just on file and it's incredibly easy to use but to be fair I've been using it for a while now at work so I'm pretty familiar with it. Using CMake has only advantages when compared to non-recursive make as it makes portability much easier and you don't even have to worry about dependency management, but then again is not as much fun and I'm quite certain non-recursive make is faster.
+
+
+
+Naming Conventions
+----
+
 > Don’t Live with Broken Windows
 
 In order to avoid broken windows I have come up with a nomenclature which uniquely defines one or more characteristics of a certain algorithm, function or data structure. Every module name conforms to the following pattern:

@@ -1,11 +1,11 @@
 cmake_minimum_required (VERSION 2.8)
 
-set (CMAKE_VERBOSE_MAKEFILE ON)
+set (PROJECT_NAME "ARCLib")
+
+set (CMAKE_VERBOSE_MAKEFILE OFF)
 
 option(STATIC "Build static library" OFF)
 option(SHARED "Build shared library" ON)
-
-set (PROJECT_NAME "ARCLib")
 
 set (SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set (INCLUDES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include/")
