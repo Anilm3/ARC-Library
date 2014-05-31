@@ -6,17 +6,17 @@ int main()
     int i;
     sl_list_t list = sl_list_create(sizeof(int));
 
-    for (i = 0; i < 20000; i++)
+    for (i = 0; i < 20; i++)
     {
         sl_list_push_front(list, (void *)&i);
     }
 
-    i = 0;
+    i = 19;
     while(!sl_list_empty(list))
     {
-        if (*((int *)sl_list_front(list)) != i++)
+        if (*((int *)sl_list_front(list)) != i--)
         {
-            printf("Error on list element comparison\n");
+            printf("Error on list element comparison \n");
         }
         sl_list_pop_front(list);
     }

@@ -2,10 +2,7 @@ sp := $(sp).x
 dirstack_$(sp)	:= $(d)
 d := $(dir)
 
-dir := $(d)/container
-include $(dir)/module.mk
-
-dir := $(d)/test
+dir := $(d)/list
 include $(dir)/module.mk
 
 d := $(dirstack_$(sp))

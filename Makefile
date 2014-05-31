@@ -1,38 +1,13 @@
 SHELL = /bin/sh
 CC    = gcc
-FLAGS        = 
-CFLAGS       = -shared -fPIC 
-DEBUGFLAGS   = -O0 -D _DEBUG
-RELEASEFLAGS = -O2 -D NDEBUG -fwhole-program
-LDFLAGS      =
-LIB_DIR = lib
-BIN_DIR = bin
-OBJECTS := 
-BINARIES :=
 
-TARGET := $(LIB_DIR)/libarc.so
+SOURCE_DIR = src
+TEST_DIR   = test
 
-vpath %.h include
-
-all: $(TARGET) test
-
-print-%:
-	@echo '$*=$($*)'
-
-$(TARGET):
-	$(CC) $(FLAGS) $(CFLAGS) $(RELEASEFLAGS) $^ -o $(TARGET) $(LDFLAGS)
-
-%.o: %.c
-	 $(CC) -c -I include $(CFLAGS) $< -o $@
+all:
+	$(MAKE) -C $(SOURCE_DIR)
+	$(MAKE) -C $(TEST_DIR)
 
 clean:
-	rm $(TARGET) $(OBJECTS) $(BINARIES)
-
-%: %.o
-	$(CC) $@.o -o $@ 
-
-dir	:= src
-include $(dir)/module.mk
-
-# dir	:= test
-# include $(dir)/module.mk
+	$(MAKE) clean -C $(SOURCE_DIR)
+	$(MAKE) clean -C $(TEST_DIR)

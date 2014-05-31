@@ -4,7 +4,7 @@ d := $(dir)
 
 OBJECTS += $(d)/unit.o
 
-$(TARGET): $(d)/unit.o 
+#$(TARGET): $(d)/unit.o 
 
 $(d)/unit.o : arc/test/unit.h
 
