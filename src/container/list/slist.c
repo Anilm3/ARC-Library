@@ -9,6 +9,7 @@
 
 #include <string.h>
 #include <arc/container/list/slist.h>
+#include <arc/common/defines.h>
 
 struct arc_slist_node
 {
@@ -24,6 +25,12 @@ struct arc_slist
     size_t node_size;
 };
 
+struct arc_slist_iterator
+{
+    struct arc_slist_node * node;
+    struct arc_slist * list;
+
+};
 
 /******************************************************************************/
 
@@ -48,11 +55,6 @@ struct arc_slist * arc_slist_create(size_t data_size)
 
 void arc_slist_destroy(struct arc_slist * list)
 {
-    if (list == NULL)
-    {
-        return;
-    }
-
     while (list->front != NULL)
     {
         arc_slist_pop_front(list);
@@ -65,11 +67,6 @@ void arc_slist_destroy(struct arc_slist * list)
 
 int arc_slist_size(struct arc_slist * list)
 {
-    if (list == NULL)
-    {
-        return -1;
-    }
-    
     return list->size; 
 }
 
@@ -77,11 +74,6 @@ int arc_slist_size(struct arc_slist * list)
 
 int arc_slist_empty(struct arc_slist * list)
 {
-    if (list == NULL)
-    {
-        return -1;
-    }
-    
     return list->size == 0; 
 }
 
@@ -89,11 +81,6 @@ int arc_slist_empty(struct arc_slist * list)
 
 void arc_slist_clear(struct arc_slist * list)
 {
-    if (list == NULL)
-    {
-        return;
-    }
-
     while (list->front != NULL)
     {
         arc_slist_pop_front(list);
@@ -104,7 +91,7 @@ void arc_slist_clear(struct arc_slist * list)
 
 void * arc_slist_front(struct arc_slist * list)
 {
-    if (list == NULL || list->front == NULL)
+    if (list->front == NULL)
     {
         return NULL;
     }
@@ -118,7 +105,7 @@ void arc_slist_pop_front(struct arc_slist * list)
 {
     struct arc_slist_node *node;
 
-    if (list == NULL || list->front == NULL)
+    if (list->front == NULL)
     {
         return;
     }
@@ -137,16 +124,11 @@ int arc_slist_push_front(struct arc_slist * list , void *data)
 {
     struct arc_slist_node *node;
 
-    if (list == NULL)
-    {
-        return -1;    
-    }
-    
     node = (struct arc_slist_node *)malloc(list->node_size);
 
     if (node == NULL)
     {
-        return -1;
+        return ARC_OUT_OF_MEMORY;
     }
 
     node->data = (void *)(((char *)&node->data) + sizeof(void*));
@@ -158,97 +140,106 @@ int arc_slist_push_front(struct arc_slist * list , void *data)
 
     list->size++;
 
-    return 0;
+    return ARC_SUCCESS;
 }
 
 /******************************************************************************/
 
-struct arc_slist_node * arc_slist_begin(struct arc_slist * list)
+struct arc_slist_iterator * arc_slist_begin(struct arc_slist * list)
 {
-    if (list == NULL)
+    struct arc_slist_iterator * it;
+
+    it = (struct arc_slist_iterator *)malloc(sizeof(struct arc_slist_iterator));
+
+    if (it == NULL)
     {
         return NULL;
     }
 
-    return list->front;
+    it->list = list;
+    it->node = list->front;
+
+    return it;
 }
 
 /******************************************************************************/
 
-int arc_slist_insert_after(struct arc_slist * list, 
-                         struct arc_slist_node * it, 
-                         void * data)
+int arc_slist_insert_after(struct arc_slist_iterator * it, void * data)
 {
+    struct arc_slist * list = it->list;
     struct arc_slist_node * node;
-
-    if (list == NULL || it == NULL)
-    {
-        return -1;
-    }
+    struct arc_slist_node * current = it->node;
 
     node = (struct arc_slist_node *)malloc(list->node_size);
 
     if (node == NULL)
     {
-        return -1;
+        return ARC_OUT_OF_MEMORY;
     }
 
     node->data = (void *)(((char *)&node->data) + sizeof(void*));
     memcpy(node->data, data, list->data_size);
 
-    node->next = it->next;
-    it->next = node;
+    node->next = current->next;
+    current->next = node;
 
     list->size++;
 
-    return 0;
+    return ARC_SUCCESS;
 }
 
 /******************************************************************************/
 
-int arc_slist_erase_after(struct arc_slist * list, struct arc_slist_node * it)
+int arc_slist_erase_after(struct arc_slist_iterator * it)
 {
-    if (list == NULL || it == NULL)
-    {
-        return -1;
-    }
+    struct arc_slist * list = it->list;
+    struct arc_slist_node * current = it->node;
 
-    if (it->next != NULL)
+    if (current->next != NULL)
     {
-        struct arc_slist_node *node = it->next;
+        struct arc_slist_node * node = current->next;
         
-        it->next = node->next;
+        current->next = node->next;
 
         list->size--;
 
         free(node);
     }
 
-    return 0;
+    return ARC_SUCCESS;
 }
 
 /******************************************************************************/
 
-void * arc_slist_iterator_data(struct arc_slist_node * it)
+int arc_slist_iterator_valid(struct arc_slist_iterator * it)
 {
-    if (it == NULL)
-    {
-        return NULL;
-    }
-
-    return it->data;
+    return (it->node != NULL);
 }
 
 /******************************************************************************/
 
-struct arc_slist_node * arc_slist_iterator_next(struct arc_slist_node * it)
+void * arc_slist_iterator_data(struct arc_slist_iterator * it)
 {
-    if (it == NULL)
+    return it->node->data;
+}
+
+/******************************************************************************/
+
+int arc_slist_iterator_next(struct arc_slist_iterator * it)
+{
+    if (it->node != NULL)
     {
-        return NULL;
+        it->node = it->node->next;
     }
 
-    return it->next;
+    return ARC_SUCCESS;
+}
+
+/******************************************************************************/
+
+void arc_slist_iterator_destroy(struct arc_slist_iterator * it)
+{
+    free(it);
 }
 
 /******************************************************************************/

@@ -50,11 +50,6 @@ struct arc_dlist * arc_dlist_create(size_t data_size)
 
 void arc_dlist_destroy(struct arc_dlist * list)
 {
-    if (list == NULL)
-    {
-        return;
-    }
-
     while (list->front != NULL)
     {
         arc_dlist_pop_front(list);
@@ -67,11 +62,6 @@ void arc_dlist_destroy(struct arc_dlist * list)
 
 int arc_dlist_size(struct arc_dlist * list )
 {
-    if (list == NULL)
-    {
-        return -1;
-    }
-    
     return list->size; 
 }
 
@@ -79,11 +69,6 @@ int arc_dlist_size(struct arc_dlist * list )
 
 int arc_dlist_empty(struct arc_dlist * list )
 {
-    if (list == NULL)
-    {
-        return -1;
-    }
-    
     return list->size == 0; 
 }
 
@@ -91,11 +76,6 @@ int arc_dlist_empty(struct arc_dlist * list )
 
 void arc_dlist_clear(struct arc_dlist * list)
 {
-    if (list == NULL)
-    {
-        return;
-    }
-
     while (list->front != NULL)
     {
         arc_dlist_pop_front(list);
@@ -106,7 +86,7 @@ void arc_dlist_clear(struct arc_dlist * list)
 
 void * arc_dlist_front(struct arc_dlist * list)
 {
-    if (list == NULL || list->front == NULL)
+    if (list->front == NULL)
     {
         return NULL;
     }
@@ -120,7 +100,7 @@ void arc_dlist_pop_front(struct arc_dlist * list)
 {
     struct arc_dlist_node *node;
 
-    if (list == NULL || list->front == NULL)
+    if (list->front == NULL)
     {
         return;
     }
@@ -148,11 +128,6 @@ int arc_dlist_push_front(struct arc_dlist * list, void * data)
 {
     struct arc_dlist_node *node;
 
-    if (list == NULL)
-    {
-        return -1;    
-    }
-    
     node = (struct arc_dlist_node *)malloc(list->node_size);
 
     if (node == NULL)
@@ -187,7 +162,7 @@ int arc_dlist_push_front(struct arc_dlist * list, void * data)
 
 void * arc_dlist_back(struct arc_dlist * list)
 {
-    if (list == NULL || list->back == NULL)
+    if (list->back == NULL)
     {
         return NULL;
     }
@@ -201,7 +176,7 @@ void arc_dlist_pop_back(struct arc_dlist * list)
 {
     struct arc_dlist_node *node;
 
-    if (list == NULL || list->back == NULL)
+    if (list->back == NULL)
     {
         return;
     }
@@ -229,11 +204,6 @@ int arc_dlist_push_back(struct arc_dlist * list, void * data)
 {
     struct arc_dlist_node *node;
 
-    if (list == NULL)
-    {
-        return -1;    
-    }
-    
     node = (struct arc_dlist_node *)malloc(list->node_size);
 
     if (node == NULL)
@@ -267,11 +237,6 @@ int arc_dlist_push_back(struct arc_dlist * list, void * data)
 
 struct arc_dlist_node * arc_dlist_begin(struct arc_dlist * list)
 {
-    if (list == NULL)
-    {
-        return NULL;
-    }
-
     return list->front;
 }
 
@@ -279,11 +244,6 @@ struct arc_dlist_node * arc_dlist_begin(struct arc_dlist * list)
 
 struct arc_dlist_node * arc_dlist_end(struct arc_dlist * list)
 {
-    if (list == NULL)
-    {
-        return NULL;
-    }
-
     return list->back;
 }
 

@@ -10,7 +10,7 @@ Since creating this library is meant to be a fun time for me, as well as organiz
 
 I worked a few days on it and reached a state where the system compiled but it didn't really feel right. I started investigating and reading a bit more in order to understand how I could improve my Makefiles so as to reduce the boilerplate code on each intermediate makefile and make the inclusion of dependencies, executables, libraries, etc, a bit more generic. After some work, I have to admit it was a lot of fun, but I realized that the non-recursive make approach was making me focus more on the build system than on the code.
 
-So for now I've decided to do a fast switch to CMake, which requires just on file and it's incredibly easy to use but to be fair I've been using it for a while now at work so I'm pretty familiar with it. Using CMake has only advantages when compared to non-recursive make as it makes portability much easier and you don't even have to worry about dependency management, but then again is not as much fun and I'm quite certain non-recursive make is faster.
+So for now I've decided to do a fast switch to CMake, which requires just one file and it's incredibly easy to use but to be fair I've been using it for a while now at work so I'm pretty familiar with it. Using CMake has only advantages when compared to non-recursive make as it makes portability much easier and you don't even have to worry about dependency management, but then again is not as much fun and I'm quite certain non-recursive make is faster.
 
 
 

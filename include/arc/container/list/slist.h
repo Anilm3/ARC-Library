@@ -13,7 +13,7 @@
 #include <stdlib.h> 
 
 typedef struct arc_slist * arc_slist_t;
-typedef struct arc_slist_node * arc_slist_iterator_t;
+typedef struct arc_slist_iterator * arc_slist_iterator_t;
 
 /**
  *
@@ -54,13 +54,15 @@ arc_slist_iterator_t arc_slist_begin(arc_slist_t list);
 /**
  *
  */
-int arc_slist_insert_after(arc_slist_t list, 
-                         arc_slist_iterator_t it, 
-                         void * data);
+int arc_slist_insert_after(arc_slist_iterator_t it, void * data);
 /**
  *
  */
-int arc_slist_erase_after(arc_slist_t list, arc_slist_iterator_t it);
+int arc_slist_erase_after(arc_slist_iterator_t it);
+/**
+ *
+ */
+int arc_slist_iterator_valid(arc_slist_iterator_t it);
 /**
  *
  */
@@ -68,6 +70,10 @@ void * arc_slist_iterator_data(arc_slist_iterator_t it);
 /**
  *
  */
-arc_slist_iterator_t arc_slist_iterator_next(arc_slist_iterator_t it);
+int arc_slist_iterator_next(arc_slist_iterator_t it);
+/**
+ *
+ */
+void arc_slist_iterator_destroy(arc_slist_iterator_t it);
 
 #endif

@@ -23,6 +23,29 @@ int main()
 
     arc_slist_destroy(list);
 
+    list = arc_slist_create(sizeof(int));
+
+    for (i = 0; i < 20000; i++)
+    {
+        arc_slist_push_front(list, (void *)&i);
+    }
+
+    i = 19999;
+    arc_slist_iterator_t it = arc_slist_begin(list);
+
+    while(arc_slist_iterator_valid(it))
+    {
+        if (*((int *)arc_slist_iterator_data(it)) != i--)
+        {
+            printf("Error on list element comparison \n");
+        }
+        arc_slist_iterator_next(it);
+    }
+
+    arc_slist_iterator_destroy(it);
+
+    arc_slist_destroy(list);
+
     list = arc_slist_create(sizeof(double));
 
     for (i = 0; i < 20000; i++)
