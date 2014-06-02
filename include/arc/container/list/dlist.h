@@ -13,7 +13,7 @@
 #include <stdlib.h> 
 
 typedef struct arc_dlist * arc_dlist_t;
-typedef struct arc_dlist_node * arc_dlist_node_t;
+typedef struct arc_dlist_iterator * arc_dlist_iterator_t;
 
 /**
  *
@@ -59,40 +59,46 @@ void arc_dlist_pop_back(arc_dlist_t list);
  *
  */
 int arc_dlist_push_back(arc_dlist_t list, void * data);
+
 /**
  *
  */
-arc_dlist_node_t arc_dlist_begin(arc_dlist_t list);
+arc_dlist_iterator_t arc_dlist_begin(arc_dlist_t list);
 /**
  *
  */
-arc_dlist_node_t arc_dlist_end(arc_dlist_t list);
+arc_dlist_iterator_t arc_dlist_end(arc_dlist_t list);
 /**
  *
  */
-int arc_dlist_insert_before(arc_dlist_t list, 
-                            arc_dlist_node_t it, 
-                            void * data);
+int arc_dlist_insert_before(arc_dlist_iterator_t it, void * data);
 /**
  *
  */
-int arc_dlist_insert_after(arc_dlist_t list, 
-                         arc_dlist_node_t it, 
-                         void * data);
+int arc_dlist_insert_after(arc_dlist_iterator_t it, void * data);
 /**
  *
  */
-int arc_dlist_erase(arc_dlist_t list, arc_dlist_node_t it);
+int arc_dlist_erase(arc_dlist_iterator_t it);
 /**
  *
  */
-void * arc_dlist_node_data(arc_dlist_node_t it);
+int arc_dlist_iterator_valid(arc_dlist_iterator_t it);
 /**
  *
  */
-arc_dlist_node_t arc_dlist_node_next(arc_dlist_node_t it);
+void * arc_dlist_iterator_data(arc_dlist_iterator_t it);
 /**
  *
  */
-arc_dlist_node_t arc_dlist_node_previous(arc_dlist_node_t it);
+int arc_dlist_iterator_next(arc_dlist_iterator_t it);
+/**
+ *
+ */
+int arc_dlist_iterator_previous(arc_dlist_iterator_t it);
+/**
+ *
+ */
+void arc_dlist_iterator_destroy(arc_dlist_iterator_t it);
+
 #endif

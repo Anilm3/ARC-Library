@@ -26,6 +26,12 @@ struct arc_dlist
     size_t node_size;
 };
 
+struct arc_dlist_iterator
+{
+    struct arc_dlist_node * node;
+    struct arc_dlist * list;
+};
+
 /******************************************************************************/
 
 struct arc_dlist * arc_dlist_create(size_t data_size)
@@ -231,20 +237,6 @@ int arc_dlist_push_back(struct arc_dlist * list, void * data)
     list->size++;
 
     return 0;
-}
-
-/******************************************************************************/
-
-struct arc_dlist_node * arc_dlist_begin(struct arc_dlist * list)
-{
-    return list->front;
-}
-
-/******************************************************************************/
-
-struct arc_dlist_node * arc_dlist_end(struct arc_dlist * list)
-{
-    return list->back;
 }
 
 /******************************************************************************/

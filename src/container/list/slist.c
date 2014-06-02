@@ -29,7 +29,6 @@ struct arc_slist_iterator
 {
     struct arc_slist_node * node;
     struct arc_slist * list;
-
 };
 
 /******************************************************************************/
