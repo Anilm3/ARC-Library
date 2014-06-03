@@ -9,7 +9,7 @@
 
 #include <string.h>
 #include <pthread.h>
-#include <arc/container/list/slist_ts.h>
+#include <arc/container/slist_ts.h>
 
 struct arc_slist_ts_node
 {

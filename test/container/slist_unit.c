@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <arc/container/list/slist.h>
+#include <arc/container/slist.h>
 
 int main()
 {

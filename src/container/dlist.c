@@ -8,7 +8,7 @@
 *******************************************************************************/
 
 #include <string.h>
-#include <arc/container/list/dlist.h>
+#include <arc/container/dlist.h>
 
 struct arc_dlist_node
 {

@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <pthread.h>
 
-#include <arc/container/stack/stack_ts.h>
+#include <arc/container/stack_ts.h>
 
 struct stack_ts_node
 {
