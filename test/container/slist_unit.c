@@ -31,18 +31,17 @@ int main()
     }
 
     i = 19999;
-    arc_slist_iterator_t it = arc_slist_begin(list);
+    arc_slist_iterator_t it;
 
-    while(arc_slist_iterator_valid(it))
+    for (it = arc_slist_begin(list);
+         it != arc_slist_after_end(list); 
+         it = arc_slist_iterator_next(it))
     {
         if (*((int *)arc_slist_iterator_data(it)) != i--)
         {
             printf("Error on list element comparison \n");
         }
-        arc_slist_iterator_next(it);
     }
-
-    arc_slist_iterator_destroy(it);
 
     arc_slist_destroy(list);
 
