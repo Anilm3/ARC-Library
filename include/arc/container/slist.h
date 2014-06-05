@@ -79,9 +79,5 @@ void * arc_slist_iterator_data(arc_slist_iterator_t it);
  *
  */
 arc_slist_iterator_t arc_slist_iterator_next(arc_slist_iterator_t it);
-/**
- *
- */
-void arc_slist_iterator_destroy(arc_slist_iterator_t it);
 
 #endif

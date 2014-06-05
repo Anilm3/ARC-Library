@@ -17,11 +17,19 @@ include_directories ("${INCLUDES_DIR}")
 
 file(GLOB_RECURSE SOURCES ${SOURCE_DIR}/*.c)
 
+set(CMAKE_BUILD_TYPE Release)
+
+# set(CMAKE_C_FLAGS "-g")
+# set(CMAKE_EXE_LINKER_FLAGS "-s")
+
 if (SHARED)
     add_library(arc-shared SHARED ${SOURCES})
     set_target_properties(arc-shared PROPERTIES
         OUTPUT_NAME arc CLEAN_DIRECT_OUTPUT 1)
 endif()
+
+# set(CMAKE_C_FLAGS "-O3")
+# set(CMAKE_EXE_LINKER_FLAGS "-s")
 
 if (STATIC)
     add_library(arc-static STATIC ${SOURCES})
