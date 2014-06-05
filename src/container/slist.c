@@ -63,10 +63,7 @@ struct arc_slist * arc_slist_create(size_t data_size)
 
 void arc_slist_destroy(struct arc_slist * list)
 {
-    while (list->front.next != NULL)
-    {
-        arc_slist_pop_front(list);
-    }
+    arc_slist_clear(list);
 
     free(list);
 }
@@ -148,6 +145,11 @@ int arc_slist_insert_after(struct arc_slist_node * current, void * data)
 {
     struct arc_slist * list = current->list;
     struct arc_slist_node * node;
+
+    if (current == &(list->back))
+    {
+        return ARC_ERROR;
+    }
 
     node = (struct arc_slist_node *)malloc(list->node_size);
 
