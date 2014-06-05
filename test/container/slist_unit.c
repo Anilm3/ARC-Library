@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <arc/container/slist.h>
 
-int main()
+int main(void)
 {
     int i;
     arc_slist_t list = arc_slist_create(sizeof(int));
