@@ -31,13 +31,13 @@ int main(void)
     }
 
     i = 19999;
-    arc_slist_iterator_t it;
+    arc_slist_node_t it;
 
     for (it = arc_slist_begin(list);
          it != arc_slist_after_end(list); 
-         it = arc_slist_iterator_next(it))
+         it = arc_slist_node_next(it))
     {
-        if (*((int *)arc_slist_iterator_data(it)) != i--)
+        if (*((int *)arc_slist_node_data(it)) != i--)
         {
             printf("Error on list element comparison \n");
         }

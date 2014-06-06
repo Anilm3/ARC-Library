@@ -47,7 +47,7 @@ struct arc_rwmutex * arc_rwmutex_create()
 
 void arc_rwmutex_destroy(struct arc_rwmutex * rwmutex)
 {
-    pthread_mutex_unlock(&(rwmutex->mutex));
+    pthread_cond_destroy(&(rwmutex->cond_var));
     pthread_mutex_destroy(&(rwmutex->mutex));
     
     free(rwmutex);
@@ -87,6 +87,7 @@ int arc_rwmutex_wlock(struct arc_rwmutex * rwmutex)
     }
     
     rwmutex->writer_writing++;
+    rwmutex->writer_waiting--;
 
     pthread_mutex_unlock(&(rwmutex->mutex));
     
@@ -132,7 +133,6 @@ int arc_rwmutex_wunlock(struct arc_rwmutex * rwmutex)
         return ARC_ERROR;
     }
 
-    rwmutex->writer_waiting--;
     rwmutex->writer_writing = 0;
 
     pthread_cond_broadcast(&(rwmutex->cond_var));

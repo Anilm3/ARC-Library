@@ -31,7 +31,7 @@ struct arc_slist
 
 struct arc_slist * arc_slist_create(size_t data_size)
 {
-    struct arc_slist * list = (struct arc_slist *)malloc(sizeof(struct arc_slist));
+    struct arc_slist * list = malloc(sizeof(struct arc_slist));
 
     if (list == NULL)
     {
@@ -41,7 +41,7 @@ struct arc_slist * arc_slist_create(size_t data_size)
     // Initialise the list
     list->size = 0;
     list->data_size = data_size;
-    list->node_size = list->data_size + sizeof(struct arc_slist_node);
+    list->node_size = data_size + sizeof(struct arc_slist_node);
     
     // Initialise the first "NULL" node : it doesn't hold memory for data
     // this node is refered to as the "before_begin" node
@@ -151,7 +151,7 @@ int arc_slist_insert_after(struct arc_slist_node * current, void * data)
         return ARC_ERROR;
     }
 
-    node = (struct arc_slist_node *)malloc(list->node_size);
+    node = malloc(list->node_size);
 
     if (node == NULL)
     {
@@ -172,7 +172,7 @@ int arc_slist_insert_after(struct arc_slist_node * current, void * data)
 
 /******************************************************************************/
 
-int arc_slist_erase_after(struct arc_slist_node * current)
+void arc_slist_erase_after(struct arc_slist_node * current)
 {
     struct arc_slist * list = current->list;
 
@@ -186,20 +186,18 @@ int arc_slist_erase_after(struct arc_slist_node * current)
 
         free(node);
     }
-
-    return ARC_SUCCESS;
 }
 
 /******************************************************************************/
 
-void * arc_slist_iterator_data(struct arc_slist_node * node)
+void * arc_slist_node_data(struct arc_slist_node * node)
 {
     return node->data;
 }
 
 /******************************************************************************/
 
-struct arc_slist_node * arc_slist_iterator_next(struct arc_slist_node * node)
+struct arc_slist_node * arc_slist_node_next(struct arc_slist_node * node)
 {
     return (node->next != NULL ? node->next : &(node->list->back));
 }
