@@ -119,7 +119,7 @@ void arc_print_report(void)
     }
 
     printf("Test result : %d/%d : %s\n", 
-           passed, passed + failed, (failed ? "FAILED" :"OK"));
+           passed, passed + failed, (failed ? "Failure" :"OK"));
 
 }
 

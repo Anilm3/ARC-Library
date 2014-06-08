@@ -78,15 +78,15 @@ if (!function) \
     ARC_ASSERT_GENERIC(arc_assert_float_equal((float)(left), \
                                               (float)(right), \
                                               (float)(delta)), \
-                       left == right +/-delta, \
-                       left != right +/-delta)
+                       left == right +/- delta, \
+                       left != right +/- delta)
 
 #define ARC_ASSERT_DOUBLE_EQUAL(left, right, delta) \
     ARC_ASSERT_GENERIC(arc_assert_double_equal((double)(left), \
                                               (double)(right), \
                                               (double)(delta)), \
-                       left == right +/-delta, \
-                       left != right +/-delta)
+                       left == right +/- delta, \
+                       left != right +/- delta)
 
 #define ARC_ASSERT_STRING_CONTAINS(str, c) \
     ARC_ASSERT_GENERIC(arc_assert_string_contains((const char *)(str), \
