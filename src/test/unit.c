@@ -24,6 +24,21 @@ int arc_assert_false(int exp)
     return !exp;
 }
 
+int arc_assert_pointer_null(void * pointer)
+{
+    return (pointer == NULL);
+}
+
+int arc_assert_pointer_not_null(void * pointer)
+{
+    return (pointer != NULL);
+}
+
+int arc_assert_pointer_equal(void * left, void * right)
+{
+    return (left == right);
+}
+
 int arc_assert_int_equal(int left, int right)
 {
     return (left == right);
