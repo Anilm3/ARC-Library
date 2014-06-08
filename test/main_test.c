@@ -1,19 +1,23 @@
-#include <stdlib.h>
-#include <stdio.h>
+#include <arc/test/unit.h>
 
-int arc_assert_true(int exp);
-int arc_assert_false(int exp);
-int arc_assert_int_equal(int left, int right);
-int arc_assert_ulong_equal(unsigned long left, unsigned long right);
-int arc_assert_string_equal(char * left, char * right);
-int arc_assert_n_array_equal(int exp);
-int arc_assert_bit_set(int exp);
-int arc_assert_bit_not_set(int exp);
-int arc_assert_bit_mask_matches(int exp);
-int arc_assert_fail(int exp);
-int arc_assert_float_equal(int exp);
-int arc_assert_double_equal(int exp);
-int arc_assert_string_contains(int exp);
-int arc_assert_string_doesnt_contain(int exp);
-int arc_assert_string_starts_with(int exp);
-int arc_assert_string_ends_with(int exp);
+
+ARC_TEST(randomtest)
+    ARC_ASSERT_TRUE(1)
+    ARC_ASSERT_FALSE(0)
+    ARC_ASSERT_INT_EQUAL(1, 1)
+    ARC_ASSERT_ULONG_EQUAL(11832193802UL, 11832193802UL)
+    ARC_ASSERT_STRING_EQUAL("HOLA", "HOLA")
+    ARC_ASSERT_BIT_SET(4321, 0)
+    ARC_ASSERT_BIT_NOT_SET(4320, 0)
+    ARC_ASSERT_FLOAT_EQUAL(191.2F, 191.2F, 0.001F)
+    ARC_ASSERT_DOUBLE_EQUAL(192.131, 192.131, 0.001)
+    ARC_ASSERT_STRING_CONTAINS("HOLA", 'O')
+    ARC_ASSERT_STRING_DOESNT_CONTAIN("HOLA", 'B')
+    ARC_ASSERT_STRING_STARTS_WITH("HOLA", 'H')
+    ARC_ASSERT_STRING_ENDS_WITH("HOLA", 'A')
+ARC_END_TEST
+
+ARC_TEST_FIXTURE
+    ARC_ADD_TEST(randomtest)
+ARC_END_TEST_FIXTURE
+
