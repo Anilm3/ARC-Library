@@ -3,8 +3,8 @@
 #include <arc/test/unit.h>
 #include <arc/common/defines.h>
 
-
 ARC_TEST(push_pop)
+{
     int i;
 
     arc_slist_t list = arc_slist_create(sizeof(int));
@@ -25,9 +25,10 @@ ARC_TEST(push_pop)
     }
 
     arc_slist_destroy(list);
-ARC_END_TEST
+}
 
 ARC_TEST(iterators)
+{
     int i;
     arc_slist_t list = arc_slist_create(sizeof(int));
 
@@ -49,10 +50,10 @@ ARC_TEST(iterators)
     }
 
     arc_slist_destroy(list);
-
-ARC_END_TEST
+}
 
 ARC_TEST(destruction)
+{
     int i;
 
     arc_slist_t list = arc_slist_create(sizeof(double));
@@ -65,17 +66,13 @@ ARC_TEST(destruction)
     }
 
     arc_slist_destroy(list);
+}
 
-ARC_END_TEST
-
-ARC_SETUP
-ARC_END_SETUP 
-
-ARC_TEARDOWN
-ARC_END_TEARDOWN
-
-ARC_TEST_FIXTURE
+ARC_TEST_FIXTURE()
+{
     ARC_ADD_TEST(push_pop)
     ARC_ADD_TEST(iterators)
     ARC_ADD_TEST(destruction)
-ARC_END_TEST_FIXTURE
+}
+
+ARC_RUN_TESTS()

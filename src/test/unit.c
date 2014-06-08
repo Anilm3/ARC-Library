@@ -11,8 +11,127 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <assert.h>
 
 #include <arc/test/unit.h>
+
+typedef struct
+{
+    const char * name;
+    void (* function)(void);
+    int failed;
+    int test;
+} arc_test_t;
+
+unsigned idx = 0;
+unsigned length = 0;
+unsigned max_length = 256;
+int passed = 0;
+int failed = 0;
+
+arc_test_t * arc_user_tests;
+
+void arc_add_test(const char * name, void (*fn)(void))
+{
+    arc_test_t test = {name, fn, 0, 1};
+
+    if (idx < max_length)
+    {
+        arc_user_tests[idx++] = test;
+    }
+    else
+    {
+        max_length += 256;
+        arc_test_t * ptr = realloc(arc_user_tests, sizeof(arc_test_t)*max_length);
+
+        assert(ptr != NULL);
+
+        arc_user_tests[idx++] = test;
+    }
+}
+
+void arc_add_function(void (*fn)(void))
+{
+    arc_test_t test = {"", fn, 0, 0};
+
+    if (idx < max_length)
+    {
+        arc_user_tests[idx++] = test;
+    }
+    else
+    {
+        max_length += 256;
+        arc_test_t * ptr = realloc(arc_user_tests, sizeof(arc_test_t)*max_length);
+
+        assert(ptr != NULL);
+
+        arc_user_tests[idx++] = test;
+    }
+}
+
+void arc_set_system(void)
+{
+    arc_user_tests = malloc(sizeof(arc_test_t)*max_length);
+
+    assert(arc_user_tests != NULL);
+}
+
+void arc_run_fixture(void)
+{
+    length = idx;
+
+    for (idx = 0; idx < length; idx++)
+    {
+        if (arc_user_tests[idx].test)
+        {
+            printf("Running test : %s", arc_user_tests[idx].name);
+
+            arc_user_tests[idx].function();
+
+            if (!arc_user_tests[idx].failed)
+            {
+                printf(" : OK\n");
+                passed++;
+            }
+            else
+            {
+                failed++;
+            }
+        }
+        else
+        {
+            arc_user_tests[idx].function();
+        }
+    }
+}
+
+void arc_print_report(void)
+{
+    if (failed)
+    {
+        printf("Tests failed : ");
+
+        for (idx = 0; idx < length; idx++)
+        {
+            printf("%s, ", arc_user_tests[idx].name);
+        }
+        printf("\n");
+    }
+
+    printf("Test result : %d/%d : %s\n", 
+           passed, passed + failed, (failed ? "FAILED" :"OK"));
+
+}
+
+void arc_cleanup(void)
+{
+    free(arc_user_tests);
+}
+
+void set_test_failed(void)
+{
+    arc_user_tests[idx].failed = 1;
+}
 
 int arc_assert_true(int exp)
 {
@@ -55,11 +174,6 @@ int arc_assert_string_equal(const char * left, const char * right)
     return (strcmp(left, right) == 0);
 }
 
-// int arc_assert_n_array_equal(int exp)
-// {
-
-// }
-
 int arc_assert_bit_set(unsigned num, int bit)
 {
     return ((num >> bit) & 1);
@@ -69,16 +183,6 @@ int arc_assert_bit_not_set(int num, int bit)
 {
     return !((num >> bit) & 1);
 }
-
-// int arc_assert_bit_mask_matches(int exp)
-// {
-//     return ((num >> bit) & 1);
-// }
-
-// int arc_assert_fail(int exp)
-// {
-
-// }
 
 int arc_assert_float_equal(float left, float right, float delta)
 {

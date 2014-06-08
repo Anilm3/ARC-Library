@@ -18,12 +18,14 @@ if (!function) \
     printf("\n%s:%d: Failure\n", __FILE__, __LINE__); \
     printf("    Expected: " #expected "\n"); \
     printf("    Obtained: " #obtained "\n"); \
-    return 0; \
+    set_test_failed(); \
+    return; \
 } 
 
-#define ARC_ASSERT_FAIL \
+#define ARC_ASSERT_FAIL() \
     printf("%s:%d: Failure\n", __FILE__, __LINE__); \
-    return 0;
+    set_test_failed(); \
+    return;
 
 #define ARC_ASSERT_TRUE(exp) \
     ARC_ASSERT_GENERIC(arc_assert_true((int)(exp)), exp != 0, exp == 0)
@@ -110,52 +112,35 @@ if (!function) \
                        str[last] == c, \
                        str[last] != c)
 
-#define ARC_TEST(name) \
-int name(void) \
-{
+#define ARC_TEST(name) void name(void)
 
-#define ARC_END_TEST \
-    return 1; \
-}
+#define ARC_TEST_FIXTURE() void arc_set_tests(void)
 
-#define ARC_SETUP \
-void arc_setup(void) \
-{
-
-#define ARC_END_SETUP }
-
-
-#define ARC_TEARDOWN \
-void arc_teardown(void) \
-{
-
-#define ARC_END_TEARDOWN }
-
-#define ARC_TEST_FIXTURE \
+#define ARC_RUN_TESTS() \
 int main(void) \
 { \
-    int passed = 0, failed = 0; \
-    arc_setup();
-
-
-#define ARC_END_TEST_FIXTURE  \
-    printf("Tests passed: %d/%d : %s\n",  \
-            passed, failed + passed, (failed ? "FAILED" : "OK")); \
-    arc_teardown(); \
+    arc_set_system(); \
+    arc_set_tests(); \
+    arc_run_fixture(); \
+    arc_print_report(); \
+    arc_cleanup(); \
     return 0; \
 }
 
-#define ARC_ADD_TEST(name) \
-printf("Running : " #name); \
-if (name()) \
-{ \
-    passed++; \
-    printf(" : OK\n"); \
-} \
-else \
-{ \
-    failed++; \
-}
+#define ARC_ADD_TEST(name) arc_add_test(#name, name);
+
+#define ARC_ADD_FUNCTION(name) arc_add_function(name);
+
+void arc_add_test(const char * name, void (*fn)(void));
+void arc_add_function(void (*fn)(void));
+
+void arc_set_system(void);
+void arc_run_fixture(void);
+void arc_print_report(void);
+void arc_cleanup(void);
+
+void set_test_failed(void);
+void set_test_passed(void);
 
 int arc_assert_true(int exp);
 int arc_assert_false(int exp);
@@ -165,10 +150,8 @@ int arc_assert_pointer_equal(void * left, void * right);
 int arc_assert_int_equal(int left, int right);
 int arc_assert_ulong_equal(unsigned long left, unsigned long right);
 int arc_assert_string_equal(const char * left, const char * right);
-// int arc_assert_n_array_equal(int exp);
 int arc_assert_bit_set(unsigned num, int bit);
 int arc_assert_bit_not_set(int num, int bit);
-// int arc_assert_bit_mask_matches(int exp);
 int arc_assert_float_equal(float left, float right, float delta);
 int arc_assert_double_equal(double left, double right, double delta);
 int arc_assert_string_contains(const char * str, char c);
