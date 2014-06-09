@@ -6,6 +6,10 @@
 * There is NO WARRANTY, to the extent permitted by law.                         *
 *                                                                               *
 *********************************************************************************/
+/**
+ * @author Anil M. Mahtani Mirchandani
+ * @file stack.h
+ */
 
 #ifndef ARC_STACK_H_
 #define ARC_STACK_H_

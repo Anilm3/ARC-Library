@@ -6,6 +6,10 @@
 * There is NO WARRANTY, to the extent permitted by law.                        *
 *                                                                              *
 *******************************************************************************/
+/**
+ * @author Anil M. Mahtani Mirchandani
+ * @file defines.h
+ */
 
 #ifndef ARC_DEFINES_H_
 #define ARC_DEFINES_H_

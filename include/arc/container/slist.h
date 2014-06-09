@@ -6,7 +6,11 @@
 * There is NO WARRANTY, to the extent permitted by law.                        *
 *                                                                              *
 *******************************************************************************/
-
+/**
+ * @author Anil M. Mahtani Mirchandani
+ * @file slist.h
+ */
+ 
 #ifndef ARC_SLIST_H_
 #define ARC_SLIST_H_
 
@@ -16,7 +20,7 @@ typedef struct arc_slist * arc_slist_t;
 typedef struct arc_slist_node * arc_slist_node_t;
 
 /**
- *
+ * @brief Creates a new list
  */
 arc_slist_t arc_slist_create(size_t data_size);
 /**

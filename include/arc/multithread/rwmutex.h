@@ -6,6 +6,10 @@
 * There is NO WARRANTY, to the extent permitted by law.                        *
 *                                                                              *
 *******************************************************************************/
+/**
+ * @author Anil M. Mahtani Mirchandani
+ * @file rwmutex.h
+ */
 
 #ifndef ARC_RWMUTEX_H_
 #define ARC_RWMUTEX_H_
@@ -13,7 +17,7 @@
 typedef struct arc_rwmutex * arc_rwmutex_t;
 
 /**
- *
+ * @name Create rwmutex
  */
 arc_rwmutex_t arc_rwmutex_create(void);
 /**

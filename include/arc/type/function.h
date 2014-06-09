@@ -7,6 +7,11 @@
 *                                                                              *
 *******************************************************************************/
 
+/**
+ * @author Anil M. Mahtani Mirchandani
+ * @file function.h
+ */
+
 #ifndef ARC_FUNCTION_H_
 #define ARC_FUNCTION_H_
 
