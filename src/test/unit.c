@@ -133,14 +133,14 @@ void set_test_failed(void)
     arc_user_tests[idx].failed = 1;
 }
 
-int arc_assert_true(int exp)
+int arc_assert_true(int expression)
 {
-    return exp;
+    return expression;
 }
 
-int arc_assert_false(int exp)
+int arc_assert_false(int expression)
 {
-    return !exp;
+    return !expression;
 }
 
 int arc_assert_pointer_null(void * pointer)
