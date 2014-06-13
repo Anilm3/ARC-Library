@@ -96,6 +96,20 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wunreachable-code")
 
 # set(CMAKE_EXE_LINKER_FLAGS "-s")
 
+# add a target to generate API documentation with Doxygen
+find_package(Doxygen)
+
+if(DOXYGEN_FOUND)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in 
+                   ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+    add_custom_target(doc
+                      ${DOXYGEN_EXECUTABLE} 
+                      ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+                      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
+                      COMMENT "Generating documentation with Doxygen" VERBATIM)
+endif(DOXYGEN_FOUND)
+
+
 if (SHARED)
     add_library(arc-shared SHARED ${SOURCES})
     set_target_properties(arc-shared PROPERTIES
