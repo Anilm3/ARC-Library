@@ -25,12 +25,6 @@ In order to avoid broken windows I have come up with a nomenclature which unique
 module_name_xy
 ```
 
-And for the C++ library:
-
-```
-library::xy::module_name
-```
-
 Where `xy` is an optional suffix, describing the behaviour of the module under concurrent, parallel and interruptible environment. It can be one of the following:
 
 | Suffix | Meaning                                 | Description  |
@@ -49,12 +43,6 @@ And every function belonging to a module conforms to this other pattern:
 
 ```
 module_name_xy_function_name_ab
-```
-
-And for the C++ library:
-
-```
-module_name::function_name_ab
 ```
 
 Where `ab` is an optional suffix which describes a characteristic of the underlying algorithm implemntation. It can be one of the following:
