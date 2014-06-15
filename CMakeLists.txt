@@ -19,8 +19,11 @@ file(GLOB_RECURSE SOURCES ${SOURCE_DIR}/*.c)
 
 # set(CMAKE_BUILD_TYPE Release)
 
+#-ansi, -pedantic, -Werror : conform to ansi C, every warning is an error.
+set(CMAKE_C_FLAGS "-ansi -pedantic -Werror")
+
 # -g: debugging information
-set(CMAKE_C_FLAGS "-g")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
 
 # -Wextra, -Wall: essential.
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wextra -Wall")

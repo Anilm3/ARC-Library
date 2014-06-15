@@ -38,20 +38,20 @@ struct arc_slist * arc_slist_create(size_t data_size)
         return NULL;
     }
 
-    // Initialise the list
+    /* Initialise the list */
     list->size = 0;
     list->data_size = data_size;
     list->node_size = data_size + sizeof(struct arc_slist_node);
     
-    // Initialise the first "NULL" node : it doesn't hold memory for data
-    // this node is refered to as the "before_begin" node
+    /* Initialise the first "NULL" node : it doesn't hold memory for data
+       this node is refered to as the "before_begin" node */
     list->front.list = list;
     list->front.next = NULL;
     list->front.data = NULL;
 
-    // Initialise the last "NULL" node : it doesn't hold memory for data
-    // this node is refered to as the "after_end" node, only kept for 
-    // comparison purposes
+    /* Initialise the last "NULL" node : it doesn't hold memory for data
+       this node is refered to as the "after_end" node, only kept for 
+       comparison purposes */
     list->back.list = list;
     list->back.next = NULL;
     list->back.data = NULL;

@@ -36,7 +36,7 @@ struct arc_stack * arc_stack_create(size_t data_size)
         return NULL;
     }
 
-    // Initialise the list
+    /* Initialise the list */
     stack->size = 0;
     stack->top = NULL;
     stack->data_size = data_size;

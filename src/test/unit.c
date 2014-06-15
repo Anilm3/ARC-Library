@@ -35,7 +35,12 @@ arc_test_t * arc_user_tests;
 
 void arc_add_test(const char * name, void (*fn)(void))
 {
-    arc_test_t test = {name, fn, 0, 1};
+    arc_test_t test;
+
+    test.name = name;
+    test.function = fn;
+    test.failed = 0;
+    test.test = 1;
 
     if (idx < max_length)
     {
@@ -43,8 +48,10 @@ void arc_add_test(const char * name, void (*fn)(void))
     }
     else
     {
+        arc_test_t * ptr;
+
         max_length += 256;
-        arc_test_t * ptr = realloc(arc_user_tests, sizeof(arc_test_t)*max_length);
+        ptr = realloc(arc_user_tests, sizeof(arc_test_t)*max_length);
 
         assert(ptr != NULL);
 
@@ -56,7 +63,12 @@ void arc_add_test(const char * name, void (*fn)(void))
 
 void arc_add_function(void (*fn)(void))
 {
-    arc_test_t test = {"", fn, 0, 0};
+    arc_test_t test;
+
+    test.name = "";
+    test.function = fn;
+    test.failed = 0;
+    test.test = 0;
 
     if (idx < max_length)
     {
@@ -64,8 +76,10 @@ void arc_add_function(void (*fn)(void))
     }
     else
     {
+        arc_test_t * ptr;
+
         max_length += 256;
-        arc_test_t * ptr = realloc(arc_user_tests, sizeof(arc_test_t)*max_length);
+        ptr = realloc(arc_user_tests, sizeof(arc_test_t)*max_length);
 
         assert(ptr != NULL);
 
@@ -221,7 +235,7 @@ int arc_assert_bit_not_set(int num, int bit)
 
 int arc_assert_float_equal(float left, float right, float delta)
 {
-    return (fabsf(left - right) < delta);
+    return (fabs(left - right) < delta);
 }
 
 /******************************************************************************/

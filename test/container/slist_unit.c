@@ -39,6 +39,7 @@ ARC_TEST(push_pop)
 ARC_TEST(iterators)
 {
     int i;
+    arc_slist_node_t it;
     arc_slist_t list = arc_slist_create(sizeof(int));
 
     ARC_ASSERT_POINTER_NOT_NULL(list);
@@ -49,7 +50,6 @@ ARC_TEST(iterators)
     }
 
     i = 19999;
-    arc_slist_node_t it;
 
     for (it = arc_slist_begin(list);
          it != arc_slist_after_end(list); 
