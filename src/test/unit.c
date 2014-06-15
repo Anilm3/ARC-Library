@@ -98,7 +98,7 @@ void arc_set_system(void)
 
 /******************************************************************************/
 
-void arc_run_fixture(void)
+int arc_run_fixture(void)
 {
     length = idx;
 
@@ -125,13 +125,15 @@ void arc_run_fixture(void)
             arc_user_tests[idx].function();
         }
     }
+
+    return (failed > 0);
 }
 
 /******************************************************************************/
 
 void arc_print_report(void)
 {
-    if (failed)
+    if (failed > 0)
     {
         printf("Tests failed : ");
 
@@ -143,7 +145,7 @@ void arc_print_report(void)
     }
 
     printf("Test result : %d/%d : %s\n", 
-           passed, passed + failed, (failed ? "Failure" :"OK"));
+           passed, passed + failed, (failed > 0 ? "Failure" :"OK"));
 
 }
 

@@ -41,7 +41,7 @@ if (!function) \
  * @brief Assertion which always fails
  */
 #define ARC_ASSERT_FAIL() \
-    printf("%s:%d: Failure\n", __FILE__, __LINE__); \
+    printf("\n%s:%d: Failure\n", __FILE__, __LINE__); \
     arc_set_test_failed(); \
     return;
 /**
@@ -236,12 +236,13 @@ if (!function) \
 #define ARC_RUN_TESTS() \
 int main(void) \
 { \
+    int retval = 0; \
     arc_set_system(); \
     arc_set_tests(); \
-    arc_run_fixture(); \
+    retval = arc_run_fixture(); \
     arc_print_report(); \
     arc_cleanup(); \
-    return 0; \
+    return retval; \
 }
 
 /* Internal test fixture functions */
@@ -250,7 +251,7 @@ void arc_add_function(void (*fn)(void));
 
 void arc_set_system(void);
 void arc_set_tests(void);
-void arc_run_fixture(void);
+int arc_run_fixture(void);
 void arc_print_report(void);
 void arc_cleanup(void);
 

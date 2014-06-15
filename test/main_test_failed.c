@@ -9,7 +9,7 @@
 
 #include <arc/test/unit.h>
 
-ARC_TEST(fail)
+ARC_TEST(assert_fail)
 {
     ARC_ASSERT_FAIL()
 }
@@ -96,7 +96,7 @@ ARC_TEST(assert_string_ends_with)
 
 ARC_TEST_FIXTURE()
 {
-    ARC_ADD_TEST(fail)
+    ARC_ADD_TEST(assert_fail)
     ARC_ADD_TEST(assert_true)
     ARC_ADD_TEST(assert_false)
     ARC_ADD_TEST(assert_pointer_null)
