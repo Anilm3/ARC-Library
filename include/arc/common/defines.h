@@ -16,9 +16,9 @@
 
 /** @brief Return value to indicate success in the operation */
 #define ARC_SUCCESS        0
-/** brief Return value to indicate a generic error. */
+/** @brief Return value to indicate a generic error */
 #define ARC_ERROR         -1
-/** @brief Return value to indicate an out of memory error. */
+/** @brief Return value to indicate an out of memory error */
 #define ARC_OUT_OF_MEMORY -2
 
 #endif

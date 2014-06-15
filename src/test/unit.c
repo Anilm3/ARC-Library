@@ -31,6 +31,8 @@ int failed = 0;
 
 arc_test_t * arc_user_tests;
 
+/******************************************************************************/
+
 void arc_add_test(const char * name, void (*fn)(void))
 {
     arc_test_t test = {name, fn, 0, 1};
@@ -49,6 +51,8 @@ void arc_add_test(const char * name, void (*fn)(void))
         arc_user_tests[idx++] = test;
     }
 }
+
+/******************************************************************************/
 
 void arc_add_function(void (*fn)(void))
 {
@@ -69,12 +73,16 @@ void arc_add_function(void (*fn)(void))
     }
 }
 
+/******************************************************************************/
+
 void arc_set_system(void)
 {
     arc_user_tests = malloc(sizeof(arc_test_t)*max_length);
 
     assert(arc_user_tests != NULL);
 }
+
+/******************************************************************************/
 
 void arc_run_fixture(void)
 {
@@ -105,6 +113,8 @@ void arc_run_fixture(void)
     }
 }
 
+/******************************************************************************/
+
 void arc_print_report(void)
 {
     if (failed)
@@ -123,94 +133,130 @@ void arc_print_report(void)
 
 }
 
+/******************************************************************************/
+
 void arc_cleanup(void)
 {
     free(arc_user_tests);
 }
 
-void set_test_failed(void)
+/******************************************************************************/
+
+void arc_set_test_failed(void)
 {
     arc_user_tests[idx].failed = 1;
 }
+
+/******************************************************************************/
 
 int arc_assert_true(int expression)
 {
     return expression;
 }
 
+/******************************************************************************/
+
 int arc_assert_false(int expression)
 {
     return !expression;
 }
+
+/******************************************************************************/
 
 int arc_assert_pointer_null(void * pointer)
 {
     return (pointer == NULL);
 }
 
+/******************************************************************************/
+
 int arc_assert_pointer_not_null(void * pointer)
 {
     return (pointer != NULL);
 }
+
+/******************************************************************************/
 
 int arc_assert_pointer_equal(void * left, void * right)
 {
     return (left == right);
 }
 
+/******************************************************************************/
+
 int arc_assert_int_equal(int left, int right)
 {
     return (left == right);
 }
+
+/******************************************************************************/
 
 int arc_assert_ulong_equal(unsigned long left, unsigned long right)
 {
     return (left == right);
 }
 
-int arc_assert_string_equal(const char * left, const char * right)
+/******************************************************************************/
 
+int arc_assert_string_equal(const char * left, const char * right)
 {
     return (strcmp(left, right) == 0);
 }
+
+/******************************************************************************/
 
 int arc_assert_bit_set(unsigned num, int bit)
 {
     return ((num >> bit) & 1);
 }
 
+/******************************************************************************/
+
 int arc_assert_bit_not_set(int num, int bit)
 {
     return !((num >> bit) & 1);
 }
+
+/******************************************************************************/
 
 int arc_assert_float_equal(float left, float right, float delta)
 {
     return (fabsf(left - right) < delta);
 }
 
+/******************************************************************************/
+
 int arc_assert_double_equal(double left, double right, double delta)
 {
     return (fabs(left - right) < delta);
 }
+
+/******************************************************************************/
 
 int arc_assert_string_contains(const char * str, char c)
 {
     return (strchr(str, c) != NULL);
 }
 
+/******************************************************************************/
+
 int arc_assert_string_doesnt_contain(const char * str, char c)
 {
     return (strchr(str, c) == NULL);
 }
+
+/******************************************************************************/
 
 int arc_assert_string_starts_with(const char * str, char c)
 {
     return (str[0] == c);
 }
 
+/******************************************************************************/
+
 int arc_assert_string_ends_with(const char * str, char c)
 {
     return (str[strlen(str) - 1] == c);
 }
 
+/******************************************************************************/
