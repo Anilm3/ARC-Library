@@ -12,10 +12,36 @@
 #include <arc/test/unit.h>
 #include <arc/common/defines.h>
 
+#include <string.h>
+
+ARC_TEST(size_test)
+{
+    int i = 10;
+    arc_slist_t list = arc_slist_create(sizeof(int));
+
+    ARC_ASSERT_POINTER_NOT_NULL(list);
+
+    ARC_ASSERT_TRUE(arc_slist_empty(list));
+
+    ARC_ASSERT_INT_EQUAL(arc_slist_push_front(list, (void *)&i), ARC_SUCCESS);
+
+    ARC_ASSERT_INT_EQUAL(arc_slist_size(list), 1);
+    
+    ARC_ASSERT_FALSE(arc_slist_empty(list));
+
+    for (i = 0; i < 10; i++)
+    {
+        ARC_ASSERT_INT_EQUAL(arc_slist_push_front(list, (void *)&i), ARC_SUCCESS);
+    }
+
+    ARC_ASSERT_INT_EQUAL(arc_slist_size(list), 11);
+
+    arc_slist_destroy(list);
+}
+
 ARC_TEST(push_pop)
 {
     int i;
-
     arc_slist_t list = arc_slist_create(sizeof(int));
 
     ARC_ASSERT_POINTER_NOT_NULL(list);
@@ -79,6 +105,7 @@ ARC_TEST(destruction)
 
 ARC_TEST_FIXTURE()
 {
+    ARC_ADD_TEST(size_test)
     ARC_ADD_TEST(push_pop)
     ARC_ADD_TEST(iterators)
     ARC_ADD_TEST(destruction)

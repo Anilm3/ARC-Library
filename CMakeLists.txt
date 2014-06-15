@@ -1,15 +1,17 @@
 cmake_minimum_required (VERSION 2.8)
 
 set (PROJECT_NAME "ARCLib")
-
 set (CMAKE_VERBOSE_MAKEFILE OFF)
 
 option(STATIC "Build static library" OFF)
 option(SHARED "Build shared library" ON)
 
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules")
+
 set (SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set (INCLUDES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 set (TEST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/test")
+set (DOC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/doc/")
 set (EXECUTABLE_OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/bin/")
 set (LIBRARY_OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/")
 
@@ -17,87 +19,101 @@ include_directories ("${INCLUDES_DIR}")
 
 file(GLOB_RECURSE SOURCES ${SOURCE_DIR}/*.c)
 
-# set(CMAKE_BUILD_TYPE Release)
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
 
-#-ansi, -pedantic, -Werror : conform to ansi C, every warning is an error.
-set(CMAKE_C_FLAGS "-ansi -pedantic -Werror")
+message("-- CMake build type: ${CMAKE_BUILD_TYPE}")
 
-# -g: debugging information
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    #-ansi, -pedantic : conform to ansi C
+    set(CMAKE_C_FLAGS_DEBUG "-ansi -pedantic")
 
-# -Wextra, -Wall: essential.
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wextra -Wall")
+    # -g: debugging information.
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}  -g")
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -fprofile-arcs")
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -ftest-coverage")
 
-# -Wfloat-equal: useful because usually testing floating-point 
-#                numbers for equality is bad.
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wfloat-equal")
+    # -W, -Werror: , every warning is an error.
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}  -W -Werror")
 
-# -Wundef: warn if an uninitialized identifier is evaluated in an #if directive.
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wundef")
+    # -Wextra, -Wall: essential.
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wextra -Wall")
 
-# -Wshadow: warn whenever a local variable shadows another local 
-#           variable, parameter or global variable or whenever a 
-#           built-in function is shadowed.
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wshadow")
+    # -Wfloat-equal: useful because usually testing floating-point 
+    #                numbers for equality is bad.
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wfloat-equal")
 
-# -Wpointer-arith: warn if anything depends upon the size of a 
-#                  function or of void.
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wpointer-arith")
+    # -Wundef: warn if an uninitialized identifier is evaluated in an 
+    #          #if directive.
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wundef")
 
-# -Wcast-align: warn whenever a pointer is cast such that the required 
-#               alignment of the target is increased. For example, warn 
-#               if a char * is cast to an int * on machines where integers 
-#               can only be accessed at two- or four-byte boundaries.
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wcast-align")
+    # -Wshadow: warn whenever a local variable shadows another local 
+    #           variable, parameter or global variable or whenever a 
+    #           built-in function is shadowed.
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wshadow")
 
+    # -Wpointer-arith: warn if anything depends upon the size of a 
+    #                  function or of void.
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wpointer-arith")
 
-# -Wstrict-prototypes: warn if a function is declared or defined without 
-#                      specifying the argument types.
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wstrict-prototypes")
-
-
-# -Wstrict-overflow=5: warns about cases where the compiler optimizes based on 
-#                      the assumption that signed overflow does not occur. 
-#                      (The value 5 may be too strict, see the manual page.)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wstrict-overflow=5")
-
-
-# -Wwrite-strings: give string constants the type const char[length] so that 
-#                  copying the address of one into a non-const char * pointer
-#                  will get a warning.
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wwrite-strings")
+    # -Wcast-align: warn whenever a pointer is cast such that the required 
+    #               alignment of the target is increased. For example, warn 
+    #               if a char * is cast to an int * on machines where integers 
+    #               can only be accessed at two- or four-byte boundaries.
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wcast-align")
 
 
-# -Waggregate-return: warn if any functions that return structures or unions 
-#                     are defined or called.
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Waggregate-return")
-
-# -Wcast-qual: warn whenever a pointer is cast to remove a type qualifier from 
-#              the target type*.
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wcast-qual")
-
-# -Wswitch-default: warn whenever a switch statement does not have a default 
-#                   case*.
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wswitch-default")
-
-# -Wswitch-enum: warn whenever a switch statement has an index of enumerated 
-#                type and lacks a case for one or more of the named codes 
-#                of that enumeration*.
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wswitch-enum")
-
-# -Wconversion: warn for implicit conversions that may alter a value*.
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wconversion")
-
-# -Wunreachable-code: warn if the compiler detects that code will 
-#                     never be executed*.
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wunreachable-code")
-
-# Those marked * sometimes give too many spurious warnings, so I use them 
-# on as-needed basis:
-# http://stackoverflow.com/questions/3375697/useful-gcc-flags-for-c
+    # -Wstrict-prototypes: warn if a function is declared or defined without 
+    #                      specifying the argument types.
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wstrict-prototypes")
 
 
-# set(CMAKE_EXE_LINKER_FLAGS "-s")
+    # -Wstrict-overflow=5: warns about cases where the compiler optimizes based 
+    #                      on the assumption that signed overflow does not occur
+    #                      (The value 5 may be too strict, see the manual page).
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wstrict-overflow=5")
+
+
+    # -Wwrite-strings: give string constants the type const char[length] so that 
+    #                  copying the address of one into a non-const char * pointer
+    #                  will get a warning.
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wwrite-strings")
+
+
+    # -Waggregate-return: warn if any functions that return structures or unions 
+    #                     are defined or called.
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Waggregate-return")
+
+    # -Wcast-qual: warn whenever a pointer is cast to remove a type qualifier  
+    #              from the target type*.
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wcast-qual")
+
+    # -Wswitch-default: warn whenever a switch statement does not have a default 
+    #                   case*.
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wswitch-default")
+
+    # -Wswitch-enum: warn whenever a switch statement has an index of enumerated 
+    #                type and lacks a case for one or more of the named codes 
+    #                of that enumeration*.
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wswitch-enum")
+
+    # -Wconversion: warn for implicit conversions that may alter a value*.
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wconversion")
+
+    # -Wunreachable-code: warn if the compiler detects that code will 
+    #                     never be executed*.
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wunreachable-code")
+
+    # Those marked * sometimes give too many spurious warnings, so I use them 
+    # on as-needed basis:
+    # http://stackoverflow.com/questions/3375697/useful-gcc-flags-for-c
+   set(CMAKE_EXE_LINKER_FLAGS_DEBUG "-fprofile-arcs -ftest-coverage -lgcov")
+else()
+    #-ansi, -pedantic : conform to ansi C
+    set(CMAKE_C_FLAGS "-ansi -pedantic -O2")
+    set(CMAKE_EXE_LINKER_FLAGS "-s")
+endif()
 
 # add a target to generate API documentation with Doxygen
 find_package(Doxygen)
@@ -112,27 +128,77 @@ if(DOXYGEN_FOUND)
                       COMMENT "Generating documentation with Doxygen" VERBATIM)
 endif(DOXYGEN_FOUND)
 
+install(DIRECTORY ${INCLUDES_DIR}/arc 
+        DESTINATION /usr/local/include)
 
 if (SHARED)
     add_library(arc-shared SHARED ${SOURCES})
     set_target_properties(arc-shared PROPERTIES
-        OUTPUT_NAME arc CLEAN_DIRECT_OUTPUT 1)
+                          OUTPUT_NAME arc CLEAN_DIRECT_OUTPUT 1)
+    install(TARGETS arc-shared
+            LIBRARY DESTINATION /usr/local/lib)
 endif()
-
-# set(CMAKE_C_FLAGS "-O3")
-# set(CMAKE_EXE_LINKER_FLAGS "-s")
 
 if (STATIC)
     add_library(arc-static STATIC ${SOURCES})
     set_target_properties(arc-static PROPERTIES
-       OUTPUT_NAME arc CLEAN_DIRECT_OUTPUT 1)
+                          OUTPUT_NAME arc CLEAN_DIRECT_OUTPUT 1)
+    install(TARGETS arc-static
+            LIBRARY DESTINATION /usr/local/lib)
 endif()
 
 
 file(GLOB_RECURSE TESTS ${TEST_DIR}/*.c)
 
+enable_testing()
+
 foreach(TEST ${TESTS}) 
     get_filename_component(TEST_EXEC ${TEST} NAME_WE)
     add_executable(${TEST_EXEC} ${TEST})
-    target_link_libraries(${TEST_EXEC} arc-shared)
+    target_link_libraries(${TEST_EXEC} arc-shared gcov)
+
+    add_test(${TEST_EXEC} ${EXECUTABLE_OUTPUT_PATH}/${TEST_EXEC})
 endforeach(TEST) 
+
+
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    find_program( GCOV_PATH gcov )
+    find_program( LCOV_PATH lcov )
+    find_program( GENHTML_PATH genhtml )
+    find_program( GCOVR_PATH gcovr PATHS ${CMAKE_SOURCE_DIR}/tests)
+
+    if(NOT GCOV_PATH)
+        message(FATAL_ERROR "gcov not found! Aborting...")
+    endif() # NOT GCOV_PATH
+
+    if(NOT LCOV_PATH)
+        message(FATAL_ERROR "lcov not found! Aborting...")
+    endif() # NOT LCOV_PATH
+
+    if(NOT GENHTML_PATH)
+        message(FATAL_ERROR "genhtml not found! Aborting...")
+    endif() # 
+
+    set (COVERAGE_NAME coverage)
+
+    add_custom_target(coverage
+        # Capturing lcov counters and generating report
+        COMMAND ${LCOV_PATH} --directory . --capture --output-file ${COVERAGE_NAME}.info
+        COMMAND ${LCOV_PATH} --remove ${COVERAGE_NAME}.info 'tests/*' '/usr/*' --output-file ${COVERAGE_NAME}.info.cleaned
+        COMMAND ${GENHTML_PATH} -o ${DOC_DIR}/${COVERAGE_NAME} ${COVERAGE_NAME}.info.cleaned --legend --show-details --demangle-cpp --num-spaces 3
+        COMMAND ${CMAKE_COMMAND} -E remove ${COVERAGE_NAME}.info ${COVERAGE_NAME}.info.cleaned
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        COMMENT "Running tests.\nResetting code coverage counters to zero.\nProcessing code coverage counters and generating report."
+    )
+
+    add_custom_command(TARGET coverage POST_BUILD
+        COMMAND ${LCOV_PATH} --directory . --zerocounters
+        COMMENT "Cleaning coverage data"
+    )
+
+    # Show info where to find the report
+    add_custom_command(TARGET coverage POST_BUILD
+        COMMAND ;
+        COMMENT "Open ${DOC_DIR}/${COVERAGE_NAME}/index.html in your browser to view the coverage report."
+    )
+endif()
