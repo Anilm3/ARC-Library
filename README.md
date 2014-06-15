@@ -22,7 +22,7 @@ Naming Conventions
 In order to avoid broken windows I have come up with a nomenclature which uniquely defines one or more characteristics of a certain algorithm, function or data structure. Every module name conforms to the following pattern:
 
 ```
-module_name_xy
+arc_module_name_xy
 ```
 
 Where `xy` is an optional suffix, describing the behaviour of the module under concurrent, parallel and interruptible environment. It can be one of the following:
@@ -36,13 +36,13 @@ Where `xy` is an optional suffix, describing the behaviour of the module under c
 Every independent function conforms to the following pattern:
 
 ```
-function_name_ab
+arc_function_name_ab
 ```
 
 And every function belonging to a module conforms to this other pattern:
 
 ```
-module_name_xy_function_name_ab
+arc_module_name_xy_function_name_ab
 ```
 
 Where `ab` is an optional suffix which describes a characteristic of the underlying algorithm implemntation. It can be one of the following:
