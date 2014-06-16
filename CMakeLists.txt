@@ -104,7 +104,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     # -Wunreachable-code: warn if the compiler detects that code will 
     #                     never be executed*.
     set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wunreachable-code")
-
+    
     # Those marked * sometimes give too many spurious warnings, so I use them 
     # on as-needed basis:
     # http://stackoverflow.com/questions/3375697/useful-gcc-flags-for-c
