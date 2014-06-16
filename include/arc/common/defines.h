@@ -9,6 +9,9 @@
 /**
  * @author Anil M. Mahtani Mirchandani
  * @file defines.h
+ * @date June, 2014
+ *
+ * @brief General defines
  */
 
 #ifndef ARC_DEFINES_H_
