@@ -104,6 +104,28 @@ void arc_dlist_pop_front(arc_dlist_t list);
  */
 int arc_dlist_push_front(arc_dlist_t list, void * data);
 /**
+ * @brief Returns the data of the last element of the list
+ *
+ * @param[in] list List to perform the operation on
+ * @return Data pointer of the first element
+ */
+void * arc_dlist_back(arc_dlist_t list);
+/**
+ * @brief Removes the last element from the list
+ *
+ * @param[in] list List to perform the operation on
+ */
+void arc_dlist_pop_back(arc_dlist_t list);
+/**
+ * @brief Adds a new element to the back of the list
+ *
+ * @param[in] list List to perform the operation on
+ * @param[in] data Data associated to the new element
+ * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
+ * @retval ARC_SUCCESS If the element was added successfully
+ */
+int arc_dlist_push_back(arc_dlist_t list, void * data);
+/**
  * @brief Returns a node to the element before the beginning of the list
  *
  * @param[in] list List to get the node from
@@ -132,13 +154,28 @@ arc_dlist_node_t arc_dlist_after_end(arc_dlist_t list);
  * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
  * @retval ARC_SUCCESS If the element was added successfully
  */
-int arc_dlist_insert_after(arc_dlist_node_t it, void * data);
+int arc_dlist_insert_after(arc_dlist_node_t current, void * data);
 /**
  * @brief Removes the next node from the list
  *
  * @param[in] it Reference node
  */
-void arc_dlist_erase_after(arc_dlist_node_t it);
+void arc_dlist_erase_after(arc_dlist_node_t current);
+/**
+ * @brief Adds an element before the node
+ *
+ * @param[in] it Reference node 
+ * @param[in] data Data associated to the new element
+ * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
+ * @retval ARC_SUCCESS If the element was added successfully
+ */
+int arc_dlist_insert_before(arc_dlist_node_t current, void * data);
+/**
+ * @brief Removes the previous node from the list
+ *
+ * @param[in] it Reference node
+ */
+void arc_dlist_erase_before(arc_dlist_node_t current);
 /**
  * @brief Returns whether the node is valid or not (accessible)
  *
@@ -146,20 +183,20 @@ void arc_dlist_erase_after(arc_dlist_node_t it);
  * @retval 0 If the node is invalid
  * @retval 1 If the node is valid
  */
-int arc_dlist_node_valid(arc_dlist_node_t it);
+int arc_dlist_node_valid(arc_dlist_node_t current);
 /**
  * @brief Returns the data associated to the node
  *
  * @param[in] it Node to perform the operation on
  * @return Data pointer of the node
  */
-void * arc_dlist_node_data(arc_dlist_node_t it);
+void * arc_dlist_node_data(arc_dlist_node_t current);
 /**
  * @brief Gets the next node in the list
  *
  * @param[in] it Reference node
  * @return New empty list
  */
-arc_dlist_node_t arc_dlist_node_next(arc_dlist_node_t it);
+arc_dlist_node_t arc_dlist_node_next(arc_dlist_node_t current);
 
 #endif

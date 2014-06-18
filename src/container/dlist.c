@@ -47,7 +47,8 @@ struct arc_dlist * arc_dlist_create(size_t data_size)
     /* Initialise the first "NULL" node : it doesn't hold memory for data
        this node is refered to as the "before_begin" node */
     list->front.list = list;
-    list->front.next = NULL;
+    list->front.next = &(list->back);
+    list->front.prev = NULL;
     list->front.data = NULL;
 
     /* Initialise the last "NULL" node : it doesn't hold memory for data
@@ -55,6 +56,7 @@ struct arc_dlist * arc_dlist_create(size_t data_size)
        comparison purposes */
     list->back.list = list;
     list->back.next = NULL;
+    list->back.prev = &(list->back);
     list->back.data = NULL;
 
     return list;
@@ -97,11 +99,6 @@ void arc_dlist_clear(struct arc_dlist * list)
 
 void * arc_dlist_front(struct arc_dlist * list)
 {
-    if (list->front.next == NULL)
-    {
-        return NULL;
-    }
-
     return list->front.next->data;
 }
 
@@ -117,6 +114,27 @@ void arc_dlist_pop_front(struct arc_dlist * list)
 int arc_dlist_push_front(struct arc_dlist * list, void *data)
 {
     return arc_dlist_insert_after(&list->front, data);
+}
+
+/******************************************************************************/
+
+void * arc_dlist_back(arc_dlist_t list)
+{
+    return list->back.prev->data;
+}
+
+/******************************************************************************/
+
+void arc_dlist_pop_back(arc_dlist_t list)
+{
+    arc_dlist_erase_before(&list->back);
+}
+
+/******************************************************************************/
+
+int arc_dlist_push_back(arc_dlist_t list, void * data)
+{
+    return arc_dlist_insert_before(&list->back, data);
 }
 
 /******************************************************************************/
@@ -177,7 +195,32 @@ void arc_dlist_erase_after(struct arc_dlist_node * current)
 {
     struct arc_dlist * list = current->list;
 
-    if (current->next != NULL)
+    if (current->next != &(list->back))
+    {
+        struct arc_dlist_node * node = current->next;
+        
+        current->next = node->next;
+
+        list->size--;
+
+        free(node);
+    }
+}
+
+/******************************************************************************/
+
+int arc_dlist_insert_before(arc_dlist_node_t current, void * data)
+{
+
+}
+
+/******************************************************************************/
+
+void arc_dlist_erase_before(arc_dlist_node_t current)
+{
+    struct arc_dlist * list = current->list;
+
+    if (current->prev != &(list->front))
     {
         struct arc_dlist_node * node = current->next;
         
