@@ -89,7 +89,7 @@ int arc_dlist_empty(struct arc_dlist * list)
 
 void arc_dlist_clear(struct arc_dlist * list)
 {
-    while (list->front.next != NULL)
+    while (list->front.next != &list->back)
     {
         arc_dlist_pop_front(list);
     }
@@ -106,7 +106,7 @@ void * arc_dlist_front(struct arc_dlist * list)
 
 void arc_dlist_pop_front(struct arc_dlist * list)
 {
-    arc_dlist_erase_after(&list->front);
+    arc_dlist_erase(list->front.next);
 }
 
 /******************************************************************************/
@@ -127,7 +127,7 @@ void * arc_dlist_back(arc_dlist_t list)
 
 void arc_dlist_pop_back(arc_dlist_t list)
 {
-    arc_dlist_erase_before(&list->back);
+    arc_dlist_erase(list->back.prev);
 }
 
 /******************************************************************************/
@@ -160,12 +160,13 @@ struct arc_dlist_node * arc_dlist_after_end(struct arc_dlist * list)
 
 /******************************************************************************/
 
-int arc_dlist_insert_after(struct arc_dlist_node * current, void * data)
+int arc_dlist_insert_before(struct arc_dlist_node * current, void * data)
 {
     struct arc_dlist * list = current->list;
     struct arc_dlist_node * node;
+    struct arc_dlist_node * prev_node = current->prev;
 
-    if (current == &(list->back))
+    if (prev_node == NULL)
     {
         return ARC_ERROR;
     }
@@ -181,7 +182,45 @@ int arc_dlist_insert_after(struct arc_dlist_node * current, void * data)
     memcpy(node->data, data, list->data_size);
 
     node->list = list;
-    node->next = current->next;
+    node->next = current;
+    node->prev = prev_node;
+
+    prev_node->next = node;
+    current->prev = node;
+
+    list->size++;
+
+    return ARC_SUCCESS;
+}
+
+/******************************************************************************/
+
+int arc_dlist_insert_after(struct arc_dlist_node * current, void * data)
+{
+    struct arc_dlist * list = current->list;
+    struct arc_dlist_node * node;
+    struct arc_dlist_node * next_node = current->next;
+
+    if (next_node == NULL)
+    {
+        return ARC_ERROR;
+    }
+
+    node = malloc(list->node_size);
+
+    if (node == NULL)
+    {
+        return ARC_OUT_OF_MEMORY;
+    }
+
+    node->data = (void *)(((char *)&node->data) + sizeof(void*));
+    memcpy(node->data, data, list->data_size);
+
+    node->list = list;
+    node->next = next_node;
+    node->prev = current;
+
+    next_node->prev = node;
     current->next = node;
 
     list->size++;
@@ -191,44 +230,20 @@ int arc_dlist_insert_after(struct arc_dlist_node * current, void * data)
 
 /******************************************************************************/
 
-void arc_dlist_erase_after(struct arc_dlist_node * current)
+void arc_dlist_erase(struct arc_dlist_node * current)
 {
     struct arc_dlist * list = current->list;
+    struct arc_dlist_node * prev_node = current->prev;
+    struct arc_dlist_node * next_node = current->next;
 
-    if (current->next != &(list->back))
+    if (prev_node != NULL && next_node != NULL)
     {
-        struct arc_dlist_node * node = current->next;
-        
-        current->next = node->next;
+        prev_node->next = next_node;
+        next_node->prev = prev_node;
 
         list->size--;
 
-        free(node);
-    }
-}
-
-/******************************************************************************/
-
-int arc_dlist_insert_before(arc_dlist_node_t current, void * data)
-{
-
-}
-
-/******************************************************************************/
-
-void arc_dlist_erase_before(arc_dlist_node_t current)
-{
-    struct arc_dlist * list = current->list;
-
-    if (current->prev != &(list->front))
-    {
-        struct arc_dlist_node * node = current->next;
-        
-        current->next = node->next;
-
-        list->size--;
-
-        free(node);
+        free(current);
     }
 }
 

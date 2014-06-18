@@ -147,6 +147,15 @@ arc_dlist_node_t arc_dlist_begin(arc_dlist_t list);
  */
 arc_dlist_node_t arc_dlist_after_end(arc_dlist_t list);
 /**
+ * @brief Adds an element before the node
+ *
+ * @param[in] it Reference node 
+ * @param[in] data Data associated to the new element
+ * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
+ * @retval ARC_SUCCESS If the element was added successfully
+ */
+int arc_dlist_insert_before(arc_dlist_node_t current, void * data);
+/**
  * @brief Adds an element after the node
  *
  * @param[in] it Reference node 
@@ -160,22 +169,7 @@ int arc_dlist_insert_after(arc_dlist_node_t current, void * data);
  *
  * @param[in] it Reference node
  */
-void arc_dlist_erase_after(arc_dlist_node_t current);
-/**
- * @brief Adds an element before the node
- *
- * @param[in] it Reference node 
- * @param[in] data Data associated to the new element
- * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
- * @retval ARC_SUCCESS If the element was added successfully
- */
-int arc_dlist_insert_before(arc_dlist_node_t current, void * data);
-/**
- * @brief Removes the previous node from the list
- *
- * @param[in] it Reference node
- */
-void arc_dlist_erase_before(arc_dlist_node_t current);
+void arc_dlist_erase(arc_dlist_node_t current);
 /**
  * @brief Returns whether the node is valid or not (accessible)
  *
