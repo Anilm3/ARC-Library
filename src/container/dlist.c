@@ -153,6 +153,13 @@ struct arc_dlist_node * arc_dlist_begin(struct arc_dlist * list)
 
 /******************************************************************************/
 
+struct arc_dlist_node * arc_dlist_end(struct arc_dlist * list)
+{
+    return list->back.prev;
+}
+
+/******************************************************************************/
+
 struct arc_dlist_node * arc_dlist_after_end(struct arc_dlist * list)
 {
     return &(list->back);
@@ -258,7 +265,14 @@ void * arc_dlist_node_data(struct arc_dlist_node * node)
 
 struct arc_dlist_node * arc_dlist_node_next(struct arc_dlist_node * node)
 {
-    return (node->next != NULL ? node->next : &(node->list->back));
+    return node->next;
+}
+
+/******************************************************************************/
+
+struct arc_dlist_node * arc_dlist_node_previous(struct arc_dlist_node * node)
+{
+    return node->prev;
 }
 
 /******************************************************************************/

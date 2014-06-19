@@ -127,39 +127,31 @@ arc_slist_node_t arc_slist_after_end(arc_slist_t list);
 /**
  * @brief Adds an element after the node
  *
- * @param[in] it Reference node 
+ * @param[in] current Reference node 
  * @param[in] data Data associated to the new element
  * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
  * @retval ARC_SUCCESS If the element was added successfully
  */
-int arc_slist_insert_after(arc_slist_node_t it, void * data);
+int arc_slist_insert_after(arc_slist_node_t current, void * data);
 /**
  * @brief Removes the next node from the list
  *
- * @param[in] it Reference node
+ * @param[in] current Reference node
  */
-void arc_slist_erase_after(arc_slist_node_t it);
-/**
- * @brief Returns whether the node is valid or not (accessible)
- *
- * @param[in] it Node to perform the operation on
- * @retval 0 If the node is invalid
- * @retval 1 If the node is valid
- */
-int arc_slist_node_valid(arc_slist_node_t it);
+void arc_slist_erase_after(arc_slist_node_t current);
 /**
  * @brief Returns the data associated to the node
  *
- * @param[in] it Node to perform the operation on
+ * @param[in] current Node to perform the operation on
  * @return Data pointer of the node
  */
-void * arc_slist_node_data(arc_slist_node_t it);
+void * arc_slist_node_data(arc_slist_node_t current);
 /**
  * @brief Gets the next node in the list
  *
- * @param[in] it Reference node
+ * @param[in] current Reference node
  * @return New empty list
  */
-arc_slist_node_t arc_slist_node_next(arc_slist_node_t it);
+arc_slist_node_t arc_slist_node_next(arc_slist_node_t current);
 
 #endif

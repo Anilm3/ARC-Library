@@ -140,6 +140,13 @@ arc_dlist_node_t arc_dlist_before_begin(arc_dlist_t list);
  */
 arc_dlist_node_t arc_dlist_begin(arc_dlist_t list);
 /**
+ * @brief Returns a node to the end element of the list
+ *
+ * @param[in] list List to get the node from
+ * @return First node of the list
+ */
+arc_dlist_node_t arc_dlist_end(arc_dlist_t list);
+/**
  * @brief Returns a node to the element after the end of the list
  *
  * @param[in] list List to get the node from
@@ -149,7 +156,7 @@ arc_dlist_node_t arc_dlist_after_end(arc_dlist_t list);
 /**
  * @brief Adds an element before the node
  *
- * @param[in] it Reference node 
+ * @param[in] current Reference node 
  * @param[in] data Data associated to the new element
  * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
  * @retval ARC_SUCCESS If the element was added successfully
@@ -158,7 +165,7 @@ int arc_dlist_insert_before(arc_dlist_node_t current, void * data);
 /**
  * @brief Adds an element after the node
  *
- * @param[in] it Reference node 
+ * @param[in] current Reference node 
  * @param[in] data Data associated to the new element
  * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
  * @retval ARC_SUCCESS If the element was added successfully
@@ -167,30 +174,29 @@ int arc_dlist_insert_after(arc_dlist_node_t current, void * data);
 /**
  * @brief Removes the next node from the list
  *
- * @param[in] it Reference node
+ * @param[in] current Reference node
  */
 void arc_dlist_erase(arc_dlist_node_t current);
 /**
- * @brief Returns whether the node is valid or not (accessible)
- *
- * @param[in] it Node to perform the operation on
- * @retval 0 If the node is invalid
- * @retval 1 If the node is valid
- */
-int arc_dlist_node_valid(arc_dlist_node_t current);
-/**
  * @brief Returns the data associated to the node
  *
- * @param[in] it Node to perform the operation on
+ * @param[in] current Node to perform the operation on
  * @return Data pointer of the node
  */
 void * arc_dlist_node_data(arc_dlist_node_t current);
 /**
  * @brief Gets the next node in the list
  *
- * @param[in] it Reference node
+ * @param[in] current Reference node
  * @return New empty list
  */
 arc_dlist_node_t arc_dlist_node_next(arc_dlist_node_t current);
+/**
+ * @brief Gets the previous node in the list
+ *
+ * @param[in] current Reference node
+ * @return New empty list
+ */
+arc_dlist_node_t arc_dlist_node_previous(arc_dlist_node_t current);
 
 #endif

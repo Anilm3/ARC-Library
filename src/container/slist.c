@@ -7,6 +7,10 @@
 *                                                                              *
 *******************************************************************************/
 
+/**
+ * TODO : Add slist back to first next node
+ */
+
 #include <string.h>
 #include <arc/container/slist.h>
 #include <arc/common/defines.h>
@@ -46,7 +50,7 @@ struct arc_slist * arc_slist_create(size_t data_size)
     /* Initialise the first "NULL" node : it doesn't hold memory for data
        this node is refered to as the "before_begin" node */
     list->front.list = list;
-    list->front.next = NULL;
+    list->front.next = &(list->back);
     list->front.data = NULL;
 
     /* Initialise the last "NULL" node : it doesn't hold memory for data
@@ -86,7 +90,7 @@ int arc_slist_empty(struct arc_slist * list)
 
 void arc_slist_clear(struct arc_slist * list)
 {
-    while (list->front.next != NULL)
+    while (list->front.next != &(list->back))
     {
         arc_slist_pop_front(list);
     }
@@ -96,7 +100,7 @@ void arc_slist_clear(struct arc_slist * list)
 
 void * arc_slist_front(struct arc_slist * list)
 {
-    if (list->front.next == NULL)
+    if (list->front.next == &(list->back))
     {
         return NULL;
     }
@@ -176,7 +180,7 @@ void arc_slist_erase_after(struct arc_slist_node * current)
 {
     struct arc_slist * list = current->list;
 
-    if (current->next != NULL)
+    if (current->next != &(list->back))
     {
         struct arc_slist_node * node = current->next;
         
@@ -199,7 +203,7 @@ void * arc_slist_node_data(struct arc_slist_node * node)
 
 struct arc_slist_node * arc_slist_node_next(struct arc_slist_node * node)
 {
-    return (node->next != NULL ? node->next : &(node->list->back));
+    return node->next;
 }
 
 /******************************************************************************/
