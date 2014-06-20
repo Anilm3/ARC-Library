@@ -39,7 +39,7 @@ ARC_TEST(size_test)
     arc_dlist_destroy(list);
 }
 
-ARC_TEST(push_pop_front)
+ARC_TEST(push_pop_front_front)
 {
     int i;
     arc_dlist_t list = arc_dlist_create(sizeof(int));
@@ -62,7 +62,7 @@ ARC_TEST(push_pop_front)
     arc_dlist_destroy(list);
 }
 
-ARC_TEST(push_pop_back)
+ARC_TEST(push_pop_back_back)
 {
     int i;
     arc_dlist_t list = arc_dlist_create(sizeof(int));
@@ -78,6 +78,52 @@ ARC_TEST(push_pop_back)
     while(!arc_dlist_empty(list))
     {
         ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_back(list)), i--);
+
+        arc_dlist_pop_back(list);
+    }
+
+    arc_dlist_destroy(list);
+}
+
+ARC_TEST(push_pop_back_front)
+{
+    int i;
+    arc_dlist_t list = arc_dlist_create(sizeof(int));
+
+    ARC_ASSERT_POINTER_NOT_NULL(list);
+
+    for (i = 0; i < 1; i++)
+    {
+        ARC_ASSERT_INT_EQUAL(arc_dlist_push_back(list, (void *)&i), ARC_SUCCESS);
+    }
+
+    i = 0;
+    while(!arc_dlist_empty(list))
+    {
+        ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_front(list)), i++);
+
+        arc_dlist_pop_front(list);
+    }
+
+    arc_dlist_destroy(list);
+}
+
+ARC_TEST(push_pop_front_back)
+{
+    int i;
+    arc_dlist_t list = arc_dlist_create(sizeof(int));
+
+    ARC_ASSERT_POINTER_NOT_NULL(list);
+
+    for (i = 0; i < 20000; i++)
+    {
+        ARC_ASSERT_INT_EQUAL(arc_dlist_push_front(list, (void *)&i), ARC_SUCCESS);
+    }
+
+    i = 0;
+    while(!arc_dlist_empty(list))
+    {
+        ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_back(list)), i++);
 
         arc_dlist_pop_back(list);
     }
@@ -154,8 +200,10 @@ ARC_TEST(destruction)
 ARC_TEST_FIXTURE()
 {
     ARC_ADD_TEST(size_test)
-    ARC_ADD_TEST(push_pop_front)
-    ARC_ADD_TEST(push_pop_back)
+    ARC_ADD_TEST(push_pop_front_front)
+    ARC_ADD_TEST(push_pop_back_back)
+    ARC_ADD_TEST(push_pop_back_front)
+    ARC_ADD_TEST(push_pop_front_back)
     ARC_ADD_TEST(iterators_forward)
     ARC_ADD_TEST(iterators_backward)
     ARC_ADD_TEST(destruction)

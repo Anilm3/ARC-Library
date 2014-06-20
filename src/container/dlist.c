@@ -56,7 +56,7 @@ struct arc_dlist * arc_dlist_create(size_t data_size)
        comparison purposes */
     list->back.list = list;
     list->back.next = NULL;
-    list->back.prev = &(list->back);
+    list->back.prev = &(list->front);
     list->back.data = NULL;
 
     return list;
