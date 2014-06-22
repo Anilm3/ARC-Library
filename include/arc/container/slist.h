@@ -25,6 +25,7 @@
 #define ARC_SLIST_H_
 
 #include <stdlib.h> 
+#include <arc/container/iterator.h>
 
 /**
  * @typedef arc_slist_t
@@ -34,13 +35,6 @@
  * functions, direct stack allocations are not allowed.
  */
 typedef struct arc_slist * arc_slist_t;
-/**
- * @typedef arc_slist_node_t
- * @brief List node definition
- *
- * The list node is used as an iterator to access internal elements of the list.
- */
-typedef struct arc_slist_node * arc_slist_node_t;
 
 /**
  * @brief Creates a new list
@@ -109,21 +103,21 @@ int arc_slist_push_front(arc_slist_t list, void * data);
  * @param[in] list List to get the node from
  * @return The node before the first node of the list
  */
-arc_slist_node_t arc_slist_before_begin(arc_slist_t list);
+void arc_slist_before_begin(arc_iterator_t it);
 /**
  * @brief Returns a node to the initial element of the list
  *
  * @param[in] list List to get the node from
  * @return First node of the list
  */
-arc_slist_node_t arc_slist_begin(arc_slist_t list);
+void arc_slist_begin(arc_iterator_t it);
 /**
  * @brief Returns a node to the element after the end of the list
  *
  * @param[in] list List to get the node from
  * @return The node after the end of the list
  */
-arc_slist_node_t arc_slist_after_end(arc_slist_t list);
+void arc_slist_after_end(arc_iterator_t it);
 /**
  * @brief Adds an element after the node
  *
@@ -132,26 +126,26 @@ arc_slist_node_t arc_slist_after_end(arc_slist_t list);
  * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
  * @retval ARC_SUCCESS If the element was added successfully
  */
-int arc_slist_insert_after(arc_slist_node_t current, void * data);
+int arc_slist_insert_after(arc_iterator_t it, void * data);
 /**
  * @brief Removes the next node from the list
  *
  * @param[in] current Reference node
  */
-void arc_slist_erase_after(arc_slist_node_t current);
+void arc_slist_erase_after(arc_iterator_t it);
 /**
  * @brief Returns the data associated to the node
  *
  * @param[in] current Node to perform the operation on
  * @return Data pointer of the node
  */
-void * arc_slist_node_data(arc_slist_node_t current);
+void * arc_slist_node_data(arc_iterator_t it);
 /**
  * @brief Gets the next node in the list
  *
  * @param[in] current Reference node
  * @return New empty list
  */
-arc_slist_node_t arc_slist_node_next(arc_slist_node_t current);
+int arc_slist_node_next(arc_iterator_t it);
 
 #endif

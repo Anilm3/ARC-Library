@@ -13,6 +13,14 @@
 
 #include "iterator.h"
 
+/* Sentinel node definition */
+struct arc_dlist_snode
+{
+    struct arc_dlist_node * next;
+    struct arc_dlist_node * prev;
+};
+
+/* Standard node definition */
 struct arc_dlist_node
 {
     struct arc_dlist_node * next;
@@ -20,10 +28,11 @@ struct arc_dlist_node
     char data[1];
 };
 
+/* Container definition */
 struct arc_dlist
 {
-    struct arc_dlist_node front;
-    struct arc_dlist_node back;
+    struct arc_dlist_snode front;
+    struct arc_dlist_snode back;
     int size;
     size_t data_size;
     size_t node_size;
@@ -43,9 +52,9 @@ struct arc_dlist * arc_dlist_create(size_t data_size)
 
     /* The aligned size is the current size of the data block including the 
        space occupied by the alignment */
-    aligned_size = ((char *)&list->front) + 
-                     sizeof(struct arc_dlist_node) - 
-                     ((char *)&list->front.data);
+    aligned_size = sizeof(struct arc_dlist_node) - 
+                   ARC_OFFSETOF(struct arc_dlist_node, data);
+                   /*((size_t)&(((struct arc_dlist_node *) 0)->data));*/
 
     aligned_size = (aligned_size > data_size ? 0 : data_size - aligned_size);
 
@@ -56,14 +65,14 @@ struct arc_dlist * arc_dlist_create(size_t data_size)
     
     /* Initialise the first "NULL" node : it doesn't hold memory for data
        this node is refered to as the "before_begin" node */
-    list->front.next = &(list->back);
+    list->front.next = (struct arc_dlist_node *) &(list->back);
     list->front.prev = NULL;
 
     /* Initialise the last "NULL" node : it doesn't hold memory for data
        this node is refered to as the "after_end" node, only kept for 
        comparison purposes */
     list->back.next = NULL;
-    list->back.prev = &(list->front);
+    list->back.prev = (struct arc_dlist_node *) &(list->front);
 
     return list;
 }
@@ -81,21 +90,21 @@ void arc_dlist_destroy(struct arc_dlist * list)
 
 int arc_dlist_size(struct arc_dlist * list)
 {
-    return list->size; 
+    return list->size;
 }
 
 /******************************************************************************/
 
 int arc_dlist_empty(struct arc_dlist * list)
 {
-    return list->front.next == &(list->back); 
+    return list->front.next == (struct arc_dlist_node *) &(list->back);
 }
 
 /******************************************************************************/
 
 void arc_dlist_clear(struct arc_dlist * list)
 {
-    while (list->front.next != &list->back)
+    while (list->front.next != (struct arc_dlist_node *) &list->back)
     {
         arc_dlist_pop_front(list);
     }
@@ -212,7 +221,6 @@ int arc_dlist_insert_before(struct arc_iterator * it, void * data)
         return ARC_OUT_OF_MEMORY;
     }
 
-    /* node->data = (void *)(((char *)&node->data) + sizeof(void*)); */
     memcpy(node->data, data, list->data_size);
 
     node->next = current;
@@ -247,7 +255,6 @@ int arc_dlist_insert_after(struct arc_iterator * it, void * data)
         return ARC_OUT_OF_MEMORY;
     }
 
-    /* node->data = (void *)(((char *)&node->data) + sizeof(void*)); */
     memcpy(node->data, data, list->data_size);
 
     node->next = next_node;
@@ -297,7 +304,7 @@ int arc_dlist_node_next(struct arc_iterator * it)
     struct arc_dlist_node * current = it->node;
     struct arc_dlist * list = it->container;
 
-    if (current == &list->back)
+    if (current == (struct arc_dlist_node *) &list->back)
     {
         return 0;
     }
@@ -314,7 +321,7 @@ int arc_dlist_node_previous(struct arc_iterator * it)
     struct arc_dlist_node * current = it->node;
     struct arc_dlist * list = it->container;
 
-    if (current == &list->front)
+    if (current == (struct arc_dlist_node *) &list->front)
     {
         return 0;
     }
