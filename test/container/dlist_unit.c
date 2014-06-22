@@ -149,9 +149,9 @@ ARC_TEST(iterators_forward)
 
     arc_dlist_before_begin(it);
 
-    while(arc_dlist_node_next(it))
+    while(arc_dlist_next(it))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_node_data(it)), i--);
+        ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_data(it)), i--);
     }
 
     arc_iterator_destroy(it);
@@ -175,9 +175,9 @@ ARC_TEST(iterators_backward)
 
     arc_dlist_after_end(it);
 
-    while(arc_dlist_node_previous(it))
+    while(arc_dlist_previous(it))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_node_data(it)), i++);
+        ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_data(it)), i++);
     }
 
     arc_iterator_destroy(it);

@@ -291,7 +291,7 @@ void arc_dlist_erase(struct arc_iterator * it)
 
 /******************************************************************************/
 
-void * arc_dlist_node_data(struct arc_iterator * it)
+void * arc_dlist_data(struct arc_iterator * it)
 {
     struct arc_dlist_node * current = it->node;
 
@@ -300,7 +300,7 @@ void * arc_dlist_node_data(struct arc_iterator * it)
 
 /******************************************************************************/
 
-int arc_dlist_node_next(struct arc_iterator * it)
+int arc_dlist_next(struct arc_iterator * it)
 {
     struct arc_dlist_node * current = it->node;
     struct arc_dlist * list = it->container;
@@ -317,7 +317,7 @@ int arc_dlist_node_next(struct arc_iterator * it)
 
 /******************************************************************************/
 
-int arc_dlist_node_previous(struct arc_iterator * it)
+int arc_dlist_previous(struct arc_iterator * it)
 {
     struct arc_dlist_node * current = it->node;
     struct arc_dlist * list = it->container;

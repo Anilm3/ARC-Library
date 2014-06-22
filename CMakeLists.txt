@@ -167,38 +167,28 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     find_program( GENHTML_PATH genhtml )
     find_program( GCOVR_PATH gcovr PATHS ${CMAKE_SOURCE_DIR}/tests)
 
-    if(NOT GCOV_PATH)
-        message(FATAL_ERROR "gcov not found! Aborting...")
-    endif() # NOT GCOV_PATH
+    if(GCOV_PATH AND LCOV_PATH AND GENHTML_PATH)
+        set (COVERAGE_NAME coverage)
 
-    if(NOT LCOV_PATH)
-        message(FATAL_ERROR "lcov not found! Aborting...")
-    endif() # NOT LCOV_PATH
+        add_custom_target(coverage
+            # Capturing lcov counters and generating report
+            COMMAND ${LCOV_PATH} --directory . --capture --output-file ${COVERAGE_NAME}.info
+            COMMAND ${LCOV_PATH} --remove ${COVERAGE_NAME}.info 'tests/*' '/usr/*' --output-file ${COVERAGE_NAME}.info.cleaned
+            COMMAND ${GENHTML_PATH} -o ${DOC_DIR}/${COVERAGE_NAME} ${COVERAGE_NAME}.info.cleaned --legend --show-details --demangle-cpp --num-spaces 3
+            COMMAND ${CMAKE_COMMAND} -E remove ${COVERAGE_NAME}.info ${COVERAGE_NAME}.info.cleaned
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+            COMMENT "Running tests.\nResetting code coverage counters to zero.\nProcessing code coverage counters and generating report."
+        )
 
-    if(NOT GENHTML_PATH)
-        message(FATAL_ERROR "genhtml not found! Aborting...")
+        add_custom_command(TARGET coverage POST_BUILD
+            COMMAND ${LCOV_PATH} --directory . --zerocounters
+            COMMENT "Cleaning coverage data"
+        )
+
+        # Show info where to find the report
+        add_custom_command(TARGET coverage POST_BUILD
+            COMMAND ;
+            COMMENT "Open ${DOC_DIR}/${COVERAGE_NAME}/index.html in your browser to view the coverage report."
+        )
     endif() # 
-
-    set (COVERAGE_NAME coverage)
-
-    add_custom_target(coverage
-        # Capturing lcov counters and generating report
-        COMMAND ${LCOV_PATH} --directory . --capture --output-file ${COVERAGE_NAME}.info
-        COMMAND ${LCOV_PATH} --remove ${COVERAGE_NAME}.info 'tests/*' '/usr/*' --output-file ${COVERAGE_NAME}.info.cleaned
-        COMMAND ${GENHTML_PATH} -o ${DOC_DIR}/${COVERAGE_NAME} ${COVERAGE_NAME}.info.cleaned --legend --show-details --demangle-cpp --num-spaces 3
-        COMMAND ${CMAKE_COMMAND} -E remove ${COVERAGE_NAME}.info ${COVERAGE_NAME}.info.cleaned
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-        COMMENT "Running tests.\nResetting code coverage counters to zero.\nProcessing code coverage counters and generating report."
-    )
-
-    add_custom_command(TARGET coverage POST_BUILD
-        COMMAND ${LCOV_PATH} --directory . --zerocounters
-        COMMENT "Cleaning coverage data"
-    )
-
-    # Show info where to find the report
-    add_custom_command(TARGET coverage POST_BUILD
-        COMMAND ;
-        COMMENT "Open ${DOC_DIR}/${COVERAGE_NAME}/index.html in your browser to view the coverage report."
-    )
 endif()

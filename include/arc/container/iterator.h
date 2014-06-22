@@ -11,14 +11,13 @@
  * @author Anil M. Mahtani Mirchandani
  * @date June, 2014
  *
- * @brief Doubly-linked list
+ * @brief Generic iterator
  *
- * A double linked list is a structure in which the data is linked together in
- * both directions. The implementation of the structure is highly based on
- * iterators (called simply nodes) in order to provide mechanisms to access all 
- * the elements in the structure.
+ * A generic iterator is a common type of iterator that can be used for any
+ * data structure. It is not allowed to use the same iterator for other data
+ * structures other than the one specified for the iterator
  *
- * @see http://en.wikipedia.org/wiki/Doubly_linked_list
+ * @see http://en.wikipedia.org/wiki/Iterator
  */
  
 #ifndef ARC_ITERATOR_H_
@@ -30,27 +29,25 @@
  * @typedef arc_iterator_t
  * @brief List definition
  *
- * The list is defined as a pointer to be used with the creation and destruction
- * functions, direct stack allocations are not allowed.
+ * The iterator is defined as a pointer to be used with the creation and 
+ * destruction functions, direct stack allocations are not allowed.
  */
 typedef struct arc_iterator * arc_iterator_t;
 /**
- * @brief Creates a new list
+ * @brief Creates a new iterator
  *
- * The memory is allocated in the heap and has to be destroyed by the user. The 
- * data size provided has to coincide with the element type size to be used in
- * the container.
+ * The memory is allocated in the heap and has to be destroyed by the user. 
  *
- * @param[in] data_size Size of the data element
- * @return New empty list
+ * @param[in] container Container to iterate through
+ * @return New iterator for the specified container
  * @retval NULL if memory cannot be allocated
  */
 arc_iterator_t arc_iterator_create(void * container);
 /**
- * @brief Destroys the memory associated to a list 
+ * @brief Destroys the memory associated to a iterator 
  *
- * @param[in] list List to perform the operation on
+ * @param[in] it Iterator to delete
  */
-void arc_iterator_destroy(arc_iterator_t list);
+void arc_iterator_destroy(arc_iterator_t it);
 
 #endif

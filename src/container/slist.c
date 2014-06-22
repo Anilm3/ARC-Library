@@ -215,7 +215,7 @@ void arc_slist_erase_after(struct arc_iterator * it)
 
 /******************************************************************************/
 
-void * arc_slist_node_data(struct arc_iterator * it)
+void * arc_slist_data(struct arc_iterator * it)
 {
     struct arc_slist_node * current = it->node;
 
@@ -224,7 +224,7 @@ void * arc_slist_node_data(struct arc_iterator * it)
 
 /******************************************************************************/
 
-int arc_slist_node_next(struct arc_iterator * it)
+int arc_slist_next(struct arc_iterator * it)
 {
     struct arc_slist_node * current = it->node;
     struct arc_slist * list = it->container;

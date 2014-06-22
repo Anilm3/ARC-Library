@@ -80,9 +80,9 @@ ARC_TEST(iterators)
 
     arc_slist_before_begin(it);
 
-    while(arc_slist_node_next(it))
+    while(arc_slist_next(it))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_slist_node_data(it)), i--);
+        ARC_ASSERT_INT_EQUAL(*((int *)arc_slist_data(it)), i--);
     }
 
     arc_iterator_destroy(it);

@@ -120,77 +120,83 @@ void arc_dlist_pop_back(arc_dlist_t list);
  */
 int arc_dlist_push_back(arc_dlist_t list, void * data);
 /**
- * @brief Returns a node to the element before the beginning of the list
+ * @brief Sets an iterator to the element before the beginning of the list
  *
- * @param[in] list List to get the node from
- * @return The node before the first node of the list
+ * @warning The data pointer of this iterator must not be requested, the
+ *          iterator cannot be dereferenced as there is no memory allocated
+ *          for data.
+ *
+ * @param[in] it Iterator
  */
 void arc_dlist_before_begin(arc_iterator_t it);
 /**
- * @brief Returns a node to the initial element of the list
+ * @brief Sets an iterator to the initial element of the list
  *
- * @param[in] list List to get the node from
- * @return First node of the list
+ * @param[in] it Iterator
  */
 void arc_dlist_begin(arc_iterator_t it);
 /**
- * @brief Returns a node to the end element of the list
+ * @brief Sets an iterator to the last element of the list
  *
- * @param[in] list List to get the node from
- * @return First node of the list
+ * @param[in] it Iterator
  */
 void arc_dlist_end(arc_iterator_t it);
 /**
- * @brief Returns a node to the element after the end of the list
+ * @brief Sets an iterator to the element after the end of the list
  *
- * @param[in] list List to get the node from
- * @return The node after the end of the list
+ * @warning The data pointer of this iterator must not be requested, the
+ *          iterator cannot be dereferenced as there is no memory allocated
+ *          for data.
+ *
+ * @param[in] it Iterator
  */
 void arc_dlist_after_end(arc_iterator_t it);
 /**
- * @brief Adds an element before the node
+ * @brief Adds an element before the iterator position
  *
- * @param[in] current Reference node 
+ * @param[in] it Iterator
  * @param[in] data Data associated to the new element
  * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
  * @retval ARC_SUCCESS If the element was added successfully
  */
-int arc_dlist_insert_before(arc_iterator_t current, void * data);
+int arc_dlist_insert_before(arc_iterator_t it, void * data);
 /**
- * @brief Adds an element after the node
+ * @brief Adds an element after the iterator position
  *
- * @param[in] current Reference node 
+ * @param[in] it Iterator
  * @param[in] data Data associated to the new element
  * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
  * @retval ARC_SUCCESS If the element was added successfully
  */
-int arc_dlist_insert_after(arc_iterator_t current, void * data);
+int arc_dlist_insert_after(arc_iterator_t it, void * data);
 /**
- * @brief Removes the next node from the list
+ * @brief Removes the iterator position from the list
  *
- * @param[in] current Reference node
+ * @param[in] it Iterator
  */
-void arc_dlist_erase(arc_iterator_t current);
+void arc_dlist_erase(arc_iterator_t it);
 /**
- * @brief Returns the data associated to the node
+ * @brief Returns the data associated to the Iterator
  *
- * @param[in] current Node to perform the operation on
+ * @param[in] it Iterator
  * @return Data pointer of the node
  */
-void * arc_dlist_node_data(arc_iterator_t current);
+void * arc_dlist_data(arc_iterator_t it);
 /**
- * @brief Gets the next node in the list
+ * @brief Sets the iterator to the next node in the list
  *
- * @param[in] current Reference node
- * @return New empty list
+ * @param[in] it Iterator
+ * @retval 0 If the element after the end of the list has been reached
+ * @retval 1 If the current element is in the list
  */
-int arc_dlist_node_next(arc_iterator_t current);
+int arc_dlist_next(arc_iterator_t it);
 /**
- * @brief Gets the previous node in the list
+ * @brief Sets the iterator to the previous node in the list
  *
- * @param[in] current Reference node
- * @return New empty list
+ * @param[in] it Iterator
+ * @retval 0 If the element before the beginning of the list has been reached
+ * @retval 1 If the current element is in the list
  */
-int arc_dlist_node_previous(arc_iterator_t current);
+int arc_dlist_previous(arc_iterator_t it);
 
 #endif
