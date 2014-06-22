@@ -41,7 +41,7 @@ ARC_TEST(assert_int_equal)
 
 ARC_TEST(assert_ulong_equal)
 {
-    ARC_ASSERT_ULONG_EQUAL(11832193802UL, 11832193802UL)
+    ARC_ASSERT_ULONG_EQUAL(1183219UL, 1183219UL)
 }
 
 ARC_TEST(assert_string_equal)
