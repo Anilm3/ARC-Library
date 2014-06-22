@@ -139,7 +139,10 @@ void arc_print_report(void)
 
         for (idx = 0; idx < length; idx++)
         {
-            printf("%s, ", arc_user_tests[idx].name);
+            if (arc_user_tests[idx].failed)
+            {
+                printf("%s ", arc_user_tests[idx].name);
+            }
         }
         printf("\n");
     }

@@ -16,88 +16,88 @@
 
 ARC_TEST(creation_test)
 {
-    arc_stack_t list = arc_stack_create(sizeof(int));
+    arc_stack_t stack = arc_stack_create(sizeof(int));
 
-    ARC_ASSERT_POINTER_NOT_NULL(list);
+    ARC_ASSERT_POINTER_NOT_NULL(stack);
 
-    arc_stack_destroy(list);
+    arc_stack_destroy(stack);
 }
 
 ARC_TEST(empty_test)
 {
     int i = 10;
-    arc_stack_t list = arc_stack_create(sizeof(int));
+    arc_stack_t stack = arc_stack_create(sizeof(int));
 
-    ARC_ASSERT_TRUE(arc_stack_empty(list));
+    ARC_ASSERT_TRUE(arc_stack_empty(stack));
 
-    ARC_ASSERT_INT_EQUAL(arc_stack_push(list, (void *)&i), ARC_SUCCESS);
+    ARC_ASSERT_INT_EQUAL(arc_stack_push(stack, (void *)&i), ARC_SUCCESS);
 
-    ARC_ASSERT_FALSE(arc_stack_empty(list));
+    ARC_ASSERT_FALSE(arc_stack_empty(stack));
 
-    arc_stack_pop(list);
+    arc_stack_pop(stack);
 
-    arc_stack_destroy(list);
+    arc_stack_destroy(stack);
 }
 
 ARC_TEST(size_test)
 {
     int i = 10;
-    arc_stack_t list = arc_stack_create(sizeof(int));
+    arc_stack_t stack = arc_stack_create(sizeof(int));
 
-    ARC_ASSERT_INT_EQUAL(arc_stack_push(list, (void *)&i), ARC_SUCCESS);
+    ARC_ASSERT_INT_EQUAL(arc_stack_push(stack, (void *)&i), ARC_SUCCESS);
 
-    ARC_ASSERT_INT_EQUAL(arc_stack_size(list), 1);
+    ARC_ASSERT_INT_EQUAL(arc_stack_size(stack), 1);
     
     for (i = 0; i < 10; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_stack_push(list, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQUAL(arc_stack_push(stack, (void *)&i), ARC_SUCCESS);
     }
 
-    ARC_ASSERT_INT_EQUAL(arc_stack_size(list), 11);
+    ARC_ASSERT_INT_EQUAL(arc_stack_size(stack), 11);
 
     for (i = 0; i < 5; i++)
     {
-        arc_stack_pop(list);
+        arc_stack_pop(stack);
     }
 
-    ARC_ASSERT_INT_EQUAL(arc_stack_size(list), 6);
+    ARC_ASSERT_INT_EQUAL(arc_stack_size(stack), 6);
 
-    arc_stack_destroy(list);
+    arc_stack_destroy(stack);
 }
 
 ARC_TEST(push_pop_test)
 {
     int i;
-    arc_stack_t list = arc_stack_create(sizeof(int));
+    arc_stack_t stack = arc_stack_create(sizeof(int));
 
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_stack_push(list, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQUAL(arc_stack_push(stack, (void *)&i), ARC_SUCCESS);
     }
 
     i = 19999;
-    while(!arc_stack_empty(list))
+    while(!arc_stack_empty(stack))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_stack_top(list)), i--);
+        ARC_ASSERT_INT_EQUAL(*((int *)arc_stack_top(stack)), i--);
 
-        arc_stack_pop(list);
+        arc_stack_pop(stack);
     }
 
-    arc_stack_destroy(list);
+    arc_stack_destroy(stack);
 }
 
 ARC_TEST(destruction_test)
 {
     int i;
 
-    arc_stack_t list = arc_stack_create(sizeof(double));
+    arc_stack_t stack = arc_stack_create(sizeof(double));
     
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_stack_push(list, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQUAL(arc_stack_push(stack, (void *)&i), ARC_SUCCESS);
     }
 
-    arc_stack_destroy(list);
+    arc_stack_destroy(stack);
 }
 
 ARC_TEST_FIXTURE()
