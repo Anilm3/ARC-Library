@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <arc/container/dlist.h>
+#include <arc/container/iterator.h>
 #include <arc/test/unit.h>
 #include <arc/common/defines.h>
 
@@ -134,8 +135,8 @@ ARC_TEST(push_pop_front_back)
 ARC_TEST(iterators_forward)
 {
     int i;
-    arc_dlist_node_t it;
     arc_dlist_t list = arc_dlist_create(sizeof(int));
+    arc_iterator_t it = arc_iterator_create(list);
 
     ARC_ASSERT_POINTER_NOT_NULL(list);
 
@@ -146,21 +147,22 @@ ARC_TEST(iterators_forward)
 
     i = 19999;
 
-    for (it = arc_dlist_begin(list);
-         it != arc_dlist_after_end(list); 
-         it = arc_dlist_node_next(it))
+    arc_dlist_before_begin(it);
+
+    while(arc_dlist_node_next(it))
     {
         ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_node_data(it)), i--);
     }
 
+    arc_iterator_destroy(it);
     arc_dlist_destroy(list);
 }
 
 ARC_TEST(iterators_backward)
 {
     int i;
-    arc_dlist_node_t it;
     arc_dlist_t list = arc_dlist_create(sizeof(int));
+    arc_iterator_t it = arc_iterator_create(list);
 
     ARC_ASSERT_POINTER_NOT_NULL(list);
 
@@ -171,15 +173,17 @@ ARC_TEST(iterators_backward)
 
     i = 0;
 
-    for (it = arc_dlist_end(list);
-         it != arc_dlist_before_begin(list); 
-         it = arc_dlist_node_previous(it))
+    arc_dlist_after_end(it);
+
+    while(arc_dlist_node_previous(it))
     {
         ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_node_data(it)), i++);
     }
 
+    arc_iterator_destroy(it);
     arc_dlist_destroy(list);
 }
+
 
 ARC_TEST(destruction)
 {

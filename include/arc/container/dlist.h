@@ -25,6 +25,7 @@
 #define ARC_DLIST_H_
 
 #include <stdlib.h> 
+#include <arc/container/iterator.h>
 
 /**
  * @typedef arc_dlist_t
@@ -34,13 +35,6 @@
  * functions, direct stack allocations are not allowed.
  */
 typedef struct arc_dlist * arc_dlist_t;
-/**
- * @typedef arc_dlist_node_t
- * @brief List node definition
- *
- * The list node is used as an iterator to access internal elements of the list.
- */
-typedef struct arc_dlist_node * arc_dlist_node_t;
 
 /**
  * @brief Creates a new list
@@ -131,28 +125,28 @@ int arc_dlist_push_back(arc_dlist_t list, void * data);
  * @param[in] list List to get the node from
  * @return The node before the first node of the list
  */
-arc_dlist_node_t arc_dlist_before_begin(arc_dlist_t list);
+void arc_dlist_before_begin(arc_iterator_t it);
 /**
  * @brief Returns a node to the initial element of the list
  *
  * @param[in] list List to get the node from
  * @return First node of the list
  */
-arc_dlist_node_t arc_dlist_begin(arc_dlist_t list);
+void arc_dlist_begin(arc_iterator_t it);
 /**
  * @brief Returns a node to the end element of the list
  *
  * @param[in] list List to get the node from
  * @return First node of the list
  */
-arc_dlist_node_t arc_dlist_end(arc_dlist_t list);
+void arc_dlist_end(arc_iterator_t it);
 /**
  * @brief Returns a node to the element after the end of the list
  *
  * @param[in] list List to get the node from
  * @return The node after the end of the list
  */
-arc_dlist_node_t arc_dlist_after_end(arc_dlist_t list);
+void arc_dlist_after_end(arc_iterator_t it);
 /**
  * @brief Adds an element before the node
  *
@@ -161,7 +155,7 @@ arc_dlist_node_t arc_dlist_after_end(arc_dlist_t list);
  * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
  * @retval ARC_SUCCESS If the element was added successfully
  */
-int arc_dlist_insert_before(arc_dlist_node_t current, void * data);
+int arc_dlist_insert_before(arc_iterator_t current, void * data);
 /**
  * @brief Adds an element after the node
  *
@@ -170,33 +164,33 @@ int arc_dlist_insert_before(arc_dlist_node_t current, void * data);
  * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
  * @retval ARC_SUCCESS If the element was added successfully
  */
-int arc_dlist_insert_after(arc_dlist_node_t current, void * data);
+int arc_dlist_insert_after(arc_iterator_t current, void * data);
 /**
  * @brief Removes the next node from the list
  *
  * @param[in] current Reference node
  */
-void arc_dlist_erase(arc_dlist_node_t current);
+void arc_dlist_erase(arc_iterator_t current);
 /**
  * @brief Returns the data associated to the node
  *
  * @param[in] current Node to perform the operation on
  * @return Data pointer of the node
  */
-void * arc_dlist_node_data(arc_dlist_node_t current);
+void * arc_dlist_node_data(arc_iterator_t current);
 /**
  * @brief Gets the next node in the list
  *
  * @param[in] current Reference node
  * @return New empty list
  */
-arc_dlist_node_t arc_dlist_node_next(arc_dlist_node_t current);
+int arc_dlist_node_next(arc_iterator_t current);
 /**
  * @brief Gets the previous node in the list
  *
  * @param[in] current Reference node
  * @return New empty list
  */
-arc_dlist_node_t arc_dlist_node_previous(arc_dlist_node_t current);
+int arc_dlist_node_previous(arc_iterator_t current);
 
 #endif
