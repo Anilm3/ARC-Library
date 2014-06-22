@@ -41,6 +41,7 @@ struct arc_slist
 struct arc_slist * arc_slist_create(size_t data_size)
 {
     size_t aligned_size;
+
     struct arc_slist * list = malloc(sizeof(struct arc_slist));
 
     if (list == NULL)
