@@ -27,17 +27,6 @@ struct arc_deque
 
 struct arc_deque * arc_deque_create(size_t data_size)
 {
-    /*size_t aligned_size;
-    size_t initial_size = INITIAL_DEQUE_SIZE*data_size;*/
-    
-    /* The aligned size is the current size of the data block including the 
-       space occupied by the alignment */
-    /*
-    aligned_size = sizeof(struct arc_deque) - 
-                   ARC_OFFSETOF(struct arc_deque, data);
-
-    aligned_size = (aligned_size > initial_size ? 0 : initial_size - aligned_size);*/
-
     struct arc_deque * deque = malloc(sizeof(struct arc_deque));
 
     if (deque == NULL)
@@ -77,7 +66,7 @@ int arc_deque_realloc(struct arc_deque * deque)
 {
     if (deque->size == deque->allocated_size)
     {
-        unsigned new_size = (deque->allocated_size*9)/8;
+        unsigned new_size = (deque->allocated_size*3)/2;
 
         void * new_data = realloc(deque->data, deque->data_size*new_size);
 
