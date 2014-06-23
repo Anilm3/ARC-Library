@@ -112,7 +112,7 @@ int arc_deque_empty(arc_deque_t deque);
  * @param[in] deque Deque to perform the operation on
  * @return Size of the deque
  */
-int arc_deque_size(arc_deque_t deque);
+unsigned arc_deque_size(arc_deque_t deque);
 /**
  * @brief Clears the contents of the deque
  *

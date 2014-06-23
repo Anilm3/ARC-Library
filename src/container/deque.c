@@ -15,34 +15,41 @@
 
 struct arc_deque
 {
-    int size;
-    int allocated_size;
-    int start_idx;
-    int end_idx;
+    unsigned size;
+    unsigned allocated_size;
+    unsigned start_idx;
+    unsigned end_idx;
     size_t data_size;
-    char data[1];
+    void * data;
 };
 
 /******************************************************************************/
 
 struct arc_deque * arc_deque_create(size_t data_size)
 {
-    size_t aligned_size;
-    size_t initial_size = INITIAL_DEQUE_SIZE*data_size;
+    /*size_t aligned_size;
+    size_t initial_size = INITIAL_DEQUE_SIZE*data_size;*/
     
-    struct arc_deque * deque;
-
     /* The aligned size is the current size of the data block including the 
        space occupied by the alignment */
+    /*
     aligned_size = sizeof(struct arc_deque) - 
                    ARC_OFFSETOF(struct arc_deque, data);
 
-    aligned_size = (aligned_size > initial_size ? 0 : initial_size - aligned_size);
+    aligned_size = (aligned_size > initial_size ? 0 : initial_size - aligned_size);*/
 
-    deque = malloc(sizeof(struct arc_deque) + aligned_size);
+    struct arc_deque * deque = malloc(sizeof(struct arc_deque));
 
     if (deque == NULL)
     {
+        return NULL;
+    }
+
+    deque->data = malloc(INITIAL_DEQUE_SIZE*data_size);
+
+    if (deque->data == NULL)
+    {
+        free(deque);
         return NULL;
     }
 
@@ -60,9 +67,48 @@ struct arc_deque * arc_deque_create(size_t data_size)
 
 void arc_deque_destroy(struct arc_deque * deque)
 {
-    arc_deque_clear(deque);
-    
+    free(deque->data);
     free(deque);
+}
+
+/******************************************************************************/
+
+int arc_deque_realloc(struct arc_deque * deque)
+{
+    if (deque->size == deque->allocated_size)
+    {
+        unsigned new_size = (deque->allocated_size*9)/8;
+
+        void * new_data = realloc(deque->data, deque->data_size*new_size);
+
+        if (new_data == NULL)
+        {
+            return ARC_ERROR;
+        }
+
+        deque->data = new_data;
+
+        if (deque->start_idx + deque->size > deque->allocated_size)
+        {
+            /* TODO : Perform this operation as n memcpy's of non overlapping
+                      blocks, it will require less copies */
+            unsigned i = deque->allocated_size - 1;
+            unsigned j = new_size - 1;
+
+            for (; i >= deque->start_idx; i--, j--)
+            {
+                memcpy((char *)deque->data + j*deque->data_size,
+                       (char *)deque->data + i*deque->data_size, 
+                       deque->data_size);
+            }
+
+            deque->start_idx = j + 1;
+        }
+
+        deque->allocated_size = new_size;
+    }
+
+    return ARC_SUCCESS;
 }
 
 /******************************************************************************/
@@ -71,20 +117,22 @@ int arc_deque_push_front(struct arc_deque * deque, void * data)
 {
     void * data_pos;
 
-    if (deque->size == deque->allocated_size)
+    if (arc_deque_realloc(deque) == ARC_ERROR)
     {
         return ARC_ERROR;
     }
 
     if (deque->size > 0)
     {
-        if(--deque->start_idx < 0)
+        if(deque->start_idx == 0)
         {
-            deque->start_idx += deque->allocated_size;
+            deque->start_idx = deque->allocated_size ;
         }
+
+        deque->start_idx--;
     }
 
-    data_pos = (void *)(deque->data + ((size_t)deque->start_idx)*deque->data_size);
+    data_pos = ((char *)deque->data + deque->start_idx*deque->data_size);
 
     memcpy(data_pos, data, deque->data_size);
 
@@ -114,7 +162,7 @@ int arc_deque_push_back(struct arc_deque * deque, void * data)
 {
     void * data_pos;
 
-    if (deque->size == deque->allocated_size)
+    if (arc_deque_realloc(deque) == ARC_ERROR)
     {
         return ARC_ERROR;
     }
@@ -127,7 +175,7 @@ int arc_deque_push_back(struct arc_deque * deque, void * data)
         }
     }
 
-    data_pos = (deque->data + ((size_t)deque->end_idx)*deque->data_size);
+    data_pos = ((char *)deque->data + ((size_t)deque->end_idx)*deque->data_size);
 
     memcpy(data_pos, data, deque->data_size);
 
@@ -142,15 +190,15 @@ void arc_deque_pop_back(struct arc_deque * deque)
 {
     if (deque->size > 0)
     {
-        if(--deque->end_idx < 0)
+        if(deque->end_idx == 0)
         {
-            deque->end_idx += deque->allocated_size;
+            deque->end_idx = deque->allocated_size;
         }
 
+        deque->end_idx--;
         deque->size--;
     }
 }
-
 
 /******************************************************************************/
 
@@ -161,7 +209,7 @@ void * arc_deque_front(struct arc_deque * deque)
         return NULL;
     }
 
-    return (deque->data + ((size_t)deque->start_idx)*deque->data_size);
+    return ((char *)deque->data + ((size_t)deque->start_idx)*deque->data_size);
 }
 
 /******************************************************************************/
@@ -173,7 +221,7 @@ void * arc_deque_back(struct arc_deque * deque)
         return NULL;
     }
 
-    return (deque->data + ((size_t)deque->end_idx)*deque->data_size);
+    return ((char *)deque->data + ((size_t)deque->end_idx)*deque->data_size);
 }
 
 
@@ -186,7 +234,7 @@ int arc_deque_empty(struct arc_deque * deque)
 
 /******************************************************************************/
 
-int arc_deque_size(struct arc_deque * deque)
+unsigned arc_deque_size(struct arc_deque * deque)
 {
     return deque->size;
 }
