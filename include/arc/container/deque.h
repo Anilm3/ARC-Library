@@ -55,6 +55,14 @@ arc_deque_t arc_deque_create(size_t data_size);
  */
 void arc_deque_destroy(arc_deque_t deque);
 /**
+ * @brief Indexed access to an element of the deque
+ *
+ * @param[in] deque Deque to perform the operation on
+ * @param[in] index Position to access
+ * @return Data pointer of the first element
+ */
+void * arc_deque_at(arc_deque_t deque, unsigned index);
+/**
  * @brief Adds a new element to the front of the deque
  *
  * @param[in] deque Deque to perform the operation on

@@ -149,6 +149,58 @@ ARC_TEST(push_pop_back_front)
     arc_deque_destroy(deque);
 }
 
+ARC_TEST(mixed_push_back_front_test)
+{
+    int i;
+
+    arc_deque_t deque = arc_deque_create(sizeof(unsigned));
+    
+    for (i = 100; i >= 0; i--)
+    {
+        ARC_ASSERT_INT_EQUAL(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
+    }
+
+    for (i = 101; i < 200; i++)
+    {
+        ARC_ASSERT_INT_EQUAL(arc_deque_push_back(deque, (void *)&i), ARC_SUCCESS);
+    }
+
+    i = 0;
+    while(!arc_deque_empty(deque))
+    {
+        ARC_ASSERT_INT_EQUAL(*((int *)arc_deque_front(deque)), i++);
+
+        arc_deque_pop_front(deque);
+    }
+
+    arc_deque_destroy(deque);
+}
+
+
+ARC_TEST(indexed_access_test)
+{
+    int i;
+
+    arc_deque_t deque = arc_deque_create(sizeof(unsigned));
+    
+    for (i = 100; i >= 0; i--)
+    {
+        ARC_ASSERT_INT_EQUAL(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
+    }
+
+    for (i = 101; i < 200; i++)
+    {
+        ARC_ASSERT_INT_EQUAL(arc_deque_push_back(deque, (void *)&i), ARC_SUCCESS);
+    }
+
+    for (i = 0; i < 200; i++)
+    {
+        ARC_ASSERT_INT_EQUAL(*((int *)arc_deque_at(deque, (unsigned)i)), i);
+    }
+
+    arc_deque_destroy(deque);
+}
+
 ARC_TEST(destruction_test)
 {
     int i;
@@ -173,6 +225,8 @@ ARC_TEST_FIXTURE()
     ARC_ADD_TEST(push_pop_back_back)
     ARC_ADD_TEST(push_pop_front_back)
     ARC_ADD_TEST(push_pop_back_front)
+    ARC_ADD_TEST(mixed_push_back_front_test)
+    ARC_ADD_TEST(indexed_access_test)
     ARC_ADD_TEST(destruction_test)
 }
 

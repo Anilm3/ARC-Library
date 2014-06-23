@@ -113,6 +113,21 @@ int arc_deque_realloc(struct arc_deque * deque)
 
 /******************************************************************************/
 
+void * arc_deque_at(struct arc_deque * deque, unsigned index)
+{
+    if (index < deque->size)
+    {
+        index += deque->start_idx;
+        index = index % deque->allocated_size;
+
+        return ((char *)deque->data) + index*deque->data_size;
+    }
+
+    return NULL;
+}
+
+/******************************************************************************/
+
 int arc_deque_push_front(struct arc_deque * deque, void * data)
 {
     void * data_pos;
