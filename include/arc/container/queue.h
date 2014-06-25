@@ -32,7 +32,7 @@
  * @brief Queue definition
  *
  * The queue is defined as a pointer to be used with the creation and destruction
- * functions, direct queue allocations are not allowed.
+ * functions, direct stack allocations are not allowed.
  */
 typedef struct arc_queue * arc_queue_t;
 
