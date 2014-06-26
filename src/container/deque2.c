@@ -21,7 +21,7 @@ struct arc_deque2
     unsigned end_idx;
     size_t data_size;
     void * data;
-    void ** data;
+    /*void ** data;*/
 };
 
 /******************************************************************************/
