@@ -78,19 +78,14 @@ int arc_deque_realloc(struct arc_deque * deque)
 
         if (deque->start_idx + deque->size > deque->allocated_size)
         {
-            /* TODO : Perform this operation as n memcpy's of non overlapping
-                      blocks, it will require less copies */
-            unsigned i = deque->allocated_size - 1;
-            unsigned j = new_size - 1;
+            unsigned copy_size = deque->allocated_size - deque->start_idx;
+            unsigned new_start = (new_size - copy_size);
+    
+            memmove((char *)deque->data + new_start * deque->data_size,
+                    (char *)deque->data + deque->start_idx * deque->data_size,
+                    copy_size*deque->data_size);
 
-            for (; i >= deque->start_idx; i--, j--)
-            {
-                memcpy((char *)deque->data + j*deque->data_size,
-                       (char *)deque->data + i*deque->data_size, 
-                       deque->data_size);
-            }
-
-            deque->start_idx = j + 1;
+            deque->start_idx = new_start;
         }
 
         deque->allocated_size = new_size;
