@@ -11,6 +11,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules")
 set (SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set (INCLUDES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 set (UNIT_TEST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/unit_test")
+set (PERF_TEST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/perf_test")
 set (DOC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/doc/")
 set (EXECUTABLE_OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/bin/")
 set (LIBRARY_OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/")
@@ -149,7 +150,6 @@ endif()
 
 
 file(GLOB_RECURSE TESTS ${UNIT_TEST_DIR}/*.c)
-
 enable_testing()
 
 foreach(TEST ${TESTS}) 
@@ -192,3 +192,11 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
         )
     endif() # 
 endif()
+
+file(GLOB_RECURSE TESTS ${PERF_TEST_DIR}/*.c ${PERF_TEST_DIR}/*.cpp)
+
+foreach(TEST ${TESTS}) 
+    get_filename_component(TEST_EXEC ${TEST} NAME_WE)
+    add_executable(${TEST_EXEC} ${TEST})
+    target_link_libraries(${TEST_EXEC} arc-shared gcov rt)
+endforeach(TEST) 

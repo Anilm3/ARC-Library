@@ -27,6 +27,10 @@
 
 #include <stdlib.h>
 
+#ifdef __cplusplus
+extern "C"{
+#endif 
+
 /**
  * @typedef arc_queue_t
  * @brief Queue definition
@@ -104,5 +108,9 @@ int arc_queue_size(arc_queue_t queue);
  * @param[in] queue Queue to perform the operation on
  */
 void arc_queue_clear(arc_queue_t queue);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

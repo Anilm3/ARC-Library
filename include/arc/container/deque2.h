@@ -27,6 +27,10 @@
 
 #include <stdlib.h>
 
+#ifdef __cplusplus
+extern "C"{
+#endif 
+
 /**
  * @typedef arc_deque2_t
  * @brief Deque2 definition
@@ -127,5 +131,9 @@ unsigned arc_deque2_size(arc_deque2_t deque2);
  * @param[in] deque2 Deque2 to perform the operation on
  */
 void arc_deque2_clear(arc_deque2_t deque2);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

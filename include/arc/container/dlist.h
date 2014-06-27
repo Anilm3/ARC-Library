@@ -27,6 +27,10 @@
 #include <stdlib.h> 
 #include <arc/container/iterator.h>
 
+#ifdef __cplusplus
+extern "C"{
+#endif 
+
 /**
  * @typedef arc_dlist_t
  * @brief List definition
@@ -198,5 +202,9 @@ int arc_dlist_next(arc_iterator_t it);
  * @retval 1 If the current element is in the list
  */
 int arc_dlist_previous(arc_iterator_t it);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

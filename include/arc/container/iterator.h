@@ -25,6 +25,10 @@
 
 #include <stdlib.h> 
 
+#ifdef __cplusplus
+extern "C"{
+#endif 
+
 /**
  * @typedef arc_iterator_t
  * @brief List definition
@@ -49,5 +53,9 @@ arc_iterator_t arc_iterator_create(void * container);
  * @param[in] it Iterator to delete
  */
 void arc_iterator_destroy(arc_iterator_t it);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

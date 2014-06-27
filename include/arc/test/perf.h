@@ -18,6 +18,11 @@
 #define ARC_PERF_H_
 
 #include <stdio.h>
+ 
+#ifdef __cplusplus
+extern "C"{
+#endif 
+
 /**
  * @brief Creates a test
  *
@@ -69,5 +74,9 @@ void arc_perf_set_tests(void);
 void arc_perf_run_fixture(void);
 void arc_perf_print_report(void);
 void arc_perf_cleanup(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -27,6 +27,10 @@
 
 #include <stdlib.h>
 
+#ifdef __cplusplus
+extern "C"{
+#endif 
+
 /**
  * @typedef arc_stack_t
  * @brief Stack definition
@@ -97,5 +101,9 @@ int arc_stack_size(arc_stack_t stack);
  * @param[in] stack Stack to perform the operation on
  */
 void arc_stack_clear(arc_stack_t stack);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -17,10 +17,18 @@
 #ifndef ARC_FUNCTION_H_
 #define ARC_FUNCTION_H_
 
+#ifdef __cplusplus
+extern "C"{
+#endif 
+
 /**
  * @typedef arc_compare_fn_t
  * @brief Comparison function
  */
 typedef int (*arc_compare_fn_t)(void *, void *);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

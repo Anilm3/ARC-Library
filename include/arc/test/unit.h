@@ -21,6 +21,10 @@
 
 #include <stdio.h>
 
+#ifdef __cplusplus
+extern "C"{
+#endif 
+
 /**
  * @brief Generic assertion
  *
@@ -281,5 +285,9 @@ int arc_assert_string_contains(const char * str, char c);
 int arc_assert_string_doesnt_contain(const char * str, char c);
 int arc_assert_string_starts_with(const char * str, char c);
 int arc_assert_string_ends_with(const char * str, char c);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -26,6 +26,10 @@
 
 #include <stdlib.h>
 
+#ifdef __cplusplus
+extern "C"{
+#endif 
+
 /**
  * @typedef arc_deque_t
  * @brief Deque definition
@@ -126,5 +130,9 @@ unsigned arc_deque_size(arc_deque_t deque);
  * @param[in] deque Deque to perform the operation on
  */
 void arc_deque_clear(arc_deque_t deque);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

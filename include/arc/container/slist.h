@@ -27,6 +27,10 @@
 #include <stdlib.h> 
 #include <arc/container/iterator.h>
 
+#ifdef __cplusplus
+extern "C"{
+#endif 
+
 /**
  * @typedef arc_slist_t
  * @brief List definition
@@ -153,5 +157,9 @@ void * arc_slist_data(arc_iterator_t it);
  * @retval 1 If the current element is in the list
  */
 int arc_slist_next(arc_iterator_t it);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

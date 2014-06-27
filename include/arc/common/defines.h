@@ -17,6 +17,10 @@
 #ifndef ARC_DEFINES_H_
 #define ARC_DEFINES_H_
 
+#ifdef __cplusplus
+extern "C"{
+#endif 
+
 /** @brief Return value to indicate success in the operation */
 #define ARC_SUCCESS        0
 /** @brief Return value to indicate a generic error */
@@ -26,5 +30,9 @@
 
 /** @brief Returns the offset of the field in the struct */
 #define ARC_OFFSETOF(type, field) ((size_t) &(((type *) 0)->field))
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

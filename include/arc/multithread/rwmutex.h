@@ -21,6 +21,10 @@
 #ifndef ARC_RWMUTEX_H_
 #define ARC_RWMUTEX_H_
 
+#ifdef __cplusplus
+extern "C"{
+#endif 
+
 /**
  * @typedef arc_rwmutex_t
  * @brief Read-Write mutex definition
@@ -70,5 +74,9 @@ int arc_rwmutex_runlock(arc_rwmutex_t mutex);
  * @retval ARC_SUCCESS if the mutex has been unlocked successfully
  */
 int arc_rwmutex_wunlock(arc_rwmutex_t mutex);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
