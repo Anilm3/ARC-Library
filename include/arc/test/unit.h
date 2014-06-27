@@ -213,7 +213,13 @@ if (!function) \
  *
  * @param[in] name Name of the test
  */
-#define ARC_UNIT_TEST(name) void name(void)
+#define ARC_UNIT_TEST(name) void name ## _ ## test(void)
+/**
+ * @brief Creates a function
+ *
+ * @param[in] name Name of the test
+ */
+#define ARC_UNIT_FUNCTION(name) void name ## _ ## function(void)
 /**
  * @brief Creates the test fixture
  */
@@ -223,13 +229,13 @@ if (!function) \
  *
  * @param[in] name Name of the test
  */
-#define ARC_UNIT_ADD_TEST(name) arc_unit_add_test(#name, name);
+#define ARC_UNIT_ADD_TEST(name) arc_unit_add_test(#name, name ## _ ## test);
 /**
  * @brief Adds a function to the fixture
  *
  * @param[in] name Name of the function
  */
-#define ARC_UNIT_ADD_FUNCTION(name) arc_unit_add_function(name);
+#define ARC_UNIT_ADD_FUNCTION(name) arc_unit_add_function(name ## _ ## function);
 /**
  * @brief Runs the test fixture and prints a report
  */

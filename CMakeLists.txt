@@ -27,7 +27,7 @@ message("-- CMake build type: ${CMAKE_BUILD_TYPE}")
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     #-ansi, -pedantic : conform to ansi C
-    set(CMAKE_C_FLAGS_DEBUG "-ansi -pedantic")
+    set(CMAKE_C_FLAGS_DEBUG "-ansi -pedantic  -D_POSIX_C_SOURCE=200112L")
 
     # -g: debugging information.
     set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}  -g")
@@ -111,7 +111,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
    set(CMAKE_EXE_LINKER_FLAGS_DEBUG "-fprofile-arcs -ftest-coverage -lgcov")
 else()
     #-ansi, -pedantic : conform to ansi C
-    set(CMAKE_C_FLAGS "-ansi -pedantic -O2")
+    set(CMAKE_C_FLAGS "-ansi -pedantic -O2 -D_POSIX_C_SOURCE=200112L")
     set(CMAKE_EXE_LINKER_FLAGS "-s")
 endif()
 
@@ -155,7 +155,7 @@ enable_testing()
 foreach(TEST ${TESTS}) 
     get_filename_component(TEST_EXEC ${TEST} NAME_WE)
     add_executable(${TEST_EXEC} ${TEST})
-    target_link_libraries(${TEST_EXEC} arc-shared gcov)
+    target_link_libraries(${TEST_EXEC} arc-shared gcov rt)
 
     add_test(${TEST_EXEC} ${EXECUTABLE_OUTPUT_PATH}/${TEST_EXEC})
 endforeach(TEST) 

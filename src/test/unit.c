@@ -23,13 +23,13 @@ typedef struct
     int test;
 } arc_test_t;
 
-unsigned idx = 0;
-unsigned length = 0;
-unsigned max_length = 256;
-int passed = 0;
-int failed = 0;
+static unsigned idx = 0;
+static unsigned length = 0;
+static unsigned max_length = 256;
+static int passed = 0;
+static int failed = 0;
 
-arc_test_t * arc_user_tests;
+static arc_test_t * arc_user_tests;
 
 /******************************************************************************/
 
