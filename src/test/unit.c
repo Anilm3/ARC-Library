@@ -33,7 +33,7 @@ arc_test_t * arc_user_tests;
 
 /******************************************************************************/
 
-void arc_add_test(const char * name, void (*fn)(void))
+void arc_unit_add_test(const char * name, void (*fn)(void))
 {
     arc_test_t test;
 
@@ -61,7 +61,7 @@ void arc_add_test(const char * name, void (*fn)(void))
 
 /******************************************************************************/
 
-void arc_add_function(void (*fn)(void))
+void arc_unit_add_function(void (*fn)(void))
 {
     arc_test_t test;
 
@@ -89,7 +89,7 @@ void arc_add_function(void (*fn)(void))
 
 /******************************************************************************/
 
-void arc_set_system(void)
+void arc_unit_set_system(void)
 {
     arc_user_tests = malloc(sizeof(arc_test_t)*max_length);
 
@@ -98,7 +98,7 @@ void arc_set_system(void)
 
 /******************************************************************************/
 
-int arc_run_fixture(void)
+int arc_unit_run_fixture(void)
 {
     length = idx;
 
@@ -131,7 +131,7 @@ int arc_run_fixture(void)
 
 /******************************************************************************/
 
-void arc_print_report(void)
+void arc_unit_print_report(void)
 {
     if (failed > 0)
     {
@@ -154,14 +154,14 @@ void arc_print_report(void)
 
 /******************************************************************************/
 
-void arc_cleanup(void)
+void arc_unit_cleanup(void)
 {
     free(arc_user_tests);
 }
 
 /******************************************************************************/
 
-void arc_set_test_failed(void)
+void arc_unit_set_test_failed(void)
 {
     arc_user_tests[idx].failed = 1;
 }

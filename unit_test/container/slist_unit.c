@@ -15,7 +15,7 @@
 
 #include <string.h>
 
-ARC_TEST(size_test)
+ARC_UNIT_TEST(size_test)
 {
     int i = 10;
     arc_slist_t list = arc_slist_create(sizeof(int));
@@ -40,7 +40,7 @@ ARC_TEST(size_test)
     arc_slist_destroy(list);
 }
 
-ARC_TEST(push_pop)
+ARC_UNIT_TEST(push_pop)
 {
     int i;
     arc_slist_t list = arc_slist_create(sizeof(int));
@@ -63,7 +63,7 @@ ARC_TEST(push_pop)
     arc_slist_destroy(list);
 }
 
-ARC_TEST(iterators)
+ARC_UNIT_TEST(iterators)
 {
     int i;
     arc_slist_t list = arc_slist_create(sizeof(int));
@@ -89,7 +89,7 @@ ARC_TEST(iterators)
     arc_slist_destroy(list);
 }
 
-ARC_TEST(destruction)
+ARC_UNIT_TEST(destruction)
 {
     int i;
 
@@ -105,12 +105,12 @@ ARC_TEST(destruction)
     arc_slist_destroy(list);
 }
 
-ARC_TEST_FIXTURE()
+ARC_UNIT_TEST_FIXTURE()
 {
-    ARC_ADD_TEST(size_test)
-    ARC_ADD_TEST(push_pop)
-    ARC_ADD_TEST(iterators)
-    ARC_ADD_TEST(destruction)
+    ARC_UNIT_ADD_TEST(size_test)
+    ARC_UNIT_ADD_TEST(push_pop)
+    ARC_UNIT_ADD_TEST(iterators)
+    ARC_UNIT_ADD_TEST(destruction)
 }
 
-ARC_RUN_TESTS()
+ARC_UNIT_RUN_TESTS()

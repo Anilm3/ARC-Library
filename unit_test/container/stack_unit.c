@@ -14,7 +14,7 @@
 
 #include <string.h>
 
-ARC_TEST(creation_test)
+ARC_UNIT_TEST(creation_test)
 {
     arc_stack_t stack = arc_stack_create(sizeof(int));
 
@@ -23,7 +23,7 @@ ARC_TEST(creation_test)
     arc_stack_destroy(stack);
 }
 
-ARC_TEST(empty_test)
+ARC_UNIT_TEST(empty_test)
 {
     int i = 10;
     arc_stack_t stack = arc_stack_create(sizeof(int));
@@ -39,7 +39,7 @@ ARC_TEST(empty_test)
     arc_stack_destroy(stack);
 }
 
-ARC_TEST(size_test)
+ARC_UNIT_TEST(size_test)
 {
     int i = 10;
     arc_stack_t stack = arc_stack_create(sizeof(int));
@@ -65,7 +65,7 @@ ARC_TEST(size_test)
     arc_stack_destroy(stack);
 }
 
-ARC_TEST(push_pop_test)
+ARC_UNIT_TEST(push_pop_test)
 {
     int i;
     arc_stack_t stack = arc_stack_create(sizeof(int));
@@ -86,7 +86,7 @@ ARC_TEST(push_pop_test)
     arc_stack_destroy(stack);
 }
 
-ARC_TEST(destruction_test)
+ARC_UNIT_TEST(destruction_test)
 {
     int i;
 
@@ -100,13 +100,13 @@ ARC_TEST(destruction_test)
     arc_stack_destroy(stack);
 }
 
-ARC_TEST_FIXTURE()
+ARC_UNIT_TEST_FIXTURE()
 {
-    ARC_ADD_TEST(creation_test)
-    ARC_ADD_TEST(empty_test)
-    ARC_ADD_TEST(size_test)
-    ARC_ADD_TEST(push_pop_test)
-    ARC_ADD_TEST(destruction_test)
+    ARC_UNIT_ADD_TEST(creation_test)
+    ARC_UNIT_ADD_TEST(empty_test)
+    ARC_UNIT_ADD_TEST(size_test)
+    ARC_UNIT_ADD_TEST(push_pop_test)
+    ARC_UNIT_ADD_TEST(destruction_test)
 }
 
-ARC_RUN_TESTS()
+ARC_UNIT_RUN_TESTS()

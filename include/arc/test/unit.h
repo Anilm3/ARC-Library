@@ -34,7 +34,7 @@ if (!function) \
     printf("\n%s:%d: Failure\n", __FILE__, __LINE__); \
     printf("    Expected: " #expected "\n"); \
     printf("    Obtained: " #obtained "\n"); \
-    arc_set_test_failed(); \
+    arc_unit_set_test_failed(); \
     return; \
 } 
 /**
@@ -42,7 +42,7 @@ if (!function) \
  */
 #define ARC_ASSERT_FAIL() \
     printf("\n%s:%d: Failure\n", __FILE__, __LINE__); \
-    arc_set_test_failed(); \
+    arc_unit_set_test_failed(); \
     return;
 /**
  * @brief Asserts the expression is true
@@ -213,50 +213,50 @@ if (!function) \
  *
  * @param[in] name Name of the test
  */
-#define ARC_TEST(name) void name(void)
+#define ARC_UNIT_TEST(name) void name(void)
 /**
  * @brief Creates the test fixture
  */
-#define ARC_TEST_FIXTURE() void arc_set_tests(void)
+#define ARC_UNIT_TEST_FIXTURE() void arc_unit_set_tests(void)
 /**
  * @brief Adds a test to the fixture
  *
  * @param[in] name Name of the test
  */
-#define ARC_ADD_TEST(name) arc_add_test(#name, name);
+#define ARC_UNIT_ADD_TEST(name) arc_unit_add_test(#name, name);
 /**
  * @brief Adds a function to the fixture
  *
  * @param[in] name Name of the function
  */
-#define ARC_ADD_FUNCTION(name) arc_add_function(name);
+#define ARC_UNIT_ADD_FUNCTION(name) arc_unit_add_function(name);
 /**
  * @brief Runs the test fixture and prints a report
  */
-#define ARC_RUN_TESTS() \
+#define ARC_UNIT_RUN_TESTS() \
 int main(void) \
 { \
     int retval = 0; \
-    arc_set_system(); \
-    arc_set_tests(); \
-    retval = arc_run_fixture(); \
-    arc_print_report(); \
-    arc_cleanup(); \
+    arc_unit_set_system(); \
+    arc_unit_set_tests(); \
+    retval = arc_unit_run_fixture(); \
+    arc_unit_print_report(); \
+    arc_unit_cleanup(); \
     return retval; \
 }
 
 /* Internal test fixture functions */
-void arc_add_test(const char * name, void (*fn)(void));
-void arc_add_function(void (*fn)(void));
+void arc_unit_add_test(const char * name, void (*fn)(void));
+void arc_unit_add_function(void (*fn)(void));
 
-void arc_set_system(void);
-void arc_set_tests(void);
-int arc_run_fixture(void);
-void arc_print_report(void);
-void arc_cleanup(void);
+void arc_unit_set_system(void);
+void arc_unit_set_tests(void);
+int arc_unit_run_fixture(void);
+void arc_unit_print_report(void);
+void arc_unit_cleanup(void);
 
-void arc_set_test_failed(void);
-void arc_set_test_passed(void);
+void arc_unit_set_test_failed(void);
+void arc_unit_set_test_passed(void);
 
 /* Assertions */
 int arc_assert_true(int exp);

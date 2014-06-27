@@ -15,7 +15,7 @@
 
 #include <string.h>
 
-ARC_TEST(size_test)
+ARC_UNIT_TEST(size_test)
 {
     int i = 10;
     arc_dlist_t list = arc_dlist_create(sizeof(int));
@@ -40,7 +40,7 @@ ARC_TEST(size_test)
     arc_dlist_destroy(list);
 }
 
-ARC_TEST(push_pop_front_front)
+ARC_UNIT_TEST(push_pop_front_front)
 {
     int i;
     arc_dlist_t list = arc_dlist_create(sizeof(int));
@@ -63,7 +63,7 @@ ARC_TEST(push_pop_front_front)
     arc_dlist_destroy(list);
 }
 
-ARC_TEST(push_pop_back_back)
+ARC_UNIT_TEST(push_pop_back_back)
 {
     int i;
     arc_dlist_t list = arc_dlist_create(sizeof(int));
@@ -86,7 +86,7 @@ ARC_TEST(push_pop_back_back)
     arc_dlist_destroy(list);
 }
 
-ARC_TEST(push_pop_back_front)
+ARC_UNIT_TEST(push_pop_back_front)
 {
     int i;
     arc_dlist_t list = arc_dlist_create(sizeof(int));
@@ -109,7 +109,7 @@ ARC_TEST(push_pop_back_front)
     arc_dlist_destroy(list);
 }
 
-ARC_TEST(push_pop_front_back)
+ARC_UNIT_TEST(push_pop_front_back)
 {
     int i;
     arc_dlist_t list = arc_dlist_create(sizeof(int));
@@ -132,7 +132,7 @@ ARC_TEST(push_pop_front_back)
     arc_dlist_destroy(list);
 }
 
-ARC_TEST(iterators_forward)
+ARC_UNIT_TEST(iterators_forward)
 {
     int i;
     arc_dlist_t list = arc_dlist_create(sizeof(int));
@@ -158,7 +158,7 @@ ARC_TEST(iterators_forward)
     arc_dlist_destroy(list);
 }
 
-ARC_TEST(iterators_backward)
+ARC_UNIT_TEST(iterators_backward)
 {
     int i;
     arc_dlist_t list = arc_dlist_create(sizeof(int));
@@ -185,7 +185,7 @@ ARC_TEST(iterators_backward)
 }
 
 
-ARC_TEST(destruction)
+ARC_UNIT_TEST(destruction)
 {
     int i;
 
@@ -201,16 +201,16 @@ ARC_TEST(destruction)
     arc_dlist_destroy(list);
 }
 
-ARC_TEST_FIXTURE()
+ARC_UNIT_TEST_FIXTURE()
 {
-    ARC_ADD_TEST(size_test)
-    ARC_ADD_TEST(push_pop_front_front)
-    ARC_ADD_TEST(push_pop_back_back)
-    ARC_ADD_TEST(push_pop_back_front)
-    ARC_ADD_TEST(push_pop_front_back)
-    ARC_ADD_TEST(iterators_forward)
-    ARC_ADD_TEST(iterators_backward)
-    ARC_ADD_TEST(destruction)
+    ARC_UNIT_ADD_TEST(size_test)
+    ARC_UNIT_ADD_TEST(push_pop_front_front)
+    ARC_UNIT_ADD_TEST(push_pop_back_back)
+    ARC_UNIT_ADD_TEST(push_pop_back_front)
+    ARC_UNIT_ADD_TEST(push_pop_front_back)
+    ARC_UNIT_ADD_TEST(iterators_forward)
+    ARC_UNIT_ADD_TEST(iterators_backward)
+    ARC_UNIT_ADD_TEST(destruction)
 }
 
-ARC_RUN_TESTS()
+ARC_UNIT_RUN_TESTS()
