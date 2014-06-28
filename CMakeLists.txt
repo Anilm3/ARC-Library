@@ -20,15 +20,15 @@ include_directories ("${INCLUDES_DIR}")
 
 file(GLOB_RECURSE SOURCES ${SOURCE_DIR}/*.c)
 
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug)
+if(NOT BUILD_TYPE)
+    set(BUILD_TYPE Debug)
 endif()
 
-message("-- CMake build type: ${CMAKE_BUILD_TYPE}")
+message("-- CMake build type: ${BUILD_TYPE}")
 
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+if (BUILD_TYPE STREQUAL "Debug")
     #-ansi, -pedantic : conform to ansi C
-    set(CMAKE_C_FLAGS_DEBUG "-ansi -pedantic  -D_POSIX_C_SOURCE=200112L")
+    set(CMAKE_C_FLAGS_DEBUG "-ansi -pedantic -D_POSIX_C_SOURCE=200112L")
 
     # -g: debugging information.
     set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}  -g")
@@ -112,7 +112,8 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
    set(CMAKE_EXE_LINKER_FLAGS_DEBUG "-fprofile-arcs -ftest-coverage -lgcov")
 else()
     #-ansi, -pedantic : conform to ansi C
-    set(CMAKE_C_FLAGS "-ansi -pedantic -O2 -D_POSIX_C_SOURCE=200112L")
+    set(CMAKE_C_FLAGS "-ansi -pedantic -O3 -D_POSIX_C_SOURCE=200112L")
+    set(CMAKE_CXX_FLAGS "-O3")
     set(CMAKE_EXE_LINKER_FLAGS "-s")
 endif()
 
@@ -134,6 +135,7 @@ install(DIRECTORY ${INCLUDES_DIR}/arc
 
 if (SHARED)
     add_library(arc-shared SHARED ${SOURCES})
+    target_link_libraries(arc-shared rt)
     set_target_properties(arc-shared PROPERTIES
                           OUTPUT_NAME arc CLEAN_DIRECT_OUTPUT 1)
     install(TARGETS arc-shared
@@ -148,20 +150,19 @@ if (STATIC)
             LIBRARY DESTINATION /usr/local/lib)
 endif()
 
-
 file(GLOB_RECURSE TESTS ${UNIT_TEST_DIR}/*.c)
 enable_testing()
 
 foreach(TEST ${TESTS}) 
     get_filename_component(TEST_EXEC ${TEST} NAME_WE)
     add_executable(${TEST_EXEC} ${TEST})
-    target_link_libraries(${TEST_EXEC} arc-shared gcov rt)
+    target_link_libraries(${TEST_EXEC} arc-shared)
 
     add_test(${TEST_EXEC} ${EXECUTABLE_OUTPUT_PATH}/${TEST_EXEC})
 endforeach(TEST) 
 
 
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+if (BUILD_TYPE STREQUAL "Debug")
     find_program( GCOV_PATH gcov )
     find_program( LCOV_PATH lcov )
     find_program( GENHTML_PATH genhtml )
@@ -198,5 +199,5 @@ file(GLOB_RECURSE TESTS ${PERF_TEST_DIR}/*.c ${PERF_TEST_DIR}/*.cpp)
 foreach(TEST ${TESTS}) 
     get_filename_component(TEST_EXEC ${TEST} NAME_WE)
     add_executable(${TEST_EXEC} ${TEST})
-    target_link_libraries(${TEST_EXEC} arc-shared gcov rt)
+    target_link_libraries(${TEST_EXEC} arc-shared)
 endforeach(TEST) 

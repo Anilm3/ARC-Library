@@ -20,7 +20,7 @@ typedef struct
 {
     const char * name;
     void (* function)(void);
-    long test_time;
+    double test_time;
     int test;
 } arc_test_t;
 
@@ -128,9 +128,8 @@ void arc_perf_run_fixture(void)
                 clock_gettime(CLOCK_REALTIME, &start);
                 arc_user_tests[idx].function();
                 clock_gettime(CLOCK_REALTIME, &end);
-                arc_user_tests[idx].test_time += (end.tv_sec - start.tv_sec) * 
-                                                 1000000000 +
-                                                 end.tv_nsec - start.tv_nsec;
+                arc_user_tests[idx].test_time += (end.tv_sec - start.tv_sec) + 
+                                              (end.tv_nsec - start.tv_nsec)/1e9;
             }
             else
             {
@@ -148,12 +147,12 @@ void arc_perf_print_report(void)
     {
         if (arc_user_tests[idx].test)
         {
-            double total_time = (double)arc_user_tests[idx].test_time / 1e9;
-            double average_time = total_time / num_tests;
+            double average_time = arc_user_tests[idx].test_time / num_tests;
 
             printf("%-*s %0.9f %0.9f\n", (int)max_str_size,
                                           arc_user_tests[idx].name, 
-                                          average_time, total_time);
+                                          average_time, 
+                                          arc_user_tests[idx].test_time);
         }
     }
 }
