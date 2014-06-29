@@ -27,89 +27,90 @@ endif()
 message("-- CMake build type: ${BUILD_TYPE}")
 
 if (BUILD_TYPE STREQUAL "Debug")
+    
     #-ansi, -pedantic : conform to ansi C
-    set(CMAKE_C_FLAGS_DEBUG "-ansi -pedantic -D_POSIX_C_SOURCE=200112L")
+    set(CMAKE_C_FLAGS "-ansi -pedantic -D_POSIX_C_SOURCE=200112L")
 
     # -g: debugging information.
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}  -g")
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -fprofile-arcs")
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -ftest-coverage")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -g")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ftest-coverage")
 
     # -W, -Werror: , every warning is an error.
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}  -W -Werror")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -W -Werror")
 
     # -Wextra, -Wall: essential.
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wextra -Wall")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wextra -Wall")
 
     # -Wfloat-equal: useful because usually testing floating-point 
     #                numbers for equality is bad.
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wfloat-equal")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wfloat-equal")
 
     # -Wundef: warn if an uninitialized identifier is evaluated in an 
     #          #if directive.
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wundef")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wundef")
 
     # -Wshadow: warn whenever a local variable shadows another local 
     #           variable, parameter or global variable or whenever a 
     #           built-in function is shadowed.
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wshadow")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wshadow")
 
     # -Wpointer-arith: warn if anything depends upon the size of a 
     #                  function or of void.
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wpointer-arith")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wpointer-arith")
 
     # -Wcast-align: warn whenever a pointer is cast such that the required 
     #               alignment of the target is increased. For example, warn 
     #               if a char * is cast to an int * on machines where integers 
     #               can only be accessed at two- or four-byte boundaries.
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wcast-align")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wcast-align")
 
 
     # -Wstrict-prototypes: warn if a function is declared or defined without 
     #                      specifying the argument types.
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wstrict-prototypes")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wstrict-prototypes")
 
 
     # -Wstrict-overflow=5: warns about cases where the compiler optimizes based 
     #                      on the assumption that signed overflow does not occur
     #                      (The value 5 may be too strict, see the manual page).
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wstrict-overflow=5")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wstrict-overflow=5")
 
 
     # -Wwrite-strings: give string constants the type const char[length] so that 
     #                  copying the address of one into a non-const char * pointer
     #                  will get a warning.
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wwrite-strings")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wwrite-strings")
 
 
     # -Waggregate-return: warn if any functions that return structures or unions 
     #                     are defined or called.
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Waggregate-return")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Waggregate-return")
 
     # -Wcast-qual: warn whenever a pointer is cast to remove a type qualifier  
     #              from the target type*.
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wcast-qual")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wcast-qual")
 
     # -Wswitch-default: warn whenever a switch statement does not have a default 
     #                   case*.
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wswitch-default")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wswitch-default")
 
     # -Wswitch-enum: warn whenever a switch statement has an index of enumerated 
     #                type and lacks a case for one or more of the named codes 
     #                of that enumeration*.
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wswitch-enum")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wswitch-enum")
 
     # -Wconversion: warn for implicit conversions that may alter a value*.
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wconversion")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wconversion")
 
     # -Wunreachable-code: warn if the compiler detects that code will 
     #                     never be executed*.
-    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wunreachable-code")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wunreachable-code")
     
     # Those marked * sometimes give too many spurious warnings, so I use them 
     # on as-needed basis:
     # http://stackoverflow.com/questions/3375697/useful-gcc-flags-for-c
-   set(CMAKE_EXE_LINKER_FLAGS_DEBUG "-fprofile-arcs -ftest-coverage -lgcov")
+   set(CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage -g -pg -lgcov")
 else()
     #-ansi, -pedantic : conform to ansi C
     set(CMAKE_C_FLAGS "-ansi -pedantic -O3 -D_POSIX_C_SOURCE=200112L")

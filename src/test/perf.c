@@ -128,8 +128,8 @@ void arc_perf_run_fixture(void)
                 clock_gettime(CLOCK_REALTIME, &start);
                 arc_user_tests[idx].function();
                 clock_gettime(CLOCK_REALTIME, &end);
-                arc_user_tests[idx].test_time += (end.tv_sec - start.tv_sec) + 
-                                              (end.tv_nsec - start.tv_nsec)/1e9;
+                arc_user_tests[idx].test_time += (double)(end.tv_sec - start.tv_sec) + 
+                                              ((double)(end.tv_nsec - start.tv_nsec))/1e9;
             }
             else
             {
