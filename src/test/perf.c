@@ -175,7 +175,7 @@ void arc_perf_print_report(void)
         {
             double average_time = arc_user_tests[idx].test_time / num_tests;
 
-            sprintf(stderr, "%-*s %0.9f %0.9f\n", (int)max_str_size,
+            fprintf(stderr, "%-*s %0.9f %0.9f\n", (int)max_str_size,
                                                   arc_user_tests[idx].name, 
                                                   average_time, 
                                                   arc_user_tests[idx].test_time);
