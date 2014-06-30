@@ -13,8 +13,7 @@
 #include <arc/container/deque2.h>
 #include <arc/common/defines.h>
 
-#define INITIAL_DEQUE2_SIZE 32
-#define BLOCK_SIZE 128
+#define BLOCK_SIZE 256
 #define INITIAL_NUM_BLOCKS 64
 
 struct arc_deque2

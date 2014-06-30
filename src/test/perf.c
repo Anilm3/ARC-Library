@@ -21,9 +21,11 @@ typedef struct
     const char * name;
     void (* function)(void);
     double test_time;
+    double * all_times;
     int test;
 } arc_test_t;
 
+static int coverage = 0;
 static unsigned idx = 0;
 static unsigned length = 0;
 static unsigned max_length = 256;
@@ -42,6 +44,15 @@ void arc_perf_add_test(const char * name, void (*fn)(void))
     test.function = fn;
     test.test_time = 0;
     test.test = 1;
+
+    if (coverage)
+    {
+        test.all_times = malloc(sizeof(double)*num_tests);
+    }
+    else
+    {
+        test.all_times = NULL;
+    }
 
     if (name_size > max_str_size)
     {
@@ -104,6 +115,10 @@ void arc_perf_set_system(int argc, char * argv[])
         {
             num_tests = (unsigned)atoi(argv[i + 1]);
         }
+        else if (strcmp(argv[i], "-c") == 0 && argc > (i + 1))
+        {
+            coverage = 1;
+        }
     }
     arc_user_tests = malloc(sizeof(arc_test_t)*max_length);
 
@@ -124,12 +139,21 @@ void arc_perf_run_fixture(void)
         {
             if (arc_user_tests[idx].test)
             {
+                double test_time;
                 struct timespec start, end;
                 clock_gettime(CLOCK_REALTIME, &start);
                 arc_user_tests[idx].function();
                 clock_gettime(CLOCK_REALTIME, &end);
-                arc_user_tests[idx].test_time += (double)(end.tv_sec - start.tv_sec) + 
-                                              ((double)(end.tv_nsec - start.tv_nsec))/1e9;
+
+                test_time = (double)(end.tv_sec - start.tv_sec) + 
+                            ((double)(end.tv_nsec - start.tv_nsec))/1e9;
+
+                arc_user_tests[idx].test_time += test_time;
+
+                if (arc_user_tests[idx].all_times != NULL)
+                {
+                    arc_user_tests[idx].all_times[tests] = test_time;
+                }
             }
             else
             {
@@ -143,16 +167,29 @@ void arc_perf_run_fixture(void)
 
 void arc_perf_print_report(void)
 {
+    int tests;
+
     for (idx = 0; idx < length; idx++)
     {
         if (arc_user_tests[idx].test)
         {
             double average_time = arc_user_tests[idx].test_time / num_tests;
 
-            printf("%-*s %0.9f %0.9f\n", (int)max_str_size,
-                                          arc_user_tests[idx].name, 
-                                          average_time, 
-                                          arc_user_tests[idx].test_time);
+            sprintf(stderr, "%-*s %0.9f %0.9f\n", (int)max_str_size,
+                                                  arc_user_tests[idx].name, 
+                                                  average_time, 
+                                                  arc_user_tests[idx].test_time);
+
+            if (arc_user_tests[idx].all_times != NULL)
+            {
+                for (tests = 0; tests < num_tests; tests++)
+                {
+                    printf(" %0.9f", arc_user_tests[idx].all_times[tests]);
+                }
+
+                printf("\n");
+            }
+
         }
     }
 }

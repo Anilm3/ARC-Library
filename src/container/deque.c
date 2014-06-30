@@ -67,25 +67,39 @@ int arc_deque_realloc(struct arc_deque * deque)
     {
         unsigned new_size = (deque->allocated_size*3)/2;
 
-        void * new_data = realloc(deque->data, deque->data_size*new_size);
-
-        if (new_data == NULL)
-        {
-            return ARC_ERROR;
-        }
-
-        deque->data = new_data;
+        void * new_data;
 
         if (deque->start_idx + deque->size > deque->allocated_size)
         {
             unsigned copy_size = deque->allocated_size - deque->start_idx;
             unsigned new_start = (new_size - copy_size);
-    
-            memmove((char *)deque->data + new_start * deque->data_size,
+
+            new_data = malloc(deque->data_size*new_size);
+
+            if (new_data == NULL)
+            {
+                return ARC_ERROR;
+            }
+
+            memcpy((char *)new_data + new_start * deque->data_size,
                     (char *)deque->data + deque->start_idx * deque->data_size,
                     copy_size*deque->data_size);
+            memcpy(new_data, deque->data, (deque->end_idx + 1)*deque->data_size);
 
+            free(deque->data);
+            deque->data = new_data;
             deque->start_idx = new_start;
+        }
+        else
+        {
+            new_data = realloc(deque->data, deque->data_size*new_size);
+
+            if (new_data == NULL)
+            {
+                return ARC_ERROR;
+            }
+
+            deque->data = new_data;
         }
 
         deque->allocated_size = new_size;
