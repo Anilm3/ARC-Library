@@ -167,7 +167,7 @@ void arc_perf_run_fixture(void)
 
 void arc_perf_print_report(void)
 {
-    int tests;
+    unsigned tests;
 
     for (idx = 0; idx < length; idx++)
     {
