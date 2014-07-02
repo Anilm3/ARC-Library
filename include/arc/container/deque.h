@@ -26,6 +26,7 @@
 #define ARC_DEQUE_H_
 
 #include <stdlib.h>
+#include <arc/container/iterator.h>
 
 #ifdef __cplusplus
 extern "C"{
@@ -131,6 +132,85 @@ unsigned arc_deque_size(arc_deque_t deque);
  * @param[in] deque Deque to perform the operation on
  */
 void arc_deque_clear(arc_deque_t deque);
+/**
+ * @brief Sets an iterator to the element before the beginning of the deque
+ *
+ * @warning The data pointer of this iterator must not be requested, the
+ *          iterator cannot be dereferenced as there is no memory allocated
+ *          for data.
+ *
+ * @param[in] it Iterator
+ */
+void arc_deque_before_begin(arc_iterator_t it);
+/**
+ * @brief Sets an iterator to the initial element of the deque
+ *
+ * @param[in] it Iterator
+ */
+void arc_deque_begin(arc_iterator_t it);
+/**
+ * @brief Sets an iterator to the last element of the deque
+ *
+ * @param[in] it Iterator
+ */
+void arc_deque_end(arc_iterator_t it);
+/**
+ * @brief Sets an iterator to the element after the end of the deque
+ *
+ * @warning The data pointer of this iterator must not be requested, the
+ *          iterator cannot be dereferenced as there is no memory allocated
+ *          for data.
+ *
+ * @param[in] it Iterator
+ */
+void arc_deque_after_end(arc_iterator_t it);
+/**
+ * @brief Adds an element before the iterator position
+ *
+ * @param[in] it Iterator
+ * @param[in] data Data associated to the new element
+ * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
+ * @retval ARC_SUCCESS If the element was added successfully
+ */
+int arc_deque_insert_before(arc_iterator_t it, void * data);
+/**
+ * @brief Adds an element after the iterator position
+ *
+ * @param[in] it Iterator
+ * @param[in] data Data associated to the new element
+ * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
+ * @retval ARC_SUCCESS If the element was added successfully
+ */
+int arc_deque_insert_after(arc_iterator_t it, void * data);
+/**
+ * @brief Removes the iterator position from the deque
+ *
+ * @param[in] it Iterator
+ */
+void arc_deque_erase(arc_iterator_t it);
+/**
+ * @brief Returns the data associated to the Iterator
+ *
+ * @param[in] it Iterator
+ * @return Data pointer of the node
+ */
+void * arc_deque_data(arc_iterator_t it);
+/**
+ * @brief Sets the iterator to the next node in the deque
+ *
+ * @param[in] it Iterator
+ * @retval 0 If the element after the end of the deque has been reached
+ * @retval 1 If the current element is in the deque
+ */
+int arc_deque_next(arc_iterator_t it);
+/**
+ * @brief Sets the iterator to the previous node in the deque
+ *
+ * @param[in] it Iterator
+ * @retval 0 If the element before the beginning of the deque has been reached
+ * @retval 1 If the current element is in the deque
+ */
+int arc_deque_previous(arc_iterator_t it);
 
 #ifdef __cplusplus
 }
