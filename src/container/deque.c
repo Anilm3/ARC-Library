@@ -6,20 +6,24 @@
 * There is NO WARRANTY, to the extent permitted by law.                        *
 *                                                                              *
 *******************************************************************************/
+
+#include <stdio.h>
 #include <string.h>
+#include <strings.h>
 #include <arc/container/deque.h>
 #include <arc/common/defines.h>
 
-#define INITIAL_DEQUE_SIZE 32
+#define BLOCK_SIZE 32
+#define INITIAL_NUM_BLOCKS 8
 
 struct arc_deque
 {
     unsigned size;
-    unsigned allocated_size;
+    unsigned num_blocks;
     unsigned start_idx;
     unsigned end_idx;
     size_t data_size;
-    void * data;
+    void ** data;
 };
 
 /******************************************************************************/
@@ -33,7 +37,14 @@ struct arc_deque * arc_deque_create(size_t data_size)
         return NULL;
     }
 
-    deque->data = malloc(INITIAL_DEQUE_SIZE*data_size);
+    /* Initialise the deque */
+    deque->size = 0;
+    deque->data_size = data_size;
+    deque->num_blocks = INITIAL_NUM_BLOCKS;
+    deque->start_idx = BLOCK_SIZE*(INITIAL_NUM_BLOCKS/2) + BLOCK_SIZE/2 + 1;
+    deque->end_idx = deque->start_idx - 1;
+
+    deque->data = malloc(INITIAL_NUM_BLOCKS*sizeof(void *));
 
     if (deque->data == NULL)
     {
@@ -41,12 +52,7 @@ struct arc_deque * arc_deque_create(size_t data_size)
         return NULL;
     }
 
-    /* Initialise the deque */
-    deque->size = 0;
-    deque->allocated_size = INITIAL_DEQUE_SIZE;
-    deque->data_size = data_size;
-    deque->start_idx = 0;
-    deque->end_idx = 0;
+    bzero(deque->data, INITIAL_NUM_BLOCKS*sizeof(void *));
 
     return deque;
 }
@@ -55,6 +61,13 @@ struct arc_deque * arc_deque_create(size_t data_size)
 
 void arc_deque_destroy(struct arc_deque * deque)
 {
+    unsigned i;
+
+    for (i = 0; i < deque->num_blocks; i++)
+    {
+        free (deque->data[i]);
+    }
+
     free(deque->data);
     free(deque);
 }
@@ -63,47 +76,29 @@ void arc_deque_destroy(struct arc_deque * deque)
 
 int arc_deque_realloc(struct arc_deque * deque)
 {
-    if (deque->size == deque->allocated_size)
+    unsigned num_blocks_delta = deque->num_blocks/2;
+    unsigned new_num_blocks = num_blocks_delta*2 + deque->num_blocks;
+    void * new_data = malloc(sizeof(void *)*new_num_blocks);
+
+    if (new_data == NULL)
     {
-        unsigned new_size = (deque->allocated_size*3)/2;
-
-        void * new_data;
-
-        if (deque->start_idx + deque->size > deque->allocated_size)
-        {
-            unsigned copy_size = deque->allocated_size - deque->start_idx;
-            unsigned new_start = (new_size - copy_size);
-
-            new_data = malloc(deque->data_size*new_size);
-
-            if (new_data == NULL)
-            {
-                return ARC_ERROR;
-            }
-
-            memcpy((char *)new_data + new_start * deque->data_size,
-                    (char *)deque->data + deque->start_idx * deque->data_size,
-                    copy_size*deque->data_size);
-            memcpy(new_data, deque->data, (deque->end_idx + 1)*deque->data_size);
-
-            free(deque->data);
-            deque->data = new_data;
-            deque->start_idx = new_start;
-        }
-        else
-        {
-            new_data = realloc(deque->data, deque->data_size*new_size);
-
-            if (new_data == NULL)
-            {
-                return ARC_ERROR;
-            }
-
-            deque->data = new_data;
-        }
-
-        deque->allocated_size = new_size;
+        return ARC_ERROR;
     }
+
+    memcpy((char *)new_data + num_blocks_delta*sizeof(void *), 
+           deque->data, deque->num_blocks*sizeof(void *));
+
+    bzero(new_data, num_blocks_delta*sizeof(void *));
+    bzero((char *)new_data + (deque->num_blocks + num_blocks_delta)*sizeof(void *),
+          num_blocks_delta*sizeof(void *));
+
+    deque->start_idx += num_blocks_delta*BLOCK_SIZE;
+    deque->end_idx += num_blocks_delta*BLOCK_SIZE;
+
+    free(deque->data);
+
+    deque->data = new_data;
+    deque->num_blocks = new_num_blocks;
 
     return ARC_SUCCESS;
 }
@@ -114,10 +109,13 @@ void * arc_deque_at(struct arc_deque * deque, unsigned index)
 {
     if (index < deque->size)
     {
-        index += deque->start_idx;
-        index = index % deque->allocated_size;
+        unsigned block_num, block_idx;
 
-        return ((char *)deque->data) + index*deque->data_size;
+        index = (deque->start_idx + index) % (deque->num_blocks * BLOCK_SIZE);
+        block_num = index / BLOCK_SIZE;
+        block_idx = index % BLOCK_SIZE;
+
+        return ((char *)deque->data[block_num] + block_idx*deque->data_size);
     }
 
     return NULL;
@@ -127,24 +125,29 @@ void * arc_deque_at(struct arc_deque * deque, unsigned index)
 
 int arc_deque_push_front(struct arc_deque * deque, void * data)
 {
+    unsigned block_num;
+    unsigned block_idx;
     void * data_pos;
 
-    if (arc_deque_realloc(deque) == ARC_ERROR)
+    if(deque->size > 0 && deque->start_idx == 0)
     {
-        return ARC_ERROR;
-    }
-
-    if (deque->size > 0)
-    {
-        if(deque->start_idx == 0)
+        if (arc_deque_realloc(deque) != ARC_SUCCESS)
         {
-            deque->start_idx = deque->allocated_size ;
+            return ARC_ERROR;
         }
-
-        deque->start_idx--;
     }
 
-    data_pos = ((char *)deque->data + deque->start_idx*deque->data_size);
+    deque->start_idx--;
+
+    block_num = deque->start_idx / BLOCK_SIZE;
+    block_idx = deque->start_idx % BLOCK_SIZE;
+
+    if (deque->data[block_num] == NULL)
+    {
+        deque->data[block_num] = malloc(BLOCK_SIZE*deque->data_size);
+    }
+
+    data_pos = ((char *)deque->data[block_num] + block_idx*deque->data_size);
 
     memcpy(data_pos, data, deque->data_size);
 
@@ -159,11 +162,7 @@ void arc_deque_pop_front(struct arc_deque * deque)
 {
     if (deque->size > 0)
     {
-        if(++deque->start_idx == deque->allocated_size)
-        {
-            deque->start_idx = 0;
-        }
-
+        deque->start_idx++;
         deque->size--;
     }
 }
@@ -172,22 +171,29 @@ void arc_deque_pop_front(struct arc_deque * deque)
 
 int arc_deque_push_back(struct arc_deque * deque, void * data)
 {
+    unsigned block_num;
+    unsigned block_idx;
     void * data_pos;
 
-    if (arc_deque_realloc(deque) == ARC_ERROR)
+    if (deque->size > 0 && deque->end_idx == (deque->num_blocks * BLOCK_SIZE - 1))
     {
-        return ARC_ERROR;
-    }
-
-    if (deque->size > 0)
-    {
-        if(++deque->end_idx == deque->allocated_size)
+        if (arc_deque_realloc(deque) != ARC_SUCCESS)
         {
-            deque->end_idx = 0;
+            return ARC_ERROR;
         }
     }
 
-    data_pos = ((char *)deque->data + ((size_t)deque->end_idx)*deque->data_size);
+    deque->end_idx++;
+
+    block_num = deque->end_idx / BLOCK_SIZE;
+    block_idx = deque->end_idx % BLOCK_SIZE;
+
+    if (deque->data[block_num] == NULL)
+    {
+        deque->data[block_num] = malloc(BLOCK_SIZE*deque->data_size);
+    }
+
+    data_pos = ((char *)deque->data[block_num] + block_idx*deque->data_size);
 
     memcpy(data_pos, data, deque->data_size);
 
@@ -202,11 +208,6 @@ void arc_deque_pop_back(struct arc_deque * deque)
 {
     if (deque->size > 0)
     {
-        if(deque->end_idx == 0)
-        {
-            deque->end_idx = deque->allocated_size;
-        }
-
         deque->end_idx--;
         deque->size--;
     }
@@ -216,24 +217,30 @@ void arc_deque_pop_back(struct arc_deque * deque)
 
 void * arc_deque_front(struct arc_deque * deque)
 {
+    unsigned block_num = deque->start_idx / BLOCK_SIZE;
+    unsigned block_idx = deque->start_idx % BLOCK_SIZE;
+
     if (deque->size == 0)
     {
         return NULL;
     }
-
-    return ((char *)deque->data + ((size_t)deque->start_idx)*deque->data_size);
+    
+    return ((char *)deque->data[block_num] + block_idx*deque->data_size);
 }
 
 /******************************************************************************/
 
 void * arc_deque_back(struct arc_deque * deque)
 {
+    unsigned block_num = deque->end_idx / BLOCK_SIZE;
+    unsigned block_idx = deque->end_idx % BLOCK_SIZE;
+
     if (deque->size == 0)
     {
         return NULL;
     }
-
-    return ((char *)deque->data + ((size_t)deque->end_idx)*deque->data_size);
+    
+    return ((char *)deque->data[block_num] + block_idx*deque->data_size);
 }
 
 

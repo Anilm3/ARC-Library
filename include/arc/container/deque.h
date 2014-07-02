@@ -13,10 +13,11 @@
  *
  * @brief Deque
  *
- * A deque is a data structure implemented to be efficient for inserting and 
- * extracting from the front and back while also providing constant time access
- * to each of the individual elements.
- *
+ * A deque is very similar to a singly-linked list but it uses a bit less memory
+ * and the operations require less instructions to be performed. The main goal
+ * of this redundancy is for performance and experimentation purposes as the 
+ * simplicity of the structure provides less instructions per operation thus 
+ * making it easier to implement to be lock-free and thread-safe.
  *
  * @see http://en.wikipedia.org/wiki/Deque_(data_structure)
  */
@@ -35,7 +36,7 @@ extern "C"{
  * @brief Deque definition
  *
  * The deque is defined as a pointer to be used with the creation and destruction
- * functions, direct stack allocations are not allowed.
+ * functions, direct deque allocations are not allowed.
  */
 typedef struct arc_deque * arc_deque_t;
 
