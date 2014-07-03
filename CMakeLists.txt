@@ -115,7 +115,7 @@ else()
     #-ansi, -pedantic : conform to ansi C
     set(CMAKE_C_FLAGS "-ansi -pedantic -O3 -D_POSIX_C_SOURCE=200112L")
     set(CMAKE_CXX_FLAGS "-O3")
-    set(CMAKE_EXE_LINKER_FLAGS "-s")
+    #set(CMAKE_EXE_LINKER_FLAGS "-s")
 endif()
 
 # add a target to generate API documentation with Doxygen
