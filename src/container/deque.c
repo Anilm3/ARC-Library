@@ -105,15 +105,15 @@ int arc_deque_realloc(struct arc_deque * deque)
 
 /******************************************************************************/
 
-void * arc_deque_at(struct arc_deque * deque, unsigned index)
+void * arc_deque_atstruct arc_deque * deque, unsigned idx)
 {
-    if (index < deque->size)
+    if (idx < deque->size)
     {
         unsigned block_num, block_idx;
 
-        index = (deque->start_idx + index) % (deque->num_blocks * BLOCK_SIZE);
-        block_num = index / BLOCK_SIZE;
-        block_idx = index % BLOCK_SIZE;
+        idx = (deque->start_idx + idx) % (deque->num_blocks * BLOCK_SIZE);
+        block_num = idx / BLOCK_SIZE;
+        block_idx = idx % BLOCK_SIZE;
 
         return ((char *)deque->data[block_num] + block_idx*deque->data_size);
     }
