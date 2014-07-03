@@ -307,25 +307,25 @@ void arc_deque_after_end(struct arc_iterator * it)
 
 /******************************************************************************/
 
-int arc_deque_insert_before(struct arc_iterator * it, void * data)
+/*int arc_deque_insert_before(struct arc_iterator * it, void * data)
 {
     return ARC_SUCCESS;
 }
-
+*/
 /******************************************************************************/
 
-int arc_deque_insert_after(struct arc_iterator * it, void * data)
+/*int arc_deque_insert_after(struct arc_iterator * it, void * data)
 {
     return ARC_SUCCESS;
 }
-
+*/
 /******************************************************************************/
 
-void arc_deque_erase(struct arc_iterator * it)
+/*void arc_deque_erase(struct arc_iterator * it)
 {
 
 }
-
+*/
 /******************************************************************************/
 
 void * arc_deque_data(struct arc_iterator * it)
@@ -333,7 +333,7 @@ void * arc_deque_data(struct arc_iterator * it)
     struct arc_deque * deque = it->container;
     unsigned long  index = (unsigned long)it->node;
 
-    return arc_deque_at(deque, index);
+    return arc_deque_at(deque, (unsigned)index);
 }
 
 /******************************************************************************/
