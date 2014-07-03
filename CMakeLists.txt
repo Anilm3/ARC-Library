@@ -159,6 +159,7 @@ if (STATIC)
                           OUTPUT_NAME arc CLEAN_DIRECT_OUTPUT 1)
     target_link_libraries(arc-static rt)
     install(TARGETS arc-static
+            ARCHIVE DESTINATION /usr/local/lib
             LIBRARY DESTINATION /usr/local/lib)
 endif()
 
