@@ -5,6 +5,7 @@ set (CMAKE_VERBOSE_MAKEFILE OFF)
 
 option(STATIC "Build static library" OFF)
 option(SHARED "Build shared library" ON)
+option(ANSI "Compile with -ansi -pedantic" ON)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules")
 
@@ -26,11 +27,16 @@ endif()
 
 message("-- CMake build type: ${BUILD_TYPE}")
 
+
+#-ansi, -pedantic : conform to ansi C
+if(ANSI)
+    set(CMAKE_C_FLAGS "-ansi -pedantic -D_POSIX_C_SOURCE=200112L")
+else(ANSI)
+    set(CMAKE_C_FLAGS "-D_POSIX_C_SOURCE=200112L")
+endif()
+
 if (BUILD_TYPE STREQUAL "Debug")
     
-    #-ansi, -pedantic : conform to ansi C
-    set(CMAKE_C_FLAGS "-ansi -pedantic -D_POSIX_C_SOURCE=200112L")
-
     # -g: debugging information.
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -g")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs")
@@ -113,7 +119,7 @@ if (BUILD_TYPE STREQUAL "Debug")
    set(CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage -g -pg -lgcov")
 else()
     #-ansi, -pedantic : conform to ansi C
-    set(CMAKE_C_FLAGS "-ansi -pedantic -O3 -D_POSIX_C_SOURCE=200112L")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -O3")
     set(CMAKE_CXX_FLAGS "-O3")
     #set(CMAKE_EXE_LINKER_FLAGS "-s")
 endif()

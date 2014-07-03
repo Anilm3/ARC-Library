@@ -307,27 +307,6 @@ void arc_deque_after_end(struct arc_iterator * it)
 
 /******************************************************************************/
 
-/*int arc_deque_insert_before(struct arc_iterator * it, void * data)
-{
-    return ARC_SUCCESS;
-}
-*/
-/******************************************************************************/
-
-/*int arc_deque_insert_after(struct arc_iterator * it, void * data)
-{
-    return ARC_SUCCESS;
-}
-*/
-/******************************************************************************/
-
-/*void arc_deque_erase(struct arc_iterator * it)
-{
-
-}
-*/
-/******************************************************************************/
-
 void * arc_deque_data(struct arc_iterator * it)
 {
     struct arc_deque * deque = it->container;
