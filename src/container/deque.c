@@ -13,6 +13,8 @@
 #include <arc/container/deque.h>
 #include <arc/common/defines.h>
 
+#include "iterator.h"
+
 #define BLOCK_SIZE 32
 #define INITIAL_NUM_BLOCKS 8
 
@@ -265,6 +267,107 @@ void arc_deque_clear(struct arc_deque * deque)
     deque->start_idx = 0;
     deque->end_idx = 0;
     deque->size = 0;
+}
+
+/******************************************************************************/
+
+void arc_deque_before_begin(struct arc_iterator * it)
+{
+    struct arc_deque * deque = it->container;
+
+    it->node = (void *)((unsigned long)deque->start_idx - 1);
+}
+
+/******************************************************************************/
+
+void arc_deque_begin(struct arc_iterator * it)
+{
+    struct arc_deque * deque = it->container;
+    
+    it->node = (void *)((unsigned long)deque->start_idx);
+}
+
+/******************************************************************************/
+
+void arc_deque_end(struct arc_iterator * it)
+{
+    struct arc_deque * deque = it->container;
+    
+    it->node = (void *)((unsigned long)deque->end_idx);
+}
+
+/******************************************************************************/
+
+void arc_deque_after_end(struct arc_iterator * it)
+{
+    struct arc_deque * deque = it->container;
+    
+    it->node = (void *)((unsigned long)deque->end_idx + 1);
+}
+
+/******************************************************************************/
+
+int arc_deque_insert_before(struct arc_iterator * it, void * data)
+{
+    return ARC_SUCCESS;
+}
+
+/******************************************************************************/
+
+int arc_deque_insert_after(struct arc_iterator * it, void * data)
+{
+    return ARC_SUCCESS;
+}
+
+/******************************************************************************/
+
+void arc_deque_erase(struct arc_iterator * it)
+{
+
+}
+
+/******************************************************************************/
+
+void * arc_deque_data(struct arc_iterator * it)
+{
+    struct arc_deque * deque = it->container;
+    unsigned long  index = (unsigned long)it->node;
+
+    return arc_deque_at(deque, index);
+}
+
+/******************************************************************************/
+
+int arc_deque_next(struct arc_iterator * it)
+{
+    struct arc_deque * deque = it->container;
+    unsigned long index = (unsigned long)it->node + 1;
+
+    it->node = (void *)index;
+
+    if (index > deque->end_idx)
+    {
+        return 0;
+    }
+
+    return 1;
+}
+
+/******************************************************************************/
+
+int arc_deque_previous(struct arc_iterator * it)
+{
+    struct arc_deque * deque = it->container;
+    unsigned long index = (unsigned long)it->node - 1;
+
+    it->node = (void *)index;
+
+    if (index < deque->start_idx)
+    {
+        return 0;
+    }
+
+    return 1;
 }
 
 /******************************************************************************/
