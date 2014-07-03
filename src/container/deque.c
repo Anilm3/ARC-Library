@@ -105,7 +105,7 @@ int arc_deque_realloc(struct arc_deque * deque)
 
 /******************************************************************************/
 
-void * arc_deque_atstruct arc_deque * deque, unsigned idx)
+void * arc_deque_at(struct arc_deque * deque, unsigned idx)
 {
     if (idx < deque->size)
     {
