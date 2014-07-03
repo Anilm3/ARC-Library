@@ -66,7 +66,7 @@ void arc_deque_destroy(arc_deque_t deque);
  * @param[in] index Position to access
  * @return Data pointer of the first element
  */
-void * arc_deque_at(arc_deque_t deque, unsigned index);
+void * arc_deque_at(arc_deque_t deque, unsigned idx);
 /**
  * @brief Adds a new element to the front of the deque
  *
