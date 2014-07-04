@@ -89,6 +89,93 @@ void arc_dlist_destroy(struct arc_dlist * list)
 
 /******************************************************************************/
 
+int arc_dlist_insert_node_before(struct arc_dlist * list,
+                                 struct arc_dlist_node * current, 
+                                 void * data)
+{
+    struct arc_dlist_node * node;
+    struct arc_dlist_node * prev_node = current->prev;
+
+    if (prev_node == NULL)
+    {
+        return ARC_ERROR;
+    }
+
+    node = malloc(list->node_size);
+
+    if (node == NULL)
+    {
+        return ARC_OUT_OF_MEMORY;
+    }
+
+    memcpy(node->data, data, list->data_size);
+
+    node->next = current;
+    node->prev = prev_node;
+
+    prev_node->next = node;
+    current->prev = node;
+
+    list->size++;
+
+    return ARC_SUCCESS;
+}
+
+/******************************************************************************/
+
+int arc_dlist_insert_node_after(struct arc_dlist * list,
+                                struct arc_dlist_node * current, 
+                                void * data)
+{
+    struct arc_dlist_node * node;
+    struct arc_dlist_node * next_node = current->next;
+
+    if (next_node == NULL)
+    {
+        return ARC_ERROR;
+    }
+
+    node = malloc(list->node_size);
+
+    if (node == NULL)
+    {
+        return ARC_OUT_OF_MEMORY;
+    }
+
+    memcpy(node->data, data, list->data_size);
+
+    node->next = next_node;
+    node->prev = current;
+
+    next_node->prev = node;
+    current->next = node;
+
+    list->size++;
+
+    return ARC_SUCCESS;
+}
+
+/******************************************************************************/
+
+void arc_dlist_erase_node(struct arc_dlist * list,
+                          struct arc_dlist_node * current)
+{
+    struct arc_dlist_node * prev_node = current->prev;
+    struct arc_dlist_node * next_node = current->next;
+
+    if (prev_node != NULL && next_node != NULL)
+    {
+        prev_node->next = next_node;
+        next_node->prev = prev_node;
+
+        list->size--;
+
+        free(current);
+    }
+}
+
+/******************************************************************************/
+
 int arc_dlist_size(struct arc_dlist * list)
 {
     return list->size;
@@ -122,22 +209,16 @@ void * arc_dlist_front(struct arc_dlist * list)
 
 void arc_dlist_pop_front(struct arc_dlist * list)
 {
-    struct arc_iterator it;
-    it.container = list;
-    it.node = list->front.next;
-
-    arc_dlist_erase(&it);
+    arc_dlist_erase_node(list, list->front.next);
 }
 
 /******************************************************************************/
 
 int arc_dlist_push_front(struct arc_dlist * list, void *data)
 {
-    struct arc_iterator it;
-    it.container = list;
-    it.node = &list->front;
-
-    return arc_dlist_insert_after(&it, data);
+    return arc_dlist_insert_node_after(list, 
+                                      (struct arc_dlist_node *)&list->front,
+                                      data);
 }
 
 /******************************************************************************/
@@ -151,22 +232,16 @@ void * arc_dlist_back(arc_dlist_t list)
 
 void arc_dlist_pop_back(arc_dlist_t list)
 {
-    struct arc_iterator it;
-    it.container = list;
-    it.node = list->back.prev;
-
-    arc_dlist_erase(&it);
+    arc_dlist_erase_node(list, list->back.prev);
 }
 
 /******************************************************************************/
 
 int arc_dlist_push_back(arc_dlist_t list, void * data)
 {
-    struct arc_iterator it;
-    it.container = list;
-    it.node = &list->back;
-
-    return arc_dlist_insert_before(&it, data);
+    return arc_dlist_insert_node_before(list, 
+                                        (struct arc_dlist_node *)&list->back,
+                                        data);
 }
 
 /******************************************************************************/
@@ -205,88 +280,21 @@ void arc_dlist_after_end(struct arc_iterator * it)
 
 int arc_dlist_insert_before(struct arc_iterator * it, void * data)
 {
-    struct arc_dlist_node * current = it->node;
-    struct arc_dlist * list = it->container;
-    struct arc_dlist_node * node;
-    struct arc_dlist_node * prev_node = current->prev;
-
-    if (prev_node == NULL)
-    {
-        return ARC_ERROR;
-    }
-
-    node = malloc(list->node_size);
-
-    if (node == NULL)
-    {
-        return ARC_OUT_OF_MEMORY;
-    }
-
-    memcpy(node->data, data, list->data_size);
-
-    node->next = current;
-    node->prev = prev_node;
-
-    prev_node->next = node;
-    current->prev = node;
-
-    list->size++;
-
-    return ARC_SUCCESS;
+    return arc_dlist_insert_node_before(it->container, it->node, data);
 }
 
 /******************************************************************************/
 
 int arc_dlist_insert_after(struct arc_iterator * it, void * data)
 {
-    struct arc_dlist_node * current = it->node;
-    struct arc_dlist * list = it->container;
-    struct arc_dlist_node * node;
-    struct arc_dlist_node * next_node = current->next;
-
-    if (next_node == NULL)
-    {
-        return ARC_ERROR;
-    }
-
-    node = malloc(list->node_size);
-
-    if (node == NULL)
-    {
-        return ARC_OUT_OF_MEMORY;
-    }
-
-    memcpy(node->data, data, list->data_size);
-
-    node->next = next_node;
-    node->prev = current;
-
-    next_node->prev = node;
-    current->next = node;
-
-    list->size++;
-
-    return ARC_SUCCESS;
+    return arc_dlist_insert_node_after(it->container, it->node, data);
 }
 
 /******************************************************************************/
 
 void arc_dlist_erase(struct arc_iterator * it)
 {
-    struct arc_dlist_node * current = it->node;
-    struct arc_dlist * list = it->container;
-    struct arc_dlist_node * prev_node = current->prev;
-    struct arc_dlist_node * next_node = current->next;
-
-    if (prev_node != NULL && next_node != NULL)
-    {
-        prev_node->next = next_node;
-        next_node->prev = prev_node;
-
-        list->size--;
-
-        free(current);
-    }
+    arc_dlist_erase_node(it->container, it->node);
 }
 
 /******************************************************************************/
