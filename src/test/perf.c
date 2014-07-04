@@ -167,9 +167,9 @@ void arc_perf_run_fixture(void)
             {
                 double test_time;
                 struct timespec start, end;
-                clock_gettime(CLOCK_REALTIME, &start);
+                clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
                 info.user_tests[info.idx].function();
-                clock_gettime(CLOCK_REALTIME, &end);
+                clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end);
 
                 test_time = (double)(end.tv_sec - start.tv_sec) + 
                             ((double)(end.tv_nsec - start.tv_nsec))/1e9;

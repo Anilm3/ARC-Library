@@ -10,9 +10,9 @@
 #                                                                              #
 ################################################################################
 
-if (( $# < 3 ));
+if (( $# < 4 ));
 then
-    echo "$0 <test file> <num_tests> <container_max_size>"
+    echo "$0 <test file> <num_tests> <container_max_size> <step>"
     exit 0
 fi
 
@@ -20,7 +20,9 @@ fi
 
 (( max_n = $3 ))
 
-for (( n=0; n<${max_n}; n++ ));
+(( step = $4 ))
+
+for (( n=0; n<${max_n}; n=$n+$step ));
 do
     while read name mean total;
     do
