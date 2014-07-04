@@ -17,6 +17,19 @@
 #ifndef ARC_DEFINES_H_
 #define ARC_DEFINES_H_
 
+#if defined(__STDC__)
+# define ARC_C89
+# if defined(__STDC_VERSION__)
+#  define ARC_C90
+#  if (__STDC_VERSION__ >= 199409L)
+#   define ARC_C94
+#  endif
+#  if (__STDC_VERSION__ >= 199901L)
+#   define ARC_C99
+#  endif
+# endif
+#endif
+
 #ifdef __cplusplus
 extern "C"{
 #endif 

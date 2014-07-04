@@ -12,6 +12,7 @@
 #include <strings.h>
 #include <arc/container/deque.h>
 #include <arc/common/defines.h>
+#include <arc/memory/copy.h>
 
 #include "iterator.h"
 
@@ -151,7 +152,7 @@ int arc_deque_push_front(struct arc_deque * deque, void * data)
 
     data_pos = ((char *)deque->data[block_num] + block_idx*deque->data_size);
 
-    memcpy(data_pos, data, deque->data_size);
+    arc_memcpy(data_pos, data, deque->data_size);
 
     deque->size++;
 
@@ -197,7 +198,7 @@ int arc_deque_push_back(struct arc_deque * deque, void * data)
 
     data_pos = ((char *)deque->data[block_num] + block_idx*deque->data_size);
 
-    memcpy(data_pos, data, deque->data_size);
+    arc_memcpy(data_pos, data, deque->data_size);
 
     deque->size++;
 
