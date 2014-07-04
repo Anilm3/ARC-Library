@@ -311,9 +311,9 @@ void arc_deque_after_end(struct arc_iterator * it)
 void * arc_deque_data(struct arc_iterator * it)
 {
     struct arc_deque * deque = it->container;
-    unsigned long  index = (unsigned long)it->node;
+    unsigned long idx = (unsigned long)it->node;
 
-    return arc_deque_at(deque, (unsigned)index);
+    return arc_deque_at(deque, (unsigned)idx);
 }
 
 /******************************************************************************/
@@ -321,11 +321,11 @@ void * arc_deque_data(struct arc_iterator * it)
 int arc_deque_next(struct arc_iterator * it)
 {
     struct arc_deque * deque = it->container;
-    unsigned long index = (unsigned long)it->node + 1;
+    unsigned long idx = (unsigned long)it->node + 1;
 
-    it->node = (void *)index;
+    it->node = (void *)idx;
 
-    if (index > deque->end_idx)
+    if (idx > deque->end_idx)
     {
         return 0;
     }
@@ -338,11 +338,11 @@ int arc_deque_next(struct arc_iterator * it)
 int arc_deque_previous(struct arc_iterator * it)
 {
     struct arc_deque * deque = it->container;
-    unsigned long index = (unsigned long)it->node - 1;
+    unsigned long idx = (unsigned long)it->node - 1;
 
-    it->node = (void *)index;
+    it->node = (void *)idx;
 
-    if (index < deque->start_idx)
+    if (idx < deque->start_idx)
     {
         return 0;
     }
