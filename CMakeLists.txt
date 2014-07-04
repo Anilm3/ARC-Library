@@ -224,3 +224,4 @@ foreach(TEST ${TESTS})
         target_link_libraries(${TEST_EXEC} arc-static)
     endif()
 endforeach(TEST) 
+

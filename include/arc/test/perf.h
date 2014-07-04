@@ -65,6 +65,8 @@ int main(int argc, char * argv[]) \
     return 0; \
 }
 
+const char * arc_get_param(const char * param);
+
 /* Internal test fixture functions */
 void arc_perf_add_test(const char * name, void (*fn)(void));
 void arc_perf_add_function(void (*fn)(void));

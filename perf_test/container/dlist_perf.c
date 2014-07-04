@@ -14,17 +14,29 @@
 
 #include <string.h>
 
+int n;
 arc_dlist_t dlist;
 
 ARC_PERF_FUNCTION(set_up)
 {
+    const char * num_elems = arc_get_param("-n");
+
+    if (num_elems == NULL)
+    {
+        n = 20000;
+    }
+    else
+    {
+        n = atoi(num_elems);
+    }
+
     dlist = arc_dlist_create(sizeof(int));
 }
 
 ARC_PERF_TEST(push_front)
 {
     int i;
-    for (i = 0; i < 20000; i++)
+    for (i = 0; i < n; i++)
     {
         arc_dlist_push_front(dlist, (void *)&i);
     }
@@ -41,7 +53,7 @@ ARC_PERF_TEST(pop_front)
 ARC_PERF_TEST(push_back)
 {
     int i;
-    for (i = 0; i < 20000; i++)
+    for (i = 0; i < n; i++)
     {
         arc_dlist_push_back(dlist, (void *)&i);
     }
