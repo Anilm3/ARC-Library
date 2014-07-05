@@ -14,31 +14,40 @@
 
 #include <string.h>
 
-int n;
+int num_elems = 20000;
+unsigned block_size = 4; 
+char * data_block = NULL;
 arc_dlist_t dlist;
 
 ARC_PERF_FUNCTION(set_up)
 {
-    const char * num_elems = arc_get_param("-n");
+    const char * num_elems_str = arc_get_param("-n");
+    const char * block_size_str = arc_get_param("-b");
 
-    if (num_elems == NULL)
+    if (num_elems_str != NULL)
     {
-        n = 20000;
-    }
-    else
-    {
-        n = atoi(num_elems);
+        num_elems = atoi(num_elems_str);
     }
 
-    dlist = arc_dlist_create(sizeof(int));
+    if (block_size_str != NULL)
+    {
+        block_size = atoi(block_size_str);
+    }
+
+    data_block = malloc(block_size*sizeof(char));
+}
+
+ARC_PERF_FUNCTION(create_list)
+{
+    dlist = arc_dlist_create(block_size);
 }
 
 ARC_PERF_TEST(push_front)
 {
     int i;
-    for (i = 0; i < n; i++)
+    for (i = 0; i < num_elems; i++)
     {
-        arc_dlist_push_front(dlist, (void *)&i);
+        arc_dlist_push_front(dlist, data_block);
     }
 }
 
@@ -53,9 +62,9 @@ ARC_PERF_TEST(pop_front)
 ARC_PERF_TEST(push_back)
 {
     int i;
-    for (i = 0; i < n; i++)
+    for (i = 0; i < num_elems; i++)
     {
-        arc_dlist_push_back(dlist, (void *)&i);
+        arc_dlist_push_back(dlist, data_block);
     }
 }
 
@@ -67,22 +76,30 @@ ARC_PERF_TEST(pop_back)
     }
 }
 
+ARC_PERF_FUNCTION(destroy_list)
+{
+    arc_dlist_destroy(dlist);
+}
 
 ARC_PERF_FUNCTION(tear_down)
 {
-    arc_dlist_destroy(dlist);
+    free(data_block);
 }
 
 ARC_PERF_TEST_FIXTURE()
 {
     ARC_PERF_ADD_FUNCTION(set_up)
+
+    ARC_PERF_ADD_FUNCTION(create_list)
     ARC_PERF_ADD_TEST(push_front)
     ARC_PERF_ADD_TEST(pop_front)
-    ARC_PERF_ADD_FUNCTION(tear_down)
+    ARC_PERF_ADD_FUNCTION(destroy_list)
 
-    ARC_PERF_ADD_FUNCTION(set_up)
+    ARC_PERF_ADD_FUNCTION(create_list)
     ARC_PERF_ADD_TEST(push_back)
     ARC_PERF_ADD_TEST(pop_back)
+    ARC_PERF_ADD_FUNCTION(destroy_list)
+
     ARC_PERF_ADD_FUNCTION(tear_down)
 }
 
