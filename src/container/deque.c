@@ -311,7 +311,7 @@ void arc_deque_after_end(struct arc_iterator * it)
 void * arc_deque_data(struct arc_iterator * it)
 {
     struct arc_deque * deque = it->container;
-    unsigned long idx = (unsigned long)it->node;
+    unsigned long idx = ((unsigned long)it->node) - deque->start_idx;
 
     return arc_deque_at(deque, (unsigned)idx);
 }
