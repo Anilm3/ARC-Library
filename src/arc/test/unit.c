@@ -23,13 +23,16 @@ typedef struct
     int test;
 } arc_test_t;
 
-static unsigned idx = 0;
-static unsigned length = 0;
-static unsigned max_length = 256;
-static int passed = 0;
-static int failed = 0;
-
-static arc_test_t * arc_user_tests;
+static struct
+{
+    unsigned idx;
+    unsigned length;
+    unsigned max_length;
+    int passed;
+    int failed;
+    arc_test_t * user_tests;
+}
+info = {0, 0, 256, 0, 0, NULL};
 
 /******************************************************************************/
 
@@ -42,21 +45,21 @@ void arc_unit_add_test(const char * name, void (*fn)(void))
     test.failed = 0;
     test.test = 1;
 
-    if (idx < max_length)
+    if (info.idx < info.max_length)
     {
-        arc_user_tests[idx++] = test;
+        info.user_tests[info.idx++] = test;
     }
     else
     {
         arc_test_t * ptr;
 
-        max_length += 256;
-        ptr = realloc(arc_user_tests, sizeof(arc_test_t)*max_length);
+        info.max_length += 256;
+        ptr = realloc(info.user_tests, sizeof(arc_test_t)*info.max_length);
 
         if (ptr != NULL)
         {
-            arc_user_tests = ptr;
-            arc_user_tests[idx++] = test;
+            info.user_tests = ptr;
+            info.user_tests[info.idx++] = test;
         }
         else
         {
@@ -77,21 +80,21 @@ void arc_unit_add_function(void (*fn)(void))
     test.failed = 0;
     test.test = 0;
 
-    if (idx < max_length)
+    if (info.idx < info.max_length)
     {
-        arc_user_tests[idx++] = test;
+        info.user_tests[info.idx++] = test;
     }
     else
     {
         arc_test_t * ptr;
 
-        max_length += 256;
-        ptr = realloc(arc_user_tests, sizeof(arc_test_t)*max_length);
+        info.max_length += 256;
+        ptr = realloc(info.user_tests, sizeof(arc_test_t)*info.max_length);
 
         if (ptr != NULL)
         {
-            arc_user_tests = ptr;
-            arc_user_tests[idx++] = test;
+            info.user_tests = ptr;
+            info.user_tests[info.idx++] = test;
         }
         else
         {
@@ -105,7 +108,7 @@ void arc_unit_add_function(void (*fn)(void))
 
 void arc_unit_set_system(void)
 {
-    arc_user_tests = malloc(sizeof(arc_test_t)*max_length);
+    info.user_tests = malloc(sizeof(arc_test_t)*info.max_length);
 
     assert(arc_user_tests != NULL);
 }
@@ -114,55 +117,57 @@ void arc_unit_set_system(void)
 
 int arc_unit_run_fixture(void)
 {
-    length = idx;
+    info.length = info.idx;
 
-    for (idx = 0; idx < length; idx++)
+    for (info.idx = 0; info.idx < info.length; info.idx++)
     {
-        if (arc_user_tests[idx].test)
+        if (info.user_tests[info.idx].test)
         {
-            printf("Running test : %s", arc_user_tests[idx].name);
+            printf("Running test : %s", info.user_tests[info.idx].name);
 
-            arc_user_tests[idx].function();
+            info.user_tests[info.idx].function();
 
-            if (!arc_user_tests[idx].failed)
+            if (!info.user_tests[info.idx].failed)
             {
                 printf(" : OK\n");
-                passed++;
+                info.passed++;
             }
             else
             {
-                failed++;
+                info.failed++;
             }
         }
         else
         {
-            arc_user_tests[idx].function();
+            info.user_tests[info.idx].function();
         }
     }
 
-    return (failed > 0);
+    return (info.failed > 0);
 }
 
 /******************************************************************************/
 
 void arc_unit_print_report(void)
 {
-    if (failed > 0)
+    if (info.failed > 0)
     {
         printf("Tests failed : ");
 
-        for (idx = 0; idx < length; idx++)
+        for (info.idx = 0; info.idx < info.length; info.idx++)
         {
-            if (arc_user_tests[idx].failed)
+            if (info.user_tests[info.idx].failed)
             {
-                printf("%s ", arc_user_tests[idx].name);
+                printf("%s ", info.user_tests[info.idx].name);
             }
         }
         printf("\n");
     }
 
     printf("Test result : %d/%d : %s\n", 
-           passed, passed + failed, (failed > 0 ? "Failure" :"OK"));
+           info.passed,
+           info.passed + info.failed,
+           (info.failed > 0 ? "Failure" :"OK"));
 
 }
 
@@ -170,14 +175,14 @@ void arc_unit_print_report(void)
 
 void arc_unit_cleanup(void)
 {
-    free(arc_user_tests);
+    free(info.user_tests);
 }
 
 /******************************************************************************/
 
 void arc_unit_set_test_failed(void)
 {
-    arc_user_tests[idx].failed = 1;
+    info.user_tests[info.idx].failed = 1;
 }
 
 /******************************************************************************/
