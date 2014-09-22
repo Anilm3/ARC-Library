@@ -31,7 +31,7 @@ ARC_PERF_FUNCTION(set_up)
 
     if (block_size_str != NULL)
     {
-        block_size = atoi(block_size_str);
+        block_size = (unsigned)atoi(block_size_str);
     }
 
     data_block = malloc(block_size*sizeof(char));

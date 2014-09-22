@@ -11,7 +11,7 @@
 #include <arc/container/iterator.h>
 #include <arc/common/defines.h>
 
-#include "iterator.h"
+#include <arc/container/iterator_def.h>
 
 struct arc_iterator * arc_iterator_create(void * container)
 {

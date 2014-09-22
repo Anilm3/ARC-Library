@@ -11,7 +11,7 @@
 #include <arc/container/dlist.h>
 #include <arc/common/defines.h>
 
-#include "iterator.h"
+#include <arc/container/iterator_def.h>
 
 /* Sentinel node definition */
 struct arc_dlist_snode

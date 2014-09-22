@@ -14,7 +14,7 @@
 #include <arc/common/defines.h>
 #include <arc/memory/copy.h>
 
-#include "iterator.h"
+#include <arc/container/iterator_def.h>
 
 #define BLOCK_SIZE 32
 #define INITIAL_NUM_BLOCKS 8

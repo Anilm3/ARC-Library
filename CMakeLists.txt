@@ -17,7 +17,10 @@ set (DOC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/doc/")
 set (EXECUTABLE_OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/bin/")
 set (LIBRARY_OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/")
 
+include(CPack)
+
 include_directories ("${INCLUDES_DIR}")
+include_directories ("${SOURCE_DIR}")
 
 file(GLOB_RECURSE SOURCES ${SOURCE_DIR}/*.c)
 
@@ -119,8 +122,8 @@ if (BUILD_TYPE STREQUAL "Debug")
    set(CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage -g -pg -lgcov")
 else()
     #-ansi, -pedantic : conform to ansi C
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -O3")
-    set(CMAKE_CXX_FLAGS "-O3")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -DNDEBUG")
+    set(CMAKE_CXX_FLAGS "-O3 -DNDEBUG")
     #set(CMAKE_EXE_LINKER_FLAGS "-s")
 endif()
 
