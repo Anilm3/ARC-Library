@@ -13,6 +13,8 @@
 
 #include <arc/container/iterator_def.h>
 
+/******************************************************************************/
+
 struct arc_iterator * arc_iterator_create(void * container)
 {
     struct arc_iterator * it = malloc(sizeof(struct arc_iterator));
@@ -28,12 +30,11 @@ struct arc_iterator * arc_iterator_create(void * container)
     return it;
 }
 
-/**
- * @brief Destroys the memory associated to a list 
- *
- * @param[in] list List to perform the operation on
- */
+/******************************************************************************/
+
 void arc_iterator_destroy(struct arc_iterator *  it)
 {
     free(it);
 }
+
+/******************************************************************************/

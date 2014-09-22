@@ -92,9 +92,16 @@ void arc_perf_add_test(const char * name, void (*fn)(void))
         info.max_length += 256;
         ptr = realloc(info.user_tests, sizeof(arc_test_t)*info.max_length);
 
-        assert(ptr != NULL);
-
-        info.user_tests[info.idx++] = test;
+        if (ptr != NULL)
+        {
+            info.user_tests = ptr;
+            info.user_tests[info.idx++] = test;
+        }
+        else
+        {
+            /* Crash like hell I guess */
+            exit(EXIT_FAILURE);
+        }
     }
 }
 
@@ -120,9 +127,16 @@ void arc_perf_add_function(void (*fn)(void))
         info.max_length += 256;
         ptr = realloc(info.user_tests, sizeof(arc_test_t)*info.max_length);
 
-        assert(ptr != NULL);
-
-        info.user_tests[info.idx++] = test;
+        if (ptr != NULL)
+        {
+            info.user_tests = ptr;
+            info.user_tests[info.idx++] = test;
+        }
+        else
+        {
+            /* Crash like hell I guess */
+            exit(EXIT_FAILURE);
+        }
     }
 }
 

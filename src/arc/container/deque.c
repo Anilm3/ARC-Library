@@ -19,6 +19,7 @@
 #define BLOCK_SIZE 32
 #define INITIAL_NUM_BLOCKS 8
 
+/* Container definition */
 struct arc_deque
 {
     unsigned size;
