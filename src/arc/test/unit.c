@@ -110,7 +110,7 @@ void arc_unit_set_system(void)
 {
     info.user_tests = malloc(sizeof(arc_test_t)*info.max_length);
 
-    assert(arc_user_tests != NULL);
+    assert(info.user_tests != NULL);
 }
 
 /******************************************************************************/

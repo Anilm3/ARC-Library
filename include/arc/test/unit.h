@@ -69,7 +69,7 @@ if (!function) \
  */
 #define ARC_ASSERT_POINTER_NULL(exp) \
     ARC_ASSERT_GENERIC(arc_assert_pointer_null((void *)(exp)), \
-                       exp == NULL, exp != NULL)
+                                               exp == NULL, exp != NULL)
 /**
  * @brief Asserts the expression is not NULL
  *
@@ -77,7 +77,7 @@ if (!function) \
  */
 #define ARC_ASSERT_POINTER_NOT_NULL(exp) \
     ARC_ASSERT_GENERIC(arc_assert_pointer_not_null((void *)(exp)), \
-                       exp != NULL, exp == NULL)
+                                                   exp != NULL, exp == NULL)
 /**
  * @brief Asserts left and right pointers are equal
  *
@@ -87,8 +87,8 @@ if (!function) \
 #define ARC_ASSERT_POINTER_EQUAL(left, right) \
     ARC_ASSERT_GENERIC(arc_assert_pointer_equal((void *)(left), \
                                                 (void *)(right)), \
-                       left == right, \
-                       left != right)
+                                                left == right, \
+                                                left != right)
 /**
  * @brief Asserts left and right integers are equal
  *
@@ -96,9 +96,10 @@ if (!function) \
  * @param[in] right Right value of the equality
  */
 #define ARC_ASSERT_INT_EQUAL(left, right) \
-    ARC_ASSERT_GENERIC(arc_assert_int_equal((int)(left), (int)(right)), \
-                       left == right, \
-                       left != right)
+    ARC_ASSERT_GENERIC(arc_assert_int_equal((int)(left), \
+                                            (int)(right)), \
+                                            left == right, \
+                                            left != right)
 /**
  * @brief Asserts left and right unsigned longs are equal
  *
@@ -108,8 +109,8 @@ if (!function) \
 #define ARC_ASSERT_ULONG_EQUAL(left, right) \
     ARC_ASSERT_GENERIC(arc_assert_ulong_equal((unsigned long)(left), \
                                               (unsigned long)(right)), \
-                       left == right, \
-                       left != right)
+                                              left == right, \
+                                              left != right)
 /**
  * @brief Asserts left and right strings are equal
  *
@@ -119,8 +120,8 @@ if (!function) \
 #define ARC_ASSERT_STRING_EQUAL(left, right) \
     ARC_ASSERT_GENERIC(arc_assert_string_equal((const char *)(left), \
                                                (const char *)(right)), \
-                       left == right, \
-                       left != right)
+                                               left == right, \
+                                               left != right)
 /**
  * @brief Asserts bit is set
  *
@@ -128,9 +129,10 @@ if (!function) \
  * @param[in] bit Bit to evaluate
  */
 #define ARC_ASSERT_BIT_SET(num, bit) \
-    ARC_ASSERT_GENERIC(arc_assert_bit_set((int)(num), (int)(bit)), \
-                       num(bit) == 1, \
-                       num(bit) == 0)
+    ARC_ASSERT_GENERIC(arc_assert_bit_set((int)(num), \
+                                          (int)(bit)), \
+                                          num(bit) == 1, \
+                                          num(bit) == 0)
 /**
  * @brief Asserts bit is not set
  *
@@ -138,9 +140,10 @@ if (!function) \
  * @param[in] bit Bit to evaluate
  */
 #define ARC_ASSERT_BIT_NOT_SET(num, bit) \
-    ARC_ASSERT_GENERIC(arc_assert_bit_not_set((int)(num), (int)(bit)), \
-                       num(bit) == 0, \
-                       num(bit) == 1)
+    ARC_ASSERT_GENERIC(arc_assert_bit_not_set((int)(num), \
+                                              (int)(bit)), \
+                                              num(bit) == 0, \
+                                              num(bit) == 1)
 /**
  * @brief Asserts left and right floats are equal
  *
@@ -152,8 +155,8 @@ if (!function) \
     ARC_ASSERT_GENERIC(arc_assert_float_equal((float)(left), \
                                               (float)(right), \
                                               (float)(delta)), \
-                       left == right +/- delta, \
-                       left != right +/- delta)
+                                              left == right +/- delta, \
+                                              left != right +/- delta)
 /**
  * @brief Asserts left and right doubles are equal
  *
@@ -165,8 +168,8 @@ if (!function) \
     ARC_ASSERT_GENERIC(arc_assert_double_equal((double)(left), \
                                               (double)(right), \
                                               (double)(delta)), \
-                       left == right +/- delta, \
-                       left != right +/- delta)
+                                              left == right +/- delta, \
+                                              left != right +/- delta)
 /**
  * @brief Asserts the string contains a character
  *
@@ -176,8 +179,8 @@ if (!function) \
 #define ARC_ASSERT_STRING_CONTAINS(str, c) \
     ARC_ASSERT_GENERIC(arc_assert_string_contains((const char *)(str), \
                                                   (char)(c)), \
-                       str contains c, \
-                       str !contains c)
+                                                  str contains c, \
+                                                  str !contains c)
 /**
  * @brief Asserts the string doesn't contain a character
  *
@@ -186,9 +189,9 @@ if (!function) \
  */
 #define ARC_ASSERT_STRING_DOESNT_CONTAIN(str, c) \
     ARC_ASSERT_GENERIC(arc_assert_string_doesnt_contain((const char *)(str), \
-                                                  (char)(c)), \
-                       str !contains c, \
-                       str contains c)
+                                                        (char)(c)), \
+                                                        str !contains c, \
+                                                        str contains c)
 /**
  * @brief Asserts the string starts with a character
  *
@@ -197,9 +200,9 @@ if (!function) \
  */
 #define ARC_ASSERT_STRING_STARTS_WITH(str, c) \
     ARC_ASSERT_GENERIC(arc_assert_string_starts_with((const char *)(str), \
-                                                  (char)(c)), \
-                       str[first] == c, \
-                       str[first] != c)
+                                                     (char)(c)), \
+                                                     str[first] == c, \
+                                                     str[first] != c)
 /**
  * @brief Asserts the string ends with a character
  *
@@ -208,9 +211,9 @@ if (!function) \
  */
 #define ARC_ASSERT_STRING_ENDS_WITH(str, c) \
     ARC_ASSERT_GENERIC(arc_assert_string_ends_with((const char *)(str), \
-                                                  (char)(c)), \
-                       str[last] == c, \
-                       str[last] != c)
+                                                   (char)(c)), \
+                                                   str[last] == c, \
+                                                   str[last] != c)
 
 /**
  * @brief Creates a test
