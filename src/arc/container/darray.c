@@ -16,31 +16,52 @@
 
 #include <arc/container/iterator_def.h>
 
-#define BLOCK_SIZE 32
+#define INITIAL_BLOCK_SIZE 32
+#define GROWTH_FACTOR 2
 
 /* Container definition */
 struct arc_darray
 {
     unsigned size;
+    unsigned allocated_size;
     size_t data_size;
     void * data;
 };
 
-/******************************************************************************
+/******************************************************************************/
 
 struct arc_darray * arc_darray_create(size_t data_size)
 {
+    struct arc_darray * darray = malloc(sizeof(struct arc_darray));
 
+    if (darray == NULL)
+    {
+        return NULL;
+    }
+
+    darray->size = 0;
+    darray->data_size = data_size;
+    darray->allocated_size = INITIAL_BLOCK_SIZE;
+
+    darray->data = malloc(INITIAL_BLOCK_SIZE*darray->data_size);
+
+    if (darray->data == NULL)
+    {
+        return NULL;
+    }
+
+    return darray;
 }
 
-******************************************************************************
+/******************************************************************************/
 
 void arc_darray_destroy(struct arc_darray * darray)
 {
-
+    free(darray->data);
+    free(darray);
 }
 
-******************************************************************************
+/******************************************************************************
 
 void * arc_darray_at(struct arc_darray * darray, unsigned idx)
 {
