@@ -6,6 +6,10 @@
 * There is NO WARRANTY, to the extent permitted by law.                        *
 *                                                                              *
 *******************************************************************************/
+/*
+TODO:
+    Change errors to OUT_OF_MEMORY
+*/
 
 #include <stdio.h>
 #include <string.h>

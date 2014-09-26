@@ -61,70 +61,130 @@ void arc_darray_destroy(struct arc_darray * darray)
     free(darray);
 }
 
-/******************************************************************************
+/******************************************************************************/
 
 void * arc_darray_at(struct arc_darray * darray, unsigned idx)
 {
-
+    return (void *)((char *)darray->data + darray->data_size*idx);
 }
 
-******************************************************************************
+/******************************************************************************/
 
 int arc_darray_push_front(struct arc_darray * darray, void * data)
 {
+    if (darray->size == darray->allocated_size)
+    {
+        size_t new_size = darray->allocated_size * GROWTH_FACTOR;
+        void * ptr = realloc(darray->data, 
+                             new_size * darray->data_size);
 
+        if (ptr == NULL)
+        {
+            return ARC_OUT_OF_MEMORY;
+        }
+
+        darray->data = ptr;
+        darray->allocated_size *= GROWTH_FACTOR;
+    }
+    
+    memmove((char *)darray->data + darray->data_size,
+            darray->data, darray->data_size * darray->size);
+
+    memcpy(darray->data, data, darray->data_size);
+
+    darray->size += 1;
+
+    return ARC_SUCCESS;
 }
 
-******************************************************************************
+/******************************************************************************/
 
 void arc_darray_pop_front(struct arc_darray * darray)
 {
-
+    if (darray->size > 0)
+    {
+        memmove(darray->data, (char *)darray->data + darray->data_size,
+                darray->data_size * darray->size);
+        darray->size -= 1;
+    }
 }
 
-******************************************************************************
+/******************************************************************************/
 
 int arc_darray_push_back(struct arc_darray * darray, void * data)
 {
+    if (darray->size == darray->allocated_size)
+    {
+        size_t new_size = darray->allocated_size * GROWTH_FACTOR;
+        void * ptr = realloc(darray->data, 
+                             new_size * darray->data_size);
 
+        if (ptr == NULL)
+        {
+            return ARC_OUT_OF_MEMORY;
+        }
+
+        darray->data = ptr;
+        darray->allocated_size *= GROWTH_FACTOR;
+    }
+
+    memcpy((char *)darray->data + darray->data_size * darray->size,
+            data, darray->data_size);
+
+    darray->size += 1;
+
+    return ARC_SUCCESS;
 }
 
-******************************************************************************
+/******************************************************************************/
 
 void arc_darray_pop_back(struct arc_darray * darray)
 {
-
+    if (darray->size > 0)
+    {
+        darray->size -= 1;
+    }
 }
 
-******************************************************************************
+/******************************************************************************/
 
 void * arc_darray_front(struct arc_darray * darray)
 {
+    if (darray->size == 0)
+    {
+        return NULL;
+    }
 
+    return darray->data;
 }
 
-******************************************************************************
+/******************************************************************************/
 
 void * arc_darray_back(struct arc_darray * darray)
 {
+    if (darray->size == 0)
+    {
+        return NULL;
+    }
 
+    return (char *)darray->data + darray->data_size * (darray->size - 1);
 }
 
-******************************************************************************
+/******************************************************************************/
 
 int arc_darray_empty(struct arc_darray * darray)
 {
-
+    return darray->size == 0;
 }
 
-******************************************************************************
+/******************************************************************************/
 
 unsigned arc_darray_size(struct arc_darray * darray)
 {
-
+    return darray->size;
 }
 
-******************************************************************************
+/******************************************************************************
 
 void arc_darray_clear(struct arc_darray * darray)
 {
