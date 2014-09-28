@@ -1,4 +1,0 @@
-TODO
---------------------------------------------------------------------------------
-- Add iterator insert before/after and erase to deque
-- Improve dlist/deque/darray unit test to expand on iterator functionality

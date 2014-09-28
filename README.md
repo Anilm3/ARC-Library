@@ -60,3 +60,6 @@ Where `ab` is an optional suffix which describes a characteristic of the underly
 * A function is said to be thread reentrant or thread-safe if it can be called from more than one thread at the same time.
 
 
+### TODO
+* Add iterator insert before/after and erase to deque
+* Improve dlist/deque/darray unit test to expand on iterator functionality
