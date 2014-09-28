@@ -63,6 +63,26 @@ void arc_darray_destroy(struct arc_darray * darray)
 
 /******************************************************************************/
 
+void arc_darray_erase_node(struct arc_darray * darray,
+                          unsigned long current)
+{
+    if (darray->size > 0)
+    {
+        unsigned long data_to_move = darray->size - (current  + 1);
+
+        if (data_to_move > 0)
+        {
+            memmove((char *)darray->data + darray->data_size * current,
+                    (char *)darray->data + darray->data_size * (current + 1),
+                    data_to_move * darray->data_size);
+        }
+
+        darray->size -= 1;
+    }
+}
+
+/******************************************************************************/
+
 void * arc_darray_at(struct arc_darray * darray, unsigned idx)
 {
     return (void *)((char *)darray->data + darray->data_size*idx);
@@ -101,12 +121,7 @@ int arc_darray_push_front(struct arc_darray * darray, void * data)
 
 void arc_darray_pop_front(struct arc_darray * darray)
 {
-    if (darray->size > 0)
-    {
-        memmove(darray->data, (char *)darray->data + darray->data_size,
-                darray->data_size * darray->size);
-        darray->size -= 1;
-    }
+    arc_darray_erase_node(darray, 0);
 }
 
 /******************************************************************************/
@@ -140,10 +155,7 @@ int arc_darray_push_back(struct arc_darray * darray, void * data)
 
 void arc_darray_pop_back(struct arc_darray * darray)
 {
-    if (darray->size > 0)
-    {
-        darray->size -= 1;
-    }
+    arc_darray_erase_node(darray, darray->size - 1);
 }
 
 /******************************************************************************/
