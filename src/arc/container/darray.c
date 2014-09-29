@@ -98,6 +98,19 @@ int arc_darray_insert_node_before(struct arc_darray * darray,
     return ARC_SUCCESS;
 }
 
+/******************************************************************************/
+
+int arc_darray_insert_node_after(struct arc_darray * darray,
+                                  long current, void * data)
+{
+
+    if ((current + 1) > darray->size)
+    {
+        return ARC_ERROR;
+    }
+
+    return arc_darray_insert_node_before(darray, current + 1, data);
+}
 
 /******************************************************************************/
 
@@ -146,7 +159,7 @@ void arc_darray_pop_front(struct arc_darray * darray)
 
 int arc_darray_push_back(struct arc_darray * darray, void * data)
 {
-    return arc_darray_insert_node_before(darray, (long)darray->size, data);
+    return arc_darray_insert_node_after(darray, (long)darray->size - 1, data);
 }
 
 /******************************************************************************/
@@ -249,9 +262,9 @@ int arc_darray_insert_before(struct arc_iterator * it, void * data)
 int arc_darray_insert_after(struct arc_iterator * it, void * data)
 {
     struct arc_darray * darray = it->container;
-    long idx = ((long)it->node) + 1;
+    long idx = ((long)it->node);
 
-    return arc_darray_insert_node_before(darray, idx, data);
+    return arc_darray_insert_node_after(darray, idx, data);
 }
 
 /******************************************************************************/
