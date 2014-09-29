@@ -63,46 +63,6 @@ void arc_darray_destroy(struct arc_darray * darray)
 
 /******************************************************************************/
 
-int arc_darray_insert_node_after(struct arc_darray * darray,
-                                 long current, void * data)
-{
-    long data_to_move = darray->size - (current  + 1);
-    long data_size = (long) darray->data_size;
-
-    /* We increase current as we're always going to use the next element */
-    current += 1;
-
-    if (darray->size == darray->allocated_size)
-    {
-        size_t new_size = darray->allocated_size * GROWTH_FACTOR;
-        void * ptr = realloc(darray->data, 
-                             new_size * darray->data_size);
-
-        if (ptr == NULL)
-        {
-            return ARC_OUT_OF_MEMORY;
-        }
-
-        darray->data = ptr;
-        darray->allocated_size *= GROWTH_FACTOR;
-    }
-
-    if (data_to_move > 0)
-    {
-        memmove((char *)darray->data + data_size * (current + 1),
-                (char *)darray->data + data_size * current,
-                (size_t)(data_to_move * data_size));
-    }
-
-    memcpy((char *)darray->data + current * data_size, data, darray->data_size);
-
-    darray->size += 1;
-
-    return ARC_SUCCESS;
-}
-
-/******************************************************************************/
-
 int arc_darray_insert_node_before(struct arc_darray * darray,
                                   long current, void * data)
 {
@@ -186,7 +146,7 @@ void arc_darray_pop_front(struct arc_darray * darray)
 
 int arc_darray_push_back(struct arc_darray * darray, void * data)
 {
-    return arc_darray_insert_node_after(darray, (long)darray->size - 1, data);
+    return arc_darray_insert_node_before(darray, (long)darray->size, data);
 }
 
 /******************************************************************************/
@@ -289,9 +249,9 @@ int arc_darray_insert_before(struct arc_iterator * it, void * data)
 int arc_darray_insert_after(struct arc_iterator * it, void * data)
 {
     struct arc_darray * darray = it->container;
-    long idx = ((long)it->node);
+    long idx = ((long)it->node) + 1;
 
-    return arc_darray_insert_node_after(darray, idx, data);
+    return arc_darray_insert_node_before(darray, idx, data);
 }
 
 /******************************************************************************/

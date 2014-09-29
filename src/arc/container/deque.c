@@ -116,7 +116,38 @@ int arc_deque_realloc(struct arc_deque * deque)
 int arc_deque_insert_node_after(struct arc_deque * deque,
                                 long current, void * data)
 {
+    unsigned cur_pos = (unsigned long)current + 1;
+    unsigned cur_block_num = cur_pos / BLOCK_SIZE;
+    unsigned cur_block_idx = cur_pos % BLOCK_SIZE;
 
+    if ((cur_pos - deque->start_idx) < (deque->end_idx - cur_pos))
+    {
+        unsigned block_num = deque->start_idx / BLOCK_SIZE;
+        unsigned block_idx = deque->start_idx % BLOCK_SIZE;
+
+        if(deque->size > 0 && deque->start_idx == 0)
+        {
+            if (arc_deque_realloc(deque) != ARC_SUCCESS)
+            {
+                return ARC_ERROR;
+            }
+        }
+
+    }
+    else
+    {
+        unsigned block_num = deque->end_idx / BLOCK_SIZE;
+        unsigned block_idx = deque->end_idx % BLOCK_SIZE;
+
+        if (deque->size > 0 && 
+            deque->end_idx == (deque->num_blocks * BLOCK_SIZE - 1))
+        {
+            if (arc_deque_realloc(deque) != ARC_SUCCESS)
+            {
+                return ARC_ERROR;
+            }
+        }
+    }
 }
 
 ******************************************************************************
