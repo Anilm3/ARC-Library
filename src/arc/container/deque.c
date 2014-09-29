@@ -113,7 +113,15 @@ int arc_deque_realloc(struct arc_deque * deque)
 
 /******************************************************************************
 
-int arc_darray_insert_node_after(struct arc_darray * darray,
+int arc_deque_insert_node_after(struct arc_deque * deque,
+                                long current, void * data)
+{
+
+}
+
+******************************************************************************
+
+int arc_deque_insert_node_before(struct arc_deque * deque,
                                  long current, void * data)
 {
 
@@ -121,16 +129,8 @@ int arc_darray_insert_node_after(struct arc_darray * darray,
 
 ******************************************************************************
 
-int arc_darray_insert_node_before(struct arc_darray * darray,
-                                  long current, void * data)
-{
-
-}
-
-******************************************************************************
-
-void arc_darray_erase_node(struct arc_darray * darray,
-                           long current)
+void arc_deque_erase_node(struct arc_deque * deque,
+                          long current)
 {
 
 }
@@ -335,7 +335,28 @@ void arc_deque_after_end(struct arc_iterator * it)
     it->node = (void *)((long)deque->end_idx + 1);
 }
 
-/******************************************************************************/
+/******************************************************************************
+
+int arc_deque_insert_before(struct arc_iterator * it, void * data)
+{
+
+}
+
+******************************************************************************
+
+int arc_deque_insert_after(struct arc_iterator * it, void * data)
+{
+
+}
+
+******************************************************************************
+
+void arc_deque_erase(struct arc_iterator * it)
+{
+
+}
+
+******************************************************************************/
 
 void * arc_deque_data(struct arc_iterator * it)
 {
