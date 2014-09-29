@@ -111,7 +111,31 @@ int arc_deque_realloc(struct arc_deque * deque)
     return ARC_SUCCESS;
 }
 
-/******************************************************************************/
+/******************************************************************************
+
+int arc_darray_insert_node_after(struct arc_darray * darray,
+                                 long current, void * data)
+{
+
+}
+
+******************************************************************************
+
+int arc_darray_insert_node_before(struct arc_darray * darray,
+                                  long current, void * data)
+{
+
+}
+
+******************************************************************************
+
+void arc_darray_erase_node(struct arc_darray * darray,
+                           long current)
+{
+
+}
+
+******************************************************************************/
 
 void * arc_deque_at(struct arc_deque * deque, unsigned idx)
 {
