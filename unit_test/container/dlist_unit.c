@@ -184,6 +184,49 @@ ARC_UNIT_TEST(iterators_backward)
     arc_dlist_destroy(list);
 }
 
+ARC_UNIT_TEST(iterators_insertion_front_back)
+{
+    int i;
+    arc_dlist_t list = arc_dlist_create(sizeof(int));
+    arc_iterator_t it = arc_iterator_create(list);
+
+    ARC_ASSERT_POINTER_NOT_NULL(list);
+
+    arc_dlist_before_begin(it);
+
+    ARC_ASSERT_INT_EQUAL(arc_dlist_insert_before(it, (void *)&i), ARC_ERROR);
+
+    for (i = 0; i < 20; i++)
+    {
+        ARC_ASSERT_INT_EQUAL(arc_dlist_insert_after(it, (void *)&i), 
+                             ARC_SUCCESS);
+    }
+
+    i = 19;
+    while(arc_dlist_next(it))
+    {
+        ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_data(it)), i);
+    }
+
+    arc_dlist_after_end(it);
+
+    ARC_ASSERT_INT_EQUAL(arc_dlist_insert_after(it, (void *)&i), ARC_ERROR);
+
+    for (i = 0; i < 20; i++)
+    {
+        ARC_ASSERT_INT_EQUAL(arc_dlist_insert_before(it, (void *)&i), 
+                             ARC_SUCCESS);
+    }
+
+    i = 19;
+    while(arc_dlist_previous(it))
+    {
+        ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_data(it)), i);
+    }
+
+    arc_iterator_destroy(it);
+    arc_dlist_destroy(list);
+}
 
 ARC_UNIT_TEST(destruction)
 {
@@ -210,6 +253,7 @@ ARC_UNIT_TEST_FIXTURE()
     ARC_UNIT_ADD_TEST(push_pop_front_back)
     ARC_UNIT_ADD_TEST(iterators_forward)
     ARC_UNIT_ADD_TEST(iterators_backward)
+    ARC_UNIT_ADD_TEST(iterators_insertion_front_back)
     ARC_UNIT_ADD_TEST(destruction)
 }
 
