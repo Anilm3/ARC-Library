@@ -305,23 +305,24 @@ ARC_UNIT_TEST(iterators_insertion_front_back)
         ARC_ASSERT_INT_EQUAL(*((int *)arc_darray_data(it)), i--);
     }
 
-    /*
-    arc_darray_after_end(it);
-
-    ARC_ASSERT_INT_EQUAL(arc_darray_insert_after(it, (void *)&i), ARC_ERROR);
+    arc_darray_clear(darray);
+    /*ARC_ASSERT_INT_EQUAL(arc_darray_insert_after(it, (void *)&i), ARC_ERROR);*/
 
     for (i = 0; i < 20; i++)
     {
+        arc_darray_after_end(it);
         ARC_ASSERT_INT_EQUAL(arc_darray_insert_before(it, (void *)&i), 
                              ARC_SUCCESS);
     }
 
+    arc_darray_after_end(it);
+
     i = 19;
     while(arc_darray_previous(it))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_darray_data(it)), i);
+        ARC_ASSERT_INT_EQUAL(*((int *)arc_darray_data(it)), i--);
     }
-*/
+
     arc_iterator_destroy(it);
     arc_darray_destroy(darray);
 }
