@@ -205,8 +205,10 @@ ARC_UNIT_TEST(iterators_insertion_front_back)
     i = 19;
     while(arc_dlist_next(it))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_data(it)), i);
+        ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_data(it)), i--);
     }
+
+    arc_dlist_clear(list);
 
     arc_dlist_after_end(it);
 
@@ -221,7 +223,7 @@ ARC_UNIT_TEST(iterators_insertion_front_back)
     i = 19;
     while(arc_dlist_previous(it))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_data(it)), i);
+        ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_data(it)), i--);
     }
 
     arc_iterator_destroy(it);

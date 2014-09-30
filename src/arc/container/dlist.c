@@ -300,7 +300,7 @@ int arc_dlist_next(struct arc_iterator * it)
 
     it->node = current->next;
 
-    return (it->node == &list->back);
+    return (it->node != &list->back);
 }
 
 /******************************************************************************/
@@ -317,7 +317,7 @@ int arc_dlist_previous(struct arc_iterator * it)
 
     it->node = current->prev;
 
-    return (it->node == &list->front);
+    return (it->node != &list->front);
 }
 
 /******************************************************************************/

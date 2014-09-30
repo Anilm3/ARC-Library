@@ -103,7 +103,6 @@ int arc_darray_insert_node_before(struct arc_darray * darray,
 int arc_darray_insert_node_after(struct arc_darray * darray,
                                   long current, void * data)
 {
-
     if ((current + 1) > darray->size)
     {
         return ARC_ERROR;
