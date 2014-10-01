@@ -229,6 +229,22 @@ void arc_darray_begin(struct arc_iterator * it)
 
 /******************************************************************************/
 
+int arc_darray_position(struct arc_iterator * it, unsigned idx)
+{
+    struct arc_darray * darray = it->container;
+
+    if (darray->size >= idx)
+    {
+        return ARC_ERROR;
+    }
+
+    it->node = (void *)((long)idx);
+
+    return ARC_SUCCESS;
+}
+
+/******************************************************************************/
+
 void arc_darray_end(struct arc_iterator * it)
 {
     struct arc_darray * darray = it->container;
