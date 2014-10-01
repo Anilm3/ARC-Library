@@ -281,6 +281,30 @@ ARC_UNIT_TEST(iterators_backward)
     arc_darray_destroy(darray);
 }
 
+ARC_UNIT_TEST(iterators_position)
+{
+    unsigned i = 0;
+    arc_darray_t darray = arc_darray_create(sizeof(int));
+    arc_iterator_t it = arc_iterator_create(darray);
+
+    ARC_ASSERT_POINTER_NOT_NULL(darray);
+
+    for (i = 0; i < 20; i++)
+    {
+        ARC_ASSERT_INT_EQUAL(arc_darray_push_back(darray, (void *)&i),
+                             ARC_SUCCESS);
+    }
+
+    for (i = 0; i < 20; i++)
+    {
+        ARC_ASSERT_INT_EQUAL(arc_darray_position(it, i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQUAL(*((int *)arc_darray_data(it)), i);
+    }
+
+    arc_iterator_destroy(it);
+    arc_darray_destroy(darray);
+}
+
 ARC_UNIT_TEST(iterators_insertion_front)
 {
     int i = 0;
@@ -344,32 +368,54 @@ ARC_UNIT_TEST(iterators_insertion_back)
     arc_darray_destroy(darray);
 }
 
-ARC_UNIT_TEST(iterators_insertion_position)
+ARC_UNIT_TEST(iterators_insertion_middle)
 {
-    unsigned i = 0;
+    unsigned i;
     arc_darray_t darray = arc_darray_create(sizeof(int));
     arc_iterator_t it = arc_iterator_create(darray);
 
     ARC_ASSERT_POINTER_NOT_NULL(darray);
 
-    for (i = 0; i < 20; i++)
+    for (i = 0; i < 10; i+=2)
     {
-        ARC_ASSERT_INT_EQUAL(arc_darray_push_back(darray, (void *)&i),
-                             ARC_SUCCESS);
+        arc_darray_push_back(darray, (void *)&i);
     }
 
+    /* 0 2 4 6 8 */
+    i = 1;
+    ARC_ASSERT_INT_EQUAL(arc_darray_position(it, 0), ARC_SUCCESS);
+    ARC_ASSERT_INT_EQUAL(arc_darray_insert_after(it, (void *)&i), ARC_SUCCESS);
 
-    for (i = 0; i < 20; i++)
+    /* 0 1 2 4 6 8 */
+    i = 3;
+    ARC_ASSERT_INT_EQUAL(arc_darray_position(it, 3), ARC_SUCCESS);
+    ARC_ASSERT_INT_EQUAL(arc_darray_insert_before(it, (void *)&i), ARC_SUCCESS);
+
+    /* 0 1 2 3 4 6 8 */
+    i = 5;
+    ARC_ASSERT_INT_EQUAL(arc_darray_position(it, 4), ARC_SUCCESS);
+    ARC_ASSERT_INT_EQUAL(arc_darray_insert_after(it, (void *)&i), ARC_SUCCESS);
+
+    /* 0 1 2 3 4 5 6 8 */
+    i = 7;
+    ARC_ASSERT_INT_EQUAL(arc_darray_position(it, 7), ARC_SUCCESS);
+    ARC_ASSERT_INT_EQUAL(arc_darray_insert_before(it, (void *)&i), ARC_SUCCESS);
+
+    /* 0 1 2 3 4 5 6 7 8 */
+    i = 9;
+    ARC_ASSERT_INT_EQUAL(arc_darray_position(it, 8), ARC_SUCCESS);
+    ARC_ASSERT_INT_EQUAL(arc_darray_insert_after(it, (void *)&i), ARC_SUCCESS);
+
+    for (i = 0; i < 10; i++)
     {
         ARC_ASSERT_INT_EQUAL(arc_darray_position(it, i), ARC_SUCCESS);
-        ARC_ASSERT_INT_EQUAL(arc_darray_insert_before(it, (void *)&i), 
-                             ARC_SUCCESS);
+        ARC_ASSERT_INT_EQUAL(*((int *)arc_darray_data(it)), i);
     }
-
 
     arc_iterator_destroy(it);
     arc_darray_destroy(darray);
 }
+
 ARC_UNIT_TEST(destruction_test)
 {
     int i;
@@ -400,9 +446,10 @@ ARC_UNIT_TEST_FIXTURE()
     ARC_UNIT_ADD_TEST(indexed_access_test)
     ARC_UNIT_ADD_TEST(iterators_forward)
     ARC_UNIT_ADD_TEST(iterators_backward)
+    ARC_UNIT_ADD_TEST(iterators_position)
     ARC_UNIT_ADD_TEST(iterators_insertion_front)
     ARC_UNIT_ADD_TEST(iterators_insertion_back)
-    ARC_UNIT_ADD_TEST(iterators_insertion_position)
+    ARC_UNIT_ADD_TEST(iterators_insertion_middle)
     ARC_UNIT_ADD_TEST(destruction_test)
 }
 
