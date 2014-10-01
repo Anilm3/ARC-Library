@@ -63,7 +63,7 @@ void arc_darray_destroy(arc_darray_t darray);
  * @brief Indexed access to an element of the darray
  *
  * @param[in] darray Dynamic Array to perform the operation on
- * @param[in] index Position to access
+ * @param[in] idx Position to access
  * @return Data pointer of the first element
  */
 void * arc_darray_at(arc_darray_t darray, unsigned idx);
@@ -148,6 +148,15 @@ void arc_darray_before_begin(arc_iterator_t it);
  * @param[in] it Iterator
  */
 void arc_darray_begin(arc_iterator_t it);
+/**
+ * @brief Sets an iterator to the specified element of the darray
+ *
+ * @param[in] it Iterator
+ * @param[in] idx Element index
+ * @retval ARC_ERROR If the specified index is out of range
+ * @retval ARC_SUCCESS If the iterator was set successfully
+ */
+int arc_darray_position(arc_iterator_t it, unsigned idx);
 /**
  * @brief Sets an iterator to the last element of the darray
  *

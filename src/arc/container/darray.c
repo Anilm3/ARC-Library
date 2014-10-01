@@ -233,7 +233,7 @@ int arc_darray_position(struct arc_iterator * it, unsigned idx)
 {
     struct arc_darray * darray = it->container;
 
-    if (darray->size >= idx)
+    if (idx >= darray->size)
     {
         return ARC_ERROR;
     }
