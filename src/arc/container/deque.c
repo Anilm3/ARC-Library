@@ -111,19 +111,21 @@ int arc_deque_realloc(struct arc_deque * deque)
     return ARC_SUCCESS;
 }
 
-/******************************************************************************
+/******************************************************************************/
 
-int arc_deque_insert_node_after(struct arc_deque * deque,
+int arc_deque_insert_node_before(struct arc_deque * deque,
                                 long current, void * data)
 {
-    unsigned cur_pos = (unsigned long)current + 1;
-    unsigned cur_block_num = cur_pos / BLOCK_SIZE;
-    unsigned cur_block_idx = cur_pos % BLOCK_SIZE;
+    unsigned i;
+    unsigned block_num, block_idx;
+    unsigned new_block_num, new_block_idx, loop_end;
+    void * data_pos, * new_data_pos;
+    unsigned cur_pos = (unsigned)current;
 
-    if ((cur_pos - deque->start_idx) < (deque->end_idx - cur_pos))
+    /*printf("%u, %u, %u, %ld\n", cur_pos, deque->start_idx, deque->end_idx, current); //*/
+    if (((long)cur_pos - deque->start_idx) <= ((long)deque->end_idx - cur_pos))
     {
-        unsigned block_num = deque->start_idx / BLOCK_SIZE;
-        unsigned block_idx = deque->start_idx % BLOCK_SIZE;
+        cur_pos -= deque->start_idx;
 
         if(deque->size > 0 && deque->start_idx == 0)
         {
@@ -133,11 +135,40 @@ int arc_deque_insert_node_after(struct arc_deque * deque,
             }
         }
 
+        cur_pos += deque->start_idx;
+
+        loop_end = (cur_pos < deque->end_idx ? cur_pos : deque->end_idx);
+
+        /* Naive way, pretty naive */
+        for (i = deque->start_idx; i < loop_end; i++)
+        {
+            block_num = i / BLOCK_SIZE;
+            block_idx = i % BLOCK_SIZE;
+            new_block_num = (i - 1) / BLOCK_SIZE;
+            new_block_idx = (i - 1) % BLOCK_SIZE;
+            
+            if (deque->data[new_block_num] == NULL)
+            {
+                deque->data[new_block_num] = malloc(BLOCK_SIZE*deque->data_size);
+            }
+
+            data_pos = ((char *)deque->data[block_num] + 
+                        block_idx*deque->data_size);
+
+            new_data_pos = ((char *)deque->data[new_block_num] + 
+                           new_block_idx*deque->data_size);
+
+            arc_memcpy(new_data_pos, data_pos, deque->data_size);
+        }
+
+        block_num = (cur_pos - 1) / BLOCK_SIZE;
+        block_idx = (cur_pos - 1) % BLOCK_SIZE;
+
+        deque->start_idx--;
     }
     else
     {
-        unsigned block_num = deque->end_idx / BLOCK_SIZE;
-        unsigned block_idx = deque->end_idx % BLOCK_SIZE;
+        cur_pos -= deque->start_idx;
 
         if (deque->size > 0 && 
             deque->end_idx == (deque->num_blocks * BLOCK_SIZE - 1))
@@ -147,10 +178,53 @@ int arc_deque_insert_node_after(struct arc_deque * deque,
                 return ARC_ERROR;
             }
         }
+
+        cur_pos += deque->start_idx;
+
+        loop_end = (cur_pos > deque->start_idx ? cur_pos : deque->start_idx);
+        /* Naive way, pretty naive */
+        for (i = deque->end_idx; i >= loop_end; i--)
+        {
+            block_num = i / BLOCK_SIZE;
+            block_idx = i % BLOCK_SIZE;
+            new_block_num = (i + 1) / BLOCK_SIZE;
+            new_block_idx = (i + 1) % BLOCK_SIZE;
+
+            if (deque->data[new_block_num] == NULL)
+            {
+                deque->data[new_block_num] = malloc(BLOCK_SIZE*deque->data_size);
+            }
+
+            data_pos = ((char *)deque->data[block_num] + 
+                        block_idx*deque->data_size);
+
+            new_data_pos = ((char *)deque->data[new_block_num] + 
+                           new_block_idx*deque->data_size);
+
+            arc_memcpy(new_data_pos, data_pos, deque->data_size);
+        }
+
+        block_num = cur_pos / BLOCK_SIZE;
+        block_idx = cur_pos % BLOCK_SIZE;
+
+        deque->end_idx++;
     }
+
+    if (deque->data[block_num] == NULL)
+    {
+        deque->data[block_num] = malloc(BLOCK_SIZE*deque->data_size);
+    }
+
+    data_pos = ((char *)deque->data[block_num] + block_idx*deque->data_size);
+
+    arc_memcpy(data_pos, data, deque->data_size);
+
+    deque->size++;
+
+    return ARC_SUCCESS;
 }
 
-******************************************************************************
+/******************************************************************************
 
 int arc_deque_insert_node_before(struct arc_deque * deque,
                                  long current, void * data)
@@ -188,6 +262,8 @@ void * arc_deque_at(struct arc_deque * deque, unsigned idx)
 
 int arc_deque_push_front(struct arc_deque * deque, void * data)
 {
+    return arc_deque_insert_node_before(deque, deque->start_idx, data);
+/*
     unsigned block_num;
     unsigned block_idx;
     void * data_pos;
@@ -216,7 +292,7 @@ int arc_deque_push_front(struct arc_deque * deque, void * data)
 
     deque->size++;
 
-    return ARC_SUCCESS;
+    return ARC_SUCCESS; */
 }
 
 /******************************************************************************/
@@ -234,6 +310,9 @@ void arc_deque_pop_front(struct arc_deque * deque)
 
 int arc_deque_push_back(struct arc_deque * deque, void * data)
 {
+    return arc_deque_insert_node_before(deque, deque->end_idx + 1, data);
+
+/*
     unsigned block_num;
     unsigned block_idx;
     void * data_pos;
@@ -262,7 +341,7 @@ int arc_deque_push_back(struct arc_deque * deque, void * data)
 
     deque->size++;
 
-    return ARC_SUCCESS;
+    return ARC_SUCCESS;*/
 }
 
 /******************************************************************************/
