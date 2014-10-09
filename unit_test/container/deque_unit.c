@@ -280,6 +280,30 @@ ARC_UNIT_TEST(iterators_backward)
     arc_deque_destroy(deque);
 }
 
+ARC_UNIT_TEST(iterators_position)
+{
+    unsigned i = 0;
+    arc_deque_t deque = arc_deque_create(sizeof(int));
+    arc_iterator_t it = arc_iterator_create(deque);
+
+    ARC_ASSERT_POINTER_NOT_NULL(deque);
+
+    for (i = 0; i < 20; i++)
+    {
+        ARC_ASSERT_INT_EQUAL(arc_deque_push_back(deque, (void *)&i),
+                             ARC_SUCCESS);
+    }
+
+    for (i = 0; i < 20; i++)
+    {
+        ARC_ASSERT_INT_EQUAL(arc_deque_position(it, i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQUAL(*((int *)arc_deque_data(it)), i);
+    }
+
+    arc_iterator_destroy(it);
+    arc_deque_destroy(deque);
+}
+
 ARC_UNIT_TEST(iterators_insertion_front)
 {
     int i = 0;
@@ -425,6 +449,7 @@ ARC_UNIT_TEST_FIXTURE()
     ARC_UNIT_ADD_TEST(indexed_access_test)
     ARC_UNIT_ADD_TEST(iterators_forward)
     ARC_UNIT_ADD_TEST(iterators_backward)
+    ARC_UNIT_ADD_TEST(iterators_position)
     ARC_UNIT_ADD_TEST(iterators_insertion_front)
     ARC_UNIT_ADD_TEST(iterators_insertion_back)
     ARC_UNIT_ADD_TEST(iterators_insertion_middle)
