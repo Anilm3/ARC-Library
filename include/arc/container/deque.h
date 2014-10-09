@@ -149,6 +149,15 @@ void arc_deque_before_begin(arc_iterator_t it);
  */
 void arc_deque_begin(arc_iterator_t it);
 /**
+ * @brief Sets an iterator to the specified element of the deque
+ *
+ * @param[in] it Iterator
+ * @param[in] idx Element index
+ * @retval ARC_ERROR If the specified index is out of range
+ * @retval ARC_SUCCESS If the iterator was set successfully
+ */
+int arc_deque_position(arc_iterator_t it, unsigned idx);
+/**
  * @brief Sets an iterator to the last element of the deque
  *
  * @param[in] it Iterator
