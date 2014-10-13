@@ -191,11 +191,6 @@ static int arc_deque_move_left(struct arc_deque * deque,
         }
     }
 
-    if (start_idx == deque->start_idx)
-    {
-        deque->start_idx--;
-    }
-
     return ARC_SUCCESS;
 }
 
@@ -287,11 +282,6 @@ static int arc_deque_move_right(struct arc_deque * deque,
         }
     }
 
-    if (end_idx == deque->end_idx)
-    {
-        deque->end_idx++;
-    }
-
     return ARC_SUCCESS;
 }
 
@@ -327,10 +317,8 @@ int arc_deque_insert_node_before(struct arc_deque * deque,
         {
             arc_deque_move_left(deque, deque->start_idx, size);
         }
-        else
-        {
-            deque->start_idx--;
-        }
+
+        deque->start_idx--;
 
         cur_pos += deque->start_idx;
     }
@@ -354,10 +342,8 @@ int arc_deque_insert_node_before(struct arc_deque * deque,
         {
             arc_deque_move_right(deque, cur_pos, size);
         }
-        else
-        {
-            deque->end_idx++;
-        }
+
+        deque->end_idx++;
     }
 
     block_num = cur_pos / BLOCK_SIZE;
@@ -390,15 +376,45 @@ int arc_deque_insert_node_after(struct arc_deque * deque,
     return arc_deque_insert_node_before(deque, current + 1 , data);
 }
 
-/******************************************************************************
+/******************************************************************************/
 
 void arc_deque_erase_node(struct arc_deque * deque,
                           long current)
 {
+    unsigned cur_pos = (unsigned)current;
 
+    if (current < deque->start_idx || current > deque->end_idx)
+    {
+        return;
+    }
+
+    if (((long)cur_pos - deque->start_idx) <= ((long)deque->end_idx - cur_pos))
+    {
+        unsigned size = cur_pos - deque->start_idx;
+
+        if (size > 0)
+        {
+            arc_deque_move_right(deque, deque->start_idx, size);
+        }
+
+        deque->start_idx++;
+    }
+    else
+    {
+        unsigned size = deque->end_idx - cur_pos;
+
+        if (size > 0)
+        {
+            arc_deque_move_left(deque, cur_pos + 1, size);
+        }
+
+        deque->end_idx--;
+    }
+
+    deque->size--;
 }
 
-******************************************************************************/
+/******************************************************************************/
 
 void * arc_deque_at(struct arc_deque * deque, unsigned idx)
 {
@@ -501,9 +517,9 @@ unsigned arc_deque_size(struct arc_deque * deque)
 
 void arc_deque_clear(struct arc_deque * deque)
 {
-    deque->start_idx = 0;
-    deque->end_idx = 0;
     deque->size = 0;
+    deque->start_idx = BLOCK_SIZE*(deque->num_blocks/2) + BLOCK_SIZE/2 + 1;
+    deque->end_idx = deque->start_idx - 1;
 }
 
 /******************************************************************************/
@@ -578,7 +594,7 @@ int arc_deque_insert_after(struct arc_iterator * it, void * data)
     return arc_deque_insert_node_after(deque, idx , data);
 }
 
-/******************************************************************************
+/******************************************************************************/
 
 void arc_deque_erase(struct arc_iterator * it)
 {
@@ -588,7 +604,7 @@ void arc_deque_erase(struct arc_iterator * it)
     arc_deque_erase_node(deque, idx);
 }
 
-******************************************************************************/
+/******************************************************************************/
 
 void * arc_deque_data(struct arc_iterator * it)
 {
