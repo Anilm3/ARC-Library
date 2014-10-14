@@ -290,13 +290,13 @@ ARC_UNIT_TEST(iterators_position)
 
     ARC_ASSERT_POINTER_NOT_NULL(deque);
 
-    for (i = 0; i < 20; i++)
+    for (i = 0; i < 20000; i++)
     {
         ARC_ASSERT_INT_EQUAL(arc_deque_push_back(deque, (void *)&i),
                              ARC_SUCCESS);
     }
 
-    for (i = 0; i < 20; i++)
+    for (i = 0; i < 20000; i++)
     {
         ARC_ASSERT_INT_EQUAL(arc_deque_position(it, i), ARC_SUCCESS);
         ARC_ASSERT_INT_EQUAL(*((int *)arc_deque_data(it)), i);
@@ -317,7 +317,7 @@ ARC_UNIT_TEST(iterators_insertion_front)
     arc_deque_before_begin(it);
     ARC_ASSERT_INT_EQUAL(arc_deque_insert_before(it, (void *)&i), ARC_ERROR);
 
-    for (i = 0; i < 20; i++)
+    for (i = 0; i < 20000; i++)
     {
         arc_deque_before_begin(it);
         ARC_ASSERT_INT_EQUAL(arc_deque_insert_after(it, (void *)&i), 
@@ -327,7 +327,7 @@ ARC_UNIT_TEST(iterators_insertion_front)
 
     arc_deque_before_begin(it);
 
-    i = 19;
+    i = 19999;
     while(arc_deque_next(it))
     {
         ARC_ASSERT_INT_EQUAL(*((int *)arc_deque_data(it)), i);
@@ -352,7 +352,7 @@ ARC_UNIT_TEST(iterators_insertion_back)
 
     ARC_ASSERT_INT_EQUAL(arc_deque_insert_after(it, (void *)&i), ARC_ERROR);
 
-    for (i = 0; i < 20; i++)
+    for (i = 0; i < 20000; i++)
     {
         arc_deque_after_end(it);
         ARC_ASSERT_INT_EQUAL(arc_deque_insert_before(it, (void *)&i), 
@@ -361,7 +361,7 @@ ARC_UNIT_TEST(iterators_insertion_back)
 
     arc_deque_after_end(it);
 
-    i = 19;
+    i = 19999;
     while(arc_deque_previous(it))
     {
         ARC_ASSERT_INT_EQUAL(*((int *)arc_deque_data(it)), i);
@@ -418,11 +418,7 @@ ARC_UNIT_TEST(iterators_insertion_middle)
         ARC_ASSERT_INT_EQUAL(*((int *)arc_deque_data(it)), i);
     }
 
-    arc_iterator_destroy(it);
-    arc_deque_destroy(deque);
-
-    deque = arc_deque_create(sizeof(int));
-    it = arc_iterator_create(deque);
+    arc_deque_clear(deque);
 
     for (i = 1; i < 20000; i+=2)
     {
@@ -441,11 +437,7 @@ ARC_UNIT_TEST(iterators_insertion_middle)
         ARC_ASSERT_INT_EQUAL(*((unsigned *)arc_deque_at(deque, i)), i);
     }
 
-    arc_iterator_destroy(it);
-    arc_deque_destroy(deque);
-
-    deque = arc_deque_create(sizeof(int));
-    it = arc_iterator_create(deque);
+    arc_deque_clear(deque);
 
     for (i = 0; i < 20000; i+=2)
     {
@@ -467,7 +459,6 @@ ARC_UNIT_TEST(iterators_insertion_middle)
     arc_iterator_destroy(it);
     arc_deque_destroy(deque);
 }
-
 
 ARC_UNIT_TEST(iterators_erase)
 {
