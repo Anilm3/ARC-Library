@@ -93,7 +93,7 @@ ARC_UNIT_TEST(push_pop_back_front)
 
     ARC_ASSERT_POINTER_NOT_NULL(list);
 
-    for (i = 0; i < 1; i++)
+    for (i = 0; i < 20000; i++)
     {
         ARC_ASSERT_INT_EQUAL(arc_dlist_push_back(list, (void *)&i), ARC_SUCCESS);
     }
@@ -196,13 +196,13 @@ ARC_UNIT_TEST(iterators_insertion_front)
 
     ARC_ASSERT_INT_EQUAL(arc_dlist_insert_before(it, (void *)&i), ARC_ERROR);
 
-    for (i = 0; i < 20; i++)
+    for (i = 0; i < 20000; i++)
     {
         ARC_ASSERT_INT_EQUAL(arc_dlist_insert_after(it, (void *)&i), 
                              ARC_SUCCESS);
     }
 
-    i = 19;
+    i = 19999;
     while(arc_dlist_next(it))
     {
         ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_data(it)), i--);
@@ -226,13 +226,13 @@ ARC_UNIT_TEST(iterators_insertion_back)
 
     ARC_ASSERT_INT_EQUAL(arc_dlist_insert_after(it, (void *)&i), ARC_ERROR);
 
-    for (i = 0; i < 20; i++)
+    for (i = 0; i < 20000; i++)
     {
         ARC_ASSERT_INT_EQUAL(arc_dlist_insert_before(it, (void *)&i), 
                              ARC_SUCCESS);
     }
 
-    i = 19;
+    i = 19999;
     while(arc_dlist_previous(it))
     {
         ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_data(it)), i--);
