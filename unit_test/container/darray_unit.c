@@ -156,12 +156,12 @@ ARC_UNIT_TEST(mixed_push_front_back_test)
 
     arc_darray_t darray = arc_darray_create(sizeof(unsigned));
     
-    for (i = 100; i >= 0; i--)
+    for (i = 10000; i >= 0; i--)
     {
         ARC_ASSERT_INT_EQUAL(arc_darray_push_front(darray, (void *)&i), ARC_SUCCESS);
     }
 
-    for (i = 101; i < 200; i++)
+    for (i = 10001; i < 20000; i++)
     {
         ARC_ASSERT_INT_EQUAL(arc_darray_push_back(darray, (void *)&i), ARC_SUCCESS);
     }
@@ -183,12 +183,12 @@ ARC_UNIT_TEST(mixed_push_back_front_test)
 
     arc_darray_t darray = arc_darray_create(sizeof(unsigned));
     
-    for (i = 101; i < 200; i++)
+    for (i = 10001; i < 20000; i++)
     {
         ARC_ASSERT_INT_EQUAL(arc_darray_push_back(darray, (void *)&i), ARC_SUCCESS);
     }
 
-    for (i = 100; i >= 0; i--)
+    for (i = 10000; i >= 0; i--)
     {
         ARC_ASSERT_INT_EQUAL(arc_darray_push_front(darray, (void *)&i), ARC_SUCCESS);
     }
@@ -211,17 +211,17 @@ ARC_UNIT_TEST(indexed_access_test)
 
     arc_darray_t darray = arc_darray_create(sizeof(unsigned));
     
-    for (i = 100; i >= 0; i--)
+    for (i = 10000; i >= 0; i--)
     {
         ARC_ASSERT_INT_EQUAL(arc_darray_push_front(darray, (void *)&i), ARC_SUCCESS);
     }
 
-    for (i = 101; i < 200; i++)
+    for (i = 10001; i < 20000; i++)
     {
         ARC_ASSERT_INT_EQUAL(arc_darray_push_back(darray, (void *)&i), ARC_SUCCESS);
     }
 
-    for (i = 0; i < 200; i++)
+    for (i = 0; i < 20000; i++)
     {
         ARC_ASSERT_INT_EQUAL(*((int *)arc_darray_at(darray, (unsigned)i)), i);
     }

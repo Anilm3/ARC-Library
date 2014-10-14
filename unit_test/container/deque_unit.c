@@ -157,12 +157,12 @@ ARC_UNIT_TEST(mixed_push_front_back_test)
 
     arc_deque_t deque = arc_deque_create(sizeof(unsigned));
     
-    for (i = 100; i >= 0; i--)
+    for (i = 10000; i >= 0; i--)
     {
         ARC_ASSERT_INT_EQUAL(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
     }
 
-    for (i = 101; i < 200; i++)
+    for (i = 10001; i < 20000; i++)
     {
         ARC_ASSERT_INT_EQUAL(arc_deque_push_back(deque, (void *)&i), ARC_SUCCESS);
     }
@@ -184,12 +184,12 @@ ARC_UNIT_TEST(mixed_push_back_front_test)
 
     arc_deque_t deque = arc_deque_create(sizeof(unsigned));
     
-    for (i = 101; i < 200; i++)
+    for (i = 10001; i < 20000; i++)
     {
         ARC_ASSERT_INT_EQUAL(arc_deque_push_back(deque, (void *)&i), ARC_SUCCESS);
     }
 
-    for (i = 100; i >= 0; i--)
+    for (i = 10000; i >= 0; i--)
     {
         ARC_ASSERT_INT_EQUAL(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
     }
@@ -212,17 +212,17 @@ ARC_UNIT_TEST(indexed_access_test)
 
     arc_deque_t deque = arc_deque_create(sizeof(unsigned));
     
-    for (i = 100; i >= 0; i--)
+    for (i = 10000; i >= 0; i--)
     {
         ARC_ASSERT_INT_EQUAL(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
     }
 
-    for (i = 101; i < 200; i++)
+    for (i = 10001; i < 20000; i++)
     {
         ARC_ASSERT_INT_EQUAL(arc_deque_push_back(deque, (void *)&i), ARC_SUCCESS);
     }
 
-    for (i = 0; i < 200; i++)
+    for (i = 0; i < 20000; i++)
     {
         ARC_ASSERT_INT_EQUAL(*((int *)arc_deque_at(deque, (unsigned)i)), i);
     }
