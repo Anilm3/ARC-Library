@@ -61,9 +61,7 @@ Where `ab` is an optional suffix which describes a characteristic of the underly
 
 
 ### TODO
-* Add iterator insert before/after and erase to deque
 * Improve dlist/deque/darray unit test to expand on iterator functionality
 + Improve unit test framework to be thread safe
 + Improve performance test framework to also be thread safe (if it makes sense)
-+ Start man pages
 + Create package directory for package type separation
