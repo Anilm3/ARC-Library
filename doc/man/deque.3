@@ -1,0 +1,24 @@
+.\" Manpage for arc_deque_create.
+.\" Contact anil.mmm@gmail.com.in to correct errors or typos.
+.TH man 3 "16 Oct 2014" "1.0" "arc_deque_create man page"
+.SH NAME
+arc_deque_create \- create a new Deque
+.SH SYNOPSIS
+.BI "arc_deque_t arc_deque_create (size_t "data_size ")
+.SH DESCRIPTION
+Creates a new deque. The memory is allocated in the heap and has to be destroyed by the user. The data size provided has to coincide with the element type size to be used in the container.
+
+.SH OPTIONS
+.BRdata_size   Size of the data element
+.SH RETURN VALUES
+.BI "void *
+New empty deque
+.TP
+.BI NULL
+if memory cannot be allocated
+.SH SEE ALSO
+Nothing
+.SH BUGS
+No known bugs.
+.SH AUTHOR
+Anil Mahtani (anil.mmm@gmail.com)
