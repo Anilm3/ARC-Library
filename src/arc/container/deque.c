@@ -60,7 +60,7 @@ struct arc_deque * arc_deque_create(size_t data_size)
         return NULL;
     }
 
-    bzero(deque->data, INITIAL_NUM_BLOCKS*sizeof(void *));
+    memset(deque->data, 0, INITIAL_NUM_BLOCKS*sizeof(void *));
 
     return deque;
 }
@@ -96,8 +96,9 @@ int arc_deque_realloc(struct arc_deque * deque)
     memcpy((char *)new_data + num_blocks_delta*sizeof(void *), 
            deque->data, deque->num_blocks*sizeof(void *));
 
-    bzero(new_data, num_blocks_delta*sizeof(void *));
-    bzero((char *)new_data + (deque->num_blocks + num_blocks_delta)*sizeof(void *),
+    memset(new_data, 0, num_blocks_delta*sizeof(void *));
+    memset((char *)new_data + (deque->num_blocks + 
+          num_blocks_delta) * sizeof(void *), 0,
           num_blocks_delta*sizeof(void *));
 
     deque->start_idx += num_blocks_delta*BLOCK_SIZE;
