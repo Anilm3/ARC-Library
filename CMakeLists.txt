@@ -13,9 +13,9 @@ set (SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set (INCLUDES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 set (UNIT_TEST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/unit_test")
 set (PERF_TEST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/perf_test")
-set (DOC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/doc/")
-set (EXECUTABLE_OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/bin/")
-set (LIBRARY_OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/")
+set (DOC_DIR "${CMAKE_CURRENT_BINARY_DIR}/doc/")
+set (EXECUTABLE_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/bin/")
+set (LIBRARY_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/lib/")
 
 SET(CPACK_PACKAGE_NAME "${CMAKE_PROJECT_NAME}")
 SET(CPACK_PACKAGE_FILE_NAME "libarc")
@@ -140,7 +140,7 @@ endif()
 find_package(Doxygen)
 
 if(DOXYGEN_FOUND)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in 
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/doxygen.config 
                    ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
     add_custom_target(doc
                       ${DOXYGEN_EXECUTABLE} 
