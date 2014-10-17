@@ -93,8 +93,8 @@ int arc_deque_realloc(struct arc_deque * deque)
         return ARC_ERROR;
     }
 
-    memcpy((char *)new_data + num_blocks_delta*sizeof(void *), 
-           deque->data, deque->num_blocks*sizeof(void *));
+    memmove((char *)new_data + num_blocks_delta*sizeof(void *), 
+            deque->data, deque->num_blocks*sizeof(void *));
 
     memset(new_data, 0, num_blocks_delta*sizeof(void *));
     memset((char *)new_data + (deque->num_blocks + 
