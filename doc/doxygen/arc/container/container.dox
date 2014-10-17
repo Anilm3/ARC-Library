@@ -3,15 +3,3 @@ This page is just an introdution to containers.
 - \subpage deque
 - \subpage dlist
 */
-
-//------------------------------------------------------------------------------
-
-/*! \page deque Deque
-Deque information
-*/
-
-//------------------------------------------------------------------------------
-
-/*! \page dlist DList
-DList information
-*/
