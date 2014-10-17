@@ -7,9 +7,20 @@ arc_deque_create \- create a new Deque
 .BI "arc_deque_t arc_deque_create (size_t "data_size ")
 .SH DESCRIPTION
 Creates a new deque. The memory is allocated in the heap and has to be destroyed by the user. The data size provided has to coincide with the element type size to be used in the container.
+.br
+ _____________________
+.br
+|                     |
+.br
+|                     |
+.br
+|_____________________|
+.br
+
 
 .SH OPTIONS
-.BRdata_size   Size of the data element
+.BR data_size
+Size of the data element
 .SH RETURN VALUES
 .BI "void *
 New empty deque
