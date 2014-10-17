@@ -35,8 +35,8 @@ extern "C"{
  * @typedef arc_stack_t
  * @brief Stack definition
  *
- * The stack is defined as a pointer to be used with the creation and destruction
- * functions, direct stack allocations are not allowed.
+ * The stack is defined as a pointer to be used with the creation and 
+ * destruction functions, direct stack allocations are not allowed.
  */
 typedef struct arc_stack * arc_stack_t;
 
