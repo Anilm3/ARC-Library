@@ -11,12 +11,17 @@
 #include <arc/container/queue.h>
 #include <arc/common/defines.h>
 
+/* Queue node definition, the data array is a placerholder for the first byte of
+   the user memory, which will be allocated as extra space for the node */
 struct arc_queue_node
 {
     struct arc_queue_node * next;
     char data[1];
 };
 
+/* The queue structure contains a pointer to the front and the back of the 
+   stack, the current number of elements (size), the size of the user data and 
+   finally the size of the stack node to avoid recomputations */
 struct arc_queue
 {
     struct arc_queue_node * front;
@@ -43,8 +48,8 @@ struct arc_queue * arc_queue_create(size_t data_size)
        space occupied by the alignment */
     aligned_size = sizeof(struct arc_queue_node) - 
                    ARC_OFFSETOF(struct arc_queue_node, data);
-                   /* ((size_t)&(((struct arc_slist_node *) 0)->data));*/
 
+    /* The aligment is taken into account to optimize the memory usage */
     aligned_size = (aligned_size > data_size ? 0 : data_size - aligned_size);
 
     /* Initialise the list */
@@ -105,6 +110,7 @@ void arc_queue_pop(struct arc_queue * queue)
     {
         struct arc_queue_node * node = queue->front;
         
+        /* The same node is the front and the back, there's only one left*/
         if (queue->front == queue->back)
         {
             queue->front = NULL;
@@ -164,7 +170,7 @@ int arc_queue_size(struct arc_queue * queue)
 
 void arc_queue_clear(struct arc_queue * queue)
 {
-    while (queue->front != NULL)
+    while (queue->size > 0)
     {
         arc_queue_pop(queue);
     }

@@ -136,7 +136,7 @@ int arc_stack_size(struct arc_stack * stack)
 
 void arc_stack_clear(struct arc_stack * stack)
 {
-    while (stack->top != NULL)
+    while (stack->size > 0)
     {
         arc_stack_pop(stack);
     }
