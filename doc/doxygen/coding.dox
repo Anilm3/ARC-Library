@@ -1,0 +1,78 @@
+/*! \page page_coding Coding conventions
+
+\tableofcontents
+
+Coding conventions play a very important role in software development and have always been a sort of controversy between programmers. One of tha main reasons to have a set of coding conventions is to decrease the likelihood of bugs, but also it has been shown that the human brain is very efficient at decoding known patterns, thus having a standard style throughout an entire code base can increase its readibility.
+
+Even though I really like some of the features of C99, I am trying to make ARC ANSI C compatible to allow it to be used on different architectures where compilers might no have yet kept up with the new standards, so suffice it to say that those features which are not in ANSI C are not allowed. For most of the coding conventions described here I've followed some of the most famous coding style guides (\ref section_ref) as well as my own personal preferences, as after this is my library.
+
+\section section_code_structure Code structure
+
+\verbatim
+               +-------+                        
+     +---------+  ARC  +--------+               
+     |         +-------+        |               
+     |                          |               
+ +---+---+                  +---+---+           
+ |include|                  |  src  |           
+ +---+---+                  +---+---+           
+     |                          |               
++----+----+                +----+----+          
+|component|             +--+component+--+       
++----+----+             |  +---------+  |       
+     |                  |               |       
+ +---+----+      +------+-----+     +---+----+  
+ |[name].h|      |[name]_def.h|     |[name].c|  
+ +---+----+      +------+-----+     +----+---+  
+\endverbatim
+
+\ref page_coding "Back to top"
+<hr>
+\section section_indentation Indentation
+\ref page_coding "Back to top"
+<hr>
+\section section_code_size Breaking lines and strings
+\ref page_coding "Back to top"
+<hr>
+\section section_braces_spaces Placing Braces and Spaces
+\ref page_coding "Back to top"
+<hr>
+\section section_naming Naming
+\ref page_coding "Back to top"
+<hr>
+\section section_types Typedefs
+\ref page_coding "Back to top"
+<hr>
+\section section_function Functions
+\ref page_coding "Back to top"
+<hr>
+\section section_exit Centralized exiting of functions
+\ref page_coding "Back to top"
+<hr>
+\section section_comments Commenting
+\ref page_coding "Back to top"
+<hr>
+\section section_reference_count Reference counting
+\ref page_coding "Back to top"
+<hr>
+\section section_inline_static Static & inline functions
+\ref page_coding "Back to top"
+<hr>
+\section section_return Return values
+\ref page_coding "Back to top"
+<hr>
+\section section_constants Defining constants
+\ref page_coding "Back to top"
+<hr>
+
+\section section_ref References
+
+- https://www.kernel.org/doc/Documentation/CodingStyle
+- https://github.com/git/git/blob/master/Documentation/CodingGuidelines
+- http://www.gnu.org/prep/standards/standards.html
+- http://www.barrgroup.com/Embedded-Systems/How-To/More-Bug-Killing-Standards-for-Embedded-C
+- http://www.barrgroup.com/Embedded-Systems/How-To/Bug-Killing-Standards-for-Embedded-C
+
+\ref page_coding "Back to top"
+<hr>
+*/
