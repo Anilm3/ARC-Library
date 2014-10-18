@@ -6,6 +6,21 @@
 * There is NO WARRANTY, to the extent permitted by law.                         *
 *                                                                               *
 *********************************************************************************/
+/**
+ * @file queue.h
+ * @author Anil M. Mahtani Mirchandani
+ * @date June, 2014
+ *
+ * @brief Queue
+ *
+ * A queue is very similar to a singly-linked list but it uses a bit less memory
+ * and the operations require less instructions to be performed. The main goal
+ * of this redundancy is for performance and experimentation purposes as the 
+ * simplicity of the structure provides less instructions per operation thus 
+ * making it easier to implement to be lock-free and thread-safe.
+ *
+ * @see http://en.wikipedia.org/wiki/Queue_(abstract_data_type)
+ */
 
 #include <string.h>
 #include <arc/container/queue.h>
