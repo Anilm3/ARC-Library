@@ -2,4 +2,5 @@
 This page is just an introdution to containers.
 - \subpage deque
 - \subpage dlist
+- \subpage page_stack
 */

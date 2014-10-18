@@ -1,0 +1,22 @@
+/*! \page page_stack Stack
+
+\code
+  Stack Node                
++------------+              
+|next        |              
++------------+              
+|alignment   |              
++------------+              
+|data[0]     | <-+          
++------------+   |          
+|alignment   |   | user data
++------------+   | memory   
+|            |   |          
+|extra memory|   |          
+|            | <-+          
++------------+              
+\endcode
+
+\section section_complexity Complexity
+
+*/
