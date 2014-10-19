@@ -6,10 +6,6 @@
 * There is NO WARRANTY, to the extent permitted by law.                        *
 *                                                                              *
 *******************************************************************************/
-/*
-TODO:
-    Change errors to OUT_OF_MEMORY
-*/
 
 #include <stdio.h>
 #include <string.h>
@@ -90,7 +86,7 @@ int arc_deque_realloc(struct arc_deque * deque)
 
     if (new_data == NULL)
     {
-        return ARC_ERROR;
+        return ARC_OUT_OF_MEMORY;
     }
 
     memmove((char *)new_data + num_blocks_delta*sizeof(void *), 
@@ -310,7 +306,7 @@ int arc_deque_insert_node_before(struct arc_deque * deque,
         {
             if (arc_deque_realloc(deque) != ARC_SUCCESS)
             {
-                return ARC_ERROR;
+                return ARC_OUT_OF_MEMORY;
             }
         }
 
@@ -334,7 +330,7 @@ int arc_deque_insert_node_before(struct arc_deque * deque,
             cur_pos -= deque->start_idx;
             if (arc_deque_realloc(deque) != ARC_SUCCESS)
             {
-                return ARC_ERROR;
+                return ARC_OUT_OF_MEMORY;
             }
             cur_pos += deque->start_idx;
         }
