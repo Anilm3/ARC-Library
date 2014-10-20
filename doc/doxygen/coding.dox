@@ -15,6 +15,7 @@ Before understanding what all the coding conventions are about, it is important 
 - <b> Portability:</b>
 
 \section section_code_structure Code structure
+To provide binary compatibility the opaque pointer pattern is used, keeping the structure definitions hidden and providing functions to allocate, initialize and deallocate the required structures. In order to do so, each structure is defined in a [name]_def.h file in the source directory, the exposed interface is defined in [name].h in the include directory and the implementation is located in [name].c in the source directory. This also provides internal reusability with minimal heap memory usage, as internal ARC modules are allowed to use ARC structures through stack allocations.
 
 \verbatim
                +-------+                        
@@ -37,14 +38,44 @@ Before understanding what all the coding conventions are about, it is important 
 \ref page_coding "Back to top"
 <hr>
 \section section_indentation Indentation
+
+Indentations in ARC are 4 spaces, clear and simple. Tabs are not allowed, other sized indentations are not allowed. There is no specific reason for this decision, in fact it's a matter of personal preference, 2 spaces is too small, 8 spaces is just too big considering that all of the names in the library have to be "namespaced" (arc_[name]). Regarding tabs, there is no clean way to provide multi-line alignment when using tabs, as the size is fixed. Some people claim that tabs provide less memory usage, but considering we're in the TB era, there is no need for this sort of premature optimization.
+
 \ref page_coding "Back to top"
 <hr>
 \section section_code_size Breaking lines and strings
 \ref page_coding "Back to top"
 <hr>
-\section section_braces_spaces Placing Braces and Spaces
+\section section_braces_spaces Placing Braces
+
+For braces, the Allman style is the preferred option as it gives a more clear separation of the different blocks in the code:
+
+\code
+if (condition)
+{
+    action 1;
+    action 2;
+}
+\endcode
+
+It is mandatory to add braces to every control structure except those without a body; control structures with one statement are no exception to this rule:
+\code
+for (i = 0; i < n; i++)
+{
+    only one action;
+}
+
+while (i != n);
+\endcode
+
 \ref page_coding "Back to top"
 <hr>
+
+\section section_spaces Spacing
+
+\ref page_coding "Back to top"
+<hr>
+
 \section section_naming Naming
 \ref page_coding "Back to top"
 <hr>
@@ -80,6 +111,7 @@ Before understanding what all the coding conventions are about, it is important 
 - http://www.gnu.org/prep/standards/standards.html
 - http://www.barrgroup.com/Embedded-Systems/How-To/More-Bug-Killing-Standards-for-Embedded-C
 - http://www.barrgroup.com/Embedded-Systems/How-To/Bug-Killing-Standards-for-Embedded-C
+- http://en.wikipedia.org/wiki/Indent_style
 
 \ref page_coding "Back to top"
 <hr>
