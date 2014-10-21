@@ -73,6 +73,72 @@ while (i != n);
 
 \section section_spaces Spacing
 
+Spacing is required after most of the control structures keywords: if, switch, case, for, do, while. E.g.:
+
+\code
+for (i = 0; i < n; i++)
+{
+    action;
+}
+
+switch (condition)
+{
+case value:
+    break;
+default:
+}
+
+if (condition)
+{
+    action;
+}
+\endcode
+
+Do not add spaces around (inside) parenthesized expressions. An example of what not to do would be:
+
+\code
+if ( condition )
+{
+    action;
+}
+\endcode
+
+Use one space around (on each side of) most binary and ternary operators,
+such as any of these:
+
+\code
+    =  +  -  <  >  *  /  %  |  &  ^  <=  >=  ==  !=  ?  :
+\endcode
+
+but no space after unary operators:
+\code
+    &  *  +  -  ~  !  sizeof  typeof  alignof  __attribute__  defined
+\endcode
+
+no space before the postfix increment & decrement unary operators:
+\code
+    ++  --
+\endcode
+
+no space after the prefix increment & decrement unary operators:
+\code
+    ++  --
+\endcode
+
+and no space around the \c'.' and \c"->" structure member operators.
+
+When declaring pointer data or a function that returns a pointer type, the
+preferred use of '*' is adjacent to the data name or function name and not
+adjacent to the type name.  E.g.:
+
+\code
+void *variable;
+int main(int argc, char **argv);
+void *malloc(size_t);
+\endcode
+
+Do not leave trailing whitespace at the ends of lines. 
+
 \ref page_coding "Back to top"
 <hr>
 
