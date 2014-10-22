@@ -152,6 +152,50 @@ Do not leave trailing whitespace at the ends of lines.
 \ref page_coding "Back to top"
 <hr>
 \section section_exit Centralized exiting of functions
+
+The goto statement is allowed when a function exits from multiple
+locations and some common work such as cleanup has to be done.  If there is no
+cleanup needed then there is no justification to use the goto statement.
+
+The rationale is:
+
+- unconditional statements are easier to understand and follow
+- nesting is reduced
+- errors by not updating individual exit points when making modifications are prevented
+- saves the compiler work to optimize redundant code away
+
+\code
+int fun(int a)
+{
+    int result = 0;
+    char *buffer = malloc(SIZE);
+
+    if (buffer == NULL)
+    {
+        return -1;
+    }
+
+    if (condition1)
+    {
+        while (loop1)
+        {
+            ...
+        }
+        
+        result = 1;
+        
+        goto out;
+    }
+
+    ...
+
+out:
+    free(buffer);
+    return result;
+}
+
+\endcode
+
 \ref page_coding "Back to top"
 <hr>
 \section section_comments Commenting
