@@ -50,6 +50,14 @@ ARC_PERF_TEST(pop_back)
     }
 }
 
+ARC_PERF_TEST(pop_back2)
+{
+    int i;
+    for (i = 0; i < 20000; i++)
+    {
+        deque->pop_back();
+    }
+}
 
 ARC_PERF_FUNCTION(tear_down)
 {
@@ -66,6 +74,12 @@ ARC_PERF_TEST_FIXTURE()
     ARC_PERF_ADD_FUNCTION(set_up)
     ARC_PERF_ADD_TEST(push_back)
     ARC_PERF_ADD_TEST(pop_back)
+    ARC_PERF_ADD_FUNCTION(tear_down)
+
+
+    ARC_PERF_ADD_FUNCTION(set_up)
+    ARC_PERF_ADD_TEST(push_back)
+    ARC_PERF_ADD_TEST(pop_back2)
     ARC_PERF_ADD_FUNCTION(tear_down)
 }
 

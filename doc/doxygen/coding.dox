@@ -199,6 +199,22 @@ out:
 \ref page_coding "Back to top"
 <hr>
 \section section_comments Commenting
+- Comments are very important, but it's also importanto to write self-commenting code, i.e. code that is clear enough to be understood without the need of comments. 
+- Comments are allowed in functions or outside of them, but it is usually more convenient to have a set of comments outside the function explaining what it does, but not necessarily how it does it. In many cases the hows can be left for documentation.
+- Since ARC has to be ANSI C compliant only the following comment style is allowed:
+
+\verbatim
+/* Comment line 1 */
+\endverbatim
+
+- Multiline comments should have the following style:
+
+\verbatim
+/*
+ * Comment line 1
+ * Comment line 2
+ */
+\endverbatim
 \ref page_coding "Back to top"
 <hr>
 \section section_reference_count Reference counting
