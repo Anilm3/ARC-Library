@@ -7,18 +7,26 @@
 *                                                                              *
 *******************************************************************************/
 /**
- * @file copy.h
+ * @file memory.h
  * @author Anil M. Mahtani Mirchandani
- * @date July, 2014
+ * @date November, 2014
  */
 
 #include <stdlib.h>
 /**
- * @brief Copies size bytes from src to dst
+ * @brief Allocates a memory block of size nmemb*size
  *
- * @param[out] dst The destination memory address
- * @param[int] src The source memory address
- * @param[int] size The amount of memory to copy
- * @return The destination memory address
+ * @param[in] nmemb Number of elements to allocate
+ * @param[in] size Size of each element
+ * @return Pointer to the allocated memory block
  */
-void *  arc_memcpy(void * dst, void * src, size_t size);
+void * arc_malloc(size_t nmemb, size_t size);
+/**
+ * @brief Resizes the given memory block
+ *
+ * @param[in] ptr Memory block to resize
+ * @param[in] nmemb New number of elements the block should contain
+ * @param[in] size Size of each element
+ * @return Data pointer to the new memory block
+ */
+void * arc_realloc(void *ptr, size_t nmemb, size_t size);

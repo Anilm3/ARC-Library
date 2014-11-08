@@ -7,18 +7,26 @@
 *                                                                              *
 *******************************************************************************/
 /**
- * @file copy.h
+ * @file integer.h
  * @author Anil M. Mahtani Mirchandani
- * @date July, 2014
+ * @date November, 2014
  */
 
-#include <stdlib.h>
-/**
- * @brief Copies size bytes from src to dst
- *
- * @param[out] dst The destination memory address
- * @param[int] src The source memory address
- * @param[int] size The amount of memory to copy
- * @return The destination memory address
- */
-void *  arc_memcpy(void * dst, void * src, size_t size);
+#include <limits.h>
+
+#ifdef ARC_C99
+    #include <stdint.h>
+#else
+    #define SIZE_MAX ULONG_MAX
+
+    typedef signed char    int8_t;
+    typedef signed short   int16_t;
+    typedef signed int     int32_t;
+    typedef signed long    int64_t;
+
+    typedef unsigned char  uint8_t;
+    typedef unsigned short uint16_t;
+    typedef unsigned int   uint32_t;
+    typedef unsigned long  uint64_t;
+
+#endif
