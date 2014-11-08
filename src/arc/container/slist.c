@@ -245,7 +245,7 @@ int arc_slist_next(struct arc_iterator * it)
 
     it->node = current->next;
 
-    return (it->node == (struct arc_slist_node *)&list->back);
+    return (it->node != (struct arc_slist_node *)&list->back);
 }
 
 /******************************************************************************/
