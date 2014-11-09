@@ -10,5 +10,6 @@
 struct arc_iterator
 {
     void * container;
-    void * node;
+    void * node_ptr;
+    unsigned long node_idx;
 };

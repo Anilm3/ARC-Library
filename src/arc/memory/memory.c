@@ -13,7 +13,7 @@
  */
 #include <limits.h>
 #include <arc/memory/memory.h>
-#include <arc/type/integer.h>
+#include <arc/common/defines.h>
 #include <errno.h>
 
 /******************************************************************************/

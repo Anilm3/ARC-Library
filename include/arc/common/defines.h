@@ -34,6 +34,13 @@
 extern "C"{
 #endif 
 
+#ifdef ARC_C99
+# include <stdint.h>
+#else
+/** @brief Maximum size of size_t type */
+# define SIZE_MAX ULONG_MAX
+#endif
+
 /** @brief Return value to indicate success in the operation */
 #define ARC_SUCCESS        0
 /** @brief Return value to indicate a generic error */

@@ -25,7 +25,8 @@ struct arc_iterator * arc_iterator_create(void * container)
     }
 
     it->container = container;
-    it->node = NULL;
+    it->node_ptr = NULL;
+    it->node_idx = 0;
 
     return it;
 }

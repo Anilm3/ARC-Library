@@ -22,8 +22,8 @@
 /* Container definition */
 struct arc_darray
 {
-    unsigned size;
-    unsigned allocated_size;
+    size_t size;
+    size_t allocated_size;
     size_t data_size;
     void * data;
 };
@@ -65,15 +65,10 @@ void arc_darray_destroy(struct arc_darray * darray)
 /******************************************************************************/
 
 static int arc_darray_insert_node_before(struct arc_darray * darray,
-                                         long current, void * data)
+                                         unsigned long current, void * data)
 {
-    long data_to_move = darray->size - current;
-    long data_size = (long) darray->data_size;
-
-    if (current < 0)
-    {
-        return ARC_ERROR;
-    }
+    unsigned long data_to_move = darray->size - current;
+    unsigned long data_size = darray->data_size;
 
     if (darray->size == darray->allocated_size)
     {
@@ -106,28 +101,16 @@ static int arc_darray_insert_node_before(struct arc_darray * darray,
 
 /******************************************************************************/
 
-static int arc_darray_insert_node_after(struct arc_darray * darray,
-                                        long current, void * data)
-{
-    if ((current + 1) > darray->size)
-    {
-        return ARC_ERROR;
-    }
-
-    return arc_darray_insert_node_before(darray, current + 1, data);
-}
-
-/******************************************************************************/
-
-static void arc_darray_erase_node(struct arc_darray * darray, long current)
+static void arc_darray_erase_node(struct arc_darray * darray, 
+                                  unsigned long current)
 {
     if (darray->size > 0)
     {
-        long data_to_move = darray->size - (current  + 1);
+        unsigned long data_to_move = darray->size - (current  + 1);
 
         if (data_to_move > 0)
         {
-            long data_size = (long) darray->data_size;
+            unsigned long data_size = darray->data_size;
 
             memmove((char *)darray->data + data_size * current,
                     (char *)darray->data + data_size * (current + 1),
@@ -140,7 +123,7 @@ static void arc_darray_erase_node(struct arc_darray * darray, long current)
 
 /******************************************************************************/
 
-void * arc_darray_at(struct arc_darray * darray, unsigned idx)
+void * arc_darray_at(struct arc_darray * darray, unsigned long idx)
 {
     return (void *)((char *)darray->data + darray->data_size*idx);
 }
@@ -163,7 +146,7 @@ void arc_darray_pop_front(struct arc_darray * darray)
 
 int arc_darray_push_back(struct arc_darray * darray, void * data)
 {
-    return arc_darray_insert_node_after(darray, (long)darray->size - 1, data);
+    return arc_darray_insert_node_before(darray, darray->size, data);
 }
 
 /******************************************************************************/
@@ -206,7 +189,7 @@ int arc_darray_empty(struct arc_darray * darray)
 
 /******************************************************************************/
 
-unsigned arc_darray_size(struct arc_darray * darray)
+unsigned long arc_darray_size(struct arc_darray * darray)
 {
     return darray->size;
 }
@@ -222,19 +205,19 @@ void arc_darray_clear(struct arc_darray * darray)
 
 void arc_darray_before_begin(struct arc_iterator * it)
 {
-    it->node = (void *)(-1);
+    it->node_idx = 0;
 }
 
 /******************************************************************************/
 
 void arc_darray_begin(struct arc_iterator * it)
 {
-    it->node = (void *)(0);
+    it->node_idx = 1;
 }
 
 /******************************************************************************/
 
-int arc_darray_position(struct arc_iterator * it, unsigned idx)
+int arc_darray_position(struct arc_iterator * it, unsigned long idx)
 {
     struct arc_darray * darray = it->container;
 
@@ -243,7 +226,7 @@ int arc_darray_position(struct arc_iterator * it, unsigned idx)
         return ARC_ERROR;
     }
 
-    it->node = (void *)((long)idx);
+    it->node_idx = idx + 1;
 
     return ARC_SUCCESS;
 }
@@ -254,7 +237,7 @@ void arc_darray_end(struct arc_iterator * it)
 {
     struct arc_darray * darray = it->container;
     
-    it->node = (void *)((long)darray->size - 1);
+    it->node_idx = darray->size;
 }
 
 /******************************************************************************/
@@ -263,8 +246,7 @@ void arc_darray_after_end(struct arc_iterator * it)
 {
     struct arc_darray * darray = it->container;
     
-    it->node = (void *)((long)darray->size);
-
+    it->node_idx = darray->size + 1;
 }
 
 /******************************************************************************/
@@ -272,9 +254,13 @@ void arc_darray_after_end(struct arc_iterator * it)
 int arc_darray_insert_before(struct arc_iterator * it, void * data)
 {
     struct arc_darray * darray = it->container;
-    long idx = ((long)it->node);
 
-    return arc_darray_insert_node_before(darray, idx, data);
+    if (it->node_idx == 0)
+    {
+        return ARC_ERROR;
+    }
+
+    return arc_darray_insert_node_before(darray, it->node_idx - 1, data);
 }
 
 /******************************************************************************/
@@ -282,9 +268,13 @@ int arc_darray_insert_before(struct arc_iterator * it, void * data)
 int arc_darray_insert_after(struct arc_iterator * it, void * data)
 {
     struct arc_darray * darray = it->container;
-    long idx = ((long)it->node);
 
-    return arc_darray_insert_node_after(darray, idx, data);
+    if (it->node_idx > darray->size)
+    {
+        return ARC_ERROR;
+    }
+
+    return arc_darray_insert_node_before(darray, it->node_idx, data);
 }
 
 /******************************************************************************/
@@ -292,9 +282,13 @@ int arc_darray_insert_after(struct arc_iterator * it, void * data)
 void arc_darray_erase(struct arc_iterator * it)
 {
     struct arc_darray * darray = it->container;
-    long idx = ((long)it->node);
 
-    arc_darray_erase_node(darray, idx);
+    if (it->node_idx == 0)
+    {
+        return;
+    }
+
+    arc_darray_erase_node(darray, it->node_idx - 1);
 }
 
 /******************************************************************************/
@@ -302,9 +296,13 @@ void arc_darray_erase(struct arc_iterator * it)
 void * arc_darray_data(struct arc_iterator * it)
 {
     struct arc_darray * darray = it->container;
-    long idx = ((long)it->node);
 
-    return arc_darray_at(darray, (unsigned)idx);
+    if (it->node_idx == 0)
+    {
+        return NULL;
+    }
+
+    return arc_darray_at(darray, it->node_idx - 1);
 }
 
 /******************************************************************************/
@@ -312,14 +310,14 @@ void * arc_darray_data(struct arc_iterator * it)
 int arc_darray_next(struct arc_iterator * it)
 {
     struct arc_darray * darray = it->container;
-    long idx = (long)it->node + 1;
+    unsigned long idx = it->node_idx + 1;
 
-    if (idx >= darray->size)
+    if (idx > darray->size)
     {
         return 0;
     }
 
-    it->node = (void *)idx;
+    it->node_idx = idx;
 
     return 1;
 }
@@ -328,14 +326,15 @@ int arc_darray_next(struct arc_iterator * it)
 
 int arc_darray_previous(struct arc_iterator * it)
 {
-    long idx = (long)it->node - 1;
+    unsigned long idx = it->node_idx - 1;
 
-    if (idx < 0)
+    if (idx == 0)
     {
+        it->node_idx = 0;
         return 0;
     }
 
-    it->node = (void *)idx;
+    it->node_idx = idx;
 
     return 1;
 }
