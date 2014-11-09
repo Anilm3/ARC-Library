@@ -270,11 +270,13 @@ static int arc_deque_move_right(struct arc_deque * deque,
 }
 
 /******************************************************************************/
+#include <stdio.h>
 
 int arc_deque_insert_node_before(struct arc_deque * deque,
                                  unsigned long current, void * data)
 {
     unsigned long block_num, block_idx;
+    unsigned long left_mem, right_mem;
     void * data_pos;
 
     if (current < deque->start_idx)
@@ -282,9 +284,11 @@ int arc_deque_insert_node_before(struct arc_deque * deque,
         return ARC_ERROR;
     }
 
-    if ((current - deque->start_idx) <= (deque->end_idx - current))
+    left_mem = current - deque->start_idx;
+    right_mem = (current > deque->end_idx ? 0 : deque->end_idx - current + 1);
+    if (left_mem <= right_mem)
     {
-        unsigned long size = current - deque->start_idx;
+        unsigned long size = left_mem;
 
         current -= deque->start_idx;
 
@@ -307,7 +311,7 @@ int arc_deque_insert_node_before(struct arc_deque * deque,
     }
     else
     {
-        unsigned long size = deque->end_idx - current + 1;
+        unsigned long size = right_mem;
 
         if (deque->size > 0 && 
             deque->end_idx == (deque->num_blocks * BLOCK_SIZE - 1))
