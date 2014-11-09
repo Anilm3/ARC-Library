@@ -310,33 +310,20 @@ void * arc_darray_data(struct arc_iterator * it)
 int arc_darray_next(struct arc_iterator * it)
 {
     struct arc_darray * darray = it->container;
-    unsigned long idx = it->node_idx + 1;
 
-    if (idx > darray->size)
-    {
-        return 0;
-    }
+    it->node_idx = (it->node_idx > darray->size ? it->node_idx : 
+                                                  it->node_idx + 1);
 
-    it->node_idx = idx;
-
-    return 1;
+    return (it->node_idx <= darray->size);
 }
 
 /******************************************************************************/
 
 int arc_darray_previous(struct arc_iterator * it)
 {
-    unsigned long idx = it->node_idx - 1;
+    it->node_idx = (it->node_idx == 0 ? 0 : it->node_idx - 1);
 
-    if (idx == 0)
-    {
-        it->node_idx = 0;
-        return 0;
-    }
-
-    it->node_idx = idx;
-
-    return 1;
+    return (it->node_idx != 0);
 }
 
 /******************************************************************************/

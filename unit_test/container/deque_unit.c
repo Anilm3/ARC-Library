@@ -493,7 +493,7 @@ ARC_UNIT_TEST(iterators_erase)
 
     for (i = 0; i < 10000; i++)
     {
-        unsigned end_idx = arc_deque_size(deque) - 1;
+        unsigned long end_idx = arc_deque_size(deque) - 1;
         ARC_ASSERT_INT_EQUAL(arc_deque_position(it, end_idx), ARC_SUCCESS);
         arc_deque_erase(it);
     }

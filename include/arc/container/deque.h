@@ -66,7 +66,7 @@ void arc_deque_destroy(arc_deque_t deque);
  * @param[in] index Position to access
  * @return Data pointer of the first element
  */
-void * arc_deque_at(arc_deque_t deque, unsigned idx);
+void * arc_deque_at(arc_deque_t deque, unsigned long idx);
 /**
  * @brief Adds a new element to the front of the deque
  *
@@ -125,7 +125,7 @@ int arc_deque_empty(arc_deque_t deque);
  * @param[in] deque Deque to perform the operation on
  * @return Size of the deque
  */
-unsigned arc_deque_size(arc_deque_t deque);
+unsigned long arc_deque_size(arc_deque_t deque);
 /**
  * @brief Clears the contents of the deque
  *
@@ -156,7 +156,7 @@ void arc_deque_begin(arc_iterator_t it);
  * @retval ARC_ERROR If the specified index is out of range
  * @retval ARC_SUCCESS If the iterator was set successfully
  */
-int arc_deque_position(arc_iterator_t it, unsigned idx);
+int arc_deque_position(arc_iterator_t it, unsigned long idx);
 /**
  * @brief Sets an iterator to the last element of the deque
  *

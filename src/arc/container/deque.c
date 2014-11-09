@@ -22,10 +22,10 @@
 /* Container definition */
 struct arc_deque
 {
-    unsigned size;
-    unsigned num_blocks;
-    unsigned start_idx;
-    unsigned end_idx;
+    size_t size;
+    unsigned long num_blocks;
+    unsigned long start_idx;
+    unsigned long end_idx;
     size_t data_size;
     void ** data;
 };
@@ -80,8 +80,8 @@ void arc_deque_destroy(struct arc_deque * deque)
 
 int arc_deque_realloc(struct arc_deque * deque)
 {
-    unsigned num_blocks_delta = deque->num_blocks/2;
-    unsigned new_num_blocks = num_blocks_delta*2 + deque->num_blocks;
+    unsigned long num_blocks_delta = deque->num_blocks/2;
+    unsigned long new_num_blocks = num_blocks_delta*2 + deque->num_blocks;
     void * new_data = malloc(sizeof(void *)*new_num_blocks);
 
     if (new_data == NULL)
@@ -111,12 +111,12 @@ int arc_deque_realloc(struct arc_deque * deque)
 /******************************************************************************/
 
 static int arc_deque_move_left(struct arc_deque * deque,
-                               unsigned start_idx, 
-                               unsigned size)
+                               unsigned long start_idx, 
+                               unsigned long size)
 {
-    unsigned block, mem_to_copy, end_idx;
-    unsigned start_block_num, start_block_idx;
-    unsigned end_block_num, end_block_idx;
+    unsigned long block, mem_to_copy, end_idx;
+    unsigned long start_block_num, start_block_idx;
+    unsigned long end_block_num, end_block_idx;
     void *data_pos, *new_data_pos;
 
     end_idx = start_idx + size - 1;
@@ -194,12 +194,12 @@ static int arc_deque_move_left(struct arc_deque * deque,
 /******************************************************************************/
 
 static int arc_deque_move_right(struct arc_deque * deque,
-                               unsigned start_idx, 
-                               unsigned size)
+                                unsigned long start_idx, 
+                                unsigned long size)
 {
-    unsigned block, mem_to_copy, end_idx;
-    unsigned start_block_num, start_block_idx;
-    unsigned end_block_num, end_block_idx;
+    unsigned long block, mem_to_copy, end_idx;
+    unsigned long start_block_num, start_block_idx;
+    unsigned long end_block_num, end_block_idx;
     void *data_pos, *new_data_pos;
 
     end_idx = start_idx + size - 1;
@@ -285,22 +285,21 @@ static int arc_deque_move_right(struct arc_deque * deque,
 /******************************************************************************/
 
 int arc_deque_insert_node_before(struct arc_deque * deque,
-                                long current, void * data)
+                                 unsigned long current, void * data)
 {
-    unsigned block_num, block_idx;
+    unsigned long block_num, block_idx;
     void * data_pos;
-    unsigned cur_pos = (unsigned)current;
 
     if (current < deque->start_idx)
     {
         return ARC_ERROR;
     }
 
-    if (((long)cur_pos - deque->start_idx) <= ((long)deque->end_idx - cur_pos))
+    if ((current - deque->start_idx) <= (deque->end_idx - current))
     {
-        unsigned size = cur_pos - deque->start_idx;
+        unsigned long size = current - deque->start_idx;
 
-        cur_pos -= deque->start_idx;
+        current -= deque->start_idx;
 
         if(deque->size > 0 && deque->start_idx == 0)
         {
@@ -317,34 +316,33 @@ int arc_deque_insert_node_before(struct arc_deque * deque,
 
         deque->start_idx--;
 
-        cur_pos += deque->start_idx;
+        current += deque->start_idx;
     }
     else
     {
-        unsigned size = deque->end_idx - cur_pos + 1;
-
+        unsigned long size = deque->end_idx - current + 1;
 
         if (deque->size > 0 && 
             deque->end_idx == (deque->num_blocks * BLOCK_SIZE - 1))
         {
-            cur_pos -= deque->start_idx;
+            current -= deque->start_idx;
             if (arc_deque_realloc(deque) != ARC_SUCCESS)
             {
                 return ARC_OUT_OF_MEMORY;
             }
-            cur_pos += deque->start_idx;
+            current += deque->start_idx;
         }
 
         if (size > 0)
         {
-            arc_deque_move_right(deque, cur_pos, size);
+            arc_deque_move_right(deque, current, size);
         }
 
         deque->end_idx++;
     }
 
-    block_num = cur_pos / BLOCK_SIZE;
-    block_idx = cur_pos % BLOCK_SIZE;
+    block_num = current / BLOCK_SIZE;
+    block_idx = current % BLOCK_SIZE;
 
     if (deque->data[block_num] == NULL)
     {
@@ -362,32 +360,17 @@ int arc_deque_insert_node_before(struct arc_deque * deque,
 
 /******************************************************************************/
 
-int arc_deque_insert_node_after(struct arc_deque * deque,
-                                 long current, void * data)
-{
-    if (current > deque->end_idx)
-    {
-        return ARC_ERROR;
-    }
-
-    return arc_deque_insert_node_before(deque, current + 1 , data);
-}
-
-/******************************************************************************/
-
 void arc_deque_erase_node(struct arc_deque * deque,
-                          long current)
+                          unsigned long current)
 {
-    unsigned cur_pos = (unsigned)current;
-
     if (current < deque->start_idx || current > deque->end_idx)
     {
         return;
     }
 
-    if (((long)cur_pos - deque->start_idx) <= ((long)deque->end_idx - cur_pos))
+    if ((current - deque->start_idx) <= (deque->end_idx - current))
     {
-        unsigned size = cur_pos - deque->start_idx;
+        unsigned long size = current - deque->start_idx;
 
         if (size > 0)
         {
@@ -398,11 +381,11 @@ void arc_deque_erase_node(struct arc_deque * deque,
     }
     else
     {
-        unsigned size = deque->end_idx - cur_pos;
+        unsigned long size = deque->end_idx - current;
 
         if (size > 0)
         {
-            arc_deque_move_left(deque, cur_pos + 1, size);
+            arc_deque_move_left(deque, current + 1, size);
         }
 
         deque->end_idx--;
@@ -413,11 +396,11 @@ void arc_deque_erase_node(struct arc_deque * deque,
 
 /******************************************************************************/
 
-void * arc_deque_at(struct arc_deque * deque, unsigned idx)
+void * arc_deque_at(struct arc_deque * deque, unsigned long idx)
 {
     if (idx < deque->size)
     {
-        unsigned block_num, block_idx;
+        unsigned long block_num, block_idx;
 
         idx = (deque->start_idx + idx);/* % (deque->num_blocks * BLOCK_SIZE);*/
         block_num = idx / BLOCK_SIZE;
@@ -451,7 +434,7 @@ void arc_deque_pop_front(struct arc_deque * deque)
 
 int arc_deque_push_back(struct arc_deque * deque, void * data)
 {
-    return arc_deque_insert_node_after(deque, deque->end_idx, data);
+    return arc_deque_insert_node_before(deque, deque->end_idx + 1, data);
 }
 
 /******************************************************************************/
@@ -469,8 +452,8 @@ void arc_deque_pop_back(struct arc_deque * deque)
 
 void * arc_deque_front(struct arc_deque * deque)
 {
-    unsigned block_num = deque->start_idx / BLOCK_SIZE;
-    unsigned block_idx = deque->start_idx % BLOCK_SIZE;
+    unsigned long block_num = deque->start_idx / BLOCK_SIZE;
+    unsigned long block_idx = deque->start_idx % BLOCK_SIZE;
 
     if (deque->size == 0)
     {
@@ -484,8 +467,8 @@ void * arc_deque_front(struct arc_deque * deque)
 
 void * arc_deque_back(struct arc_deque * deque)
 {
-    unsigned block_num = deque->end_idx / BLOCK_SIZE;
-    unsigned block_idx = deque->end_idx % BLOCK_SIZE;
+    unsigned long block_num = deque->end_idx / BLOCK_SIZE;
+    unsigned long block_idx = deque->end_idx % BLOCK_SIZE;
 
     if (deque->size == 0)
     {
@@ -505,7 +488,7 @@ int arc_deque_empty(struct arc_deque * deque)
 
 /******************************************************************************/
 
-unsigned arc_deque_size(struct arc_deque * deque)
+unsigned long arc_deque_size(struct arc_deque * deque)
 {
     return deque->size;
 }
@@ -523,32 +506,28 @@ void arc_deque_clear(struct arc_deque * deque)
 
 void arc_deque_before_begin(struct arc_iterator * it)
 {
-    struct arc_deque * deque = it->container;
-
-    it->node_ptr = (void *)((long)deque->start_idx - 1);
+    it->node_idx = 0;
 }
 
 /******************************************************************************/
 
 void arc_deque_begin(struct arc_iterator * it)
 {
-    struct arc_deque * deque = it->container;
-    
-    it->node_ptr = (void *)((long)deque->start_idx);
+    it->node_idx = 1;
 }
 
 /******************************************************************************/
 
-int arc_deque_position(struct arc_iterator * it, unsigned idx)
+int arc_deque_position(struct arc_iterator * it, unsigned long idx)
 {
     struct arc_deque * deque = it->container;
-    
-    if (idx > deque->size)
+
+    if (idx >= deque->size)
     {
         return ARC_ERROR;
     }
 
-    it->node_ptr = (void *)((long)(deque->start_idx + idx));
+    it->node_idx = idx + 1;
 
     return ARC_SUCCESS;
 }
@@ -558,8 +537,8 @@ int arc_deque_position(struct arc_iterator * it, unsigned idx)
 void arc_deque_end(struct arc_iterator * it)
 {
     struct arc_deque * deque = it->container;
-    
-    it->node_ptr = (void *)((long)deque->end_idx);
+
+    it->node_idx = deque->size;
 }
 
 /******************************************************************************/
@@ -568,7 +547,7 @@ void arc_deque_after_end(struct arc_iterator * it)
 {
     struct arc_deque * deque = it->container;
     
-    it->node_ptr = (void *)((long)deque->end_idx + 1);
+    it->node_idx = deque->size + 1;
 }
 
 /******************************************************************************/
@@ -576,9 +555,15 @@ void arc_deque_after_end(struct arc_iterator * it)
 int arc_deque_insert_before(struct arc_iterator * it, void * data)
 {
     struct arc_deque * deque = it->container;
-    long idx = (long)it->node_ptr;
 
-    return arc_deque_insert_node_before(deque, idx , data);
+    if (it->node_idx == 0)
+    {
+        return ARC_ERROR;
+    }
+
+    return arc_deque_insert_node_before(deque,
+                                        deque->start_idx + it->node_idx - 1,
+                                        data);
 }
 
 /******************************************************************************/
@@ -586,9 +571,15 @@ int arc_deque_insert_before(struct arc_iterator * it, void * data)
 int arc_deque_insert_after(struct arc_iterator * it, void * data)
 {
     struct arc_deque * deque = it->container;
-    long idx = (long)it->node_ptr;
 
-    return arc_deque_insert_node_after(deque, idx , data);
+    if (it->node_idx > deque->size)
+    {
+        return ARC_ERROR;
+    }
+
+    return arc_deque_insert_node_before(deque, 
+                                        deque->start_idx + it->node_idx,
+                                        data);
 }
 
 /******************************************************************************/
@@ -596,9 +587,13 @@ int arc_deque_insert_after(struct arc_iterator * it, void * data)
 void arc_deque_erase(struct arc_iterator * it)
 {
     struct arc_deque * deque = it->container;
-    long idx = (long)it->node_ptr;
 
-    arc_deque_erase_node(deque, idx);
+    if (it->node_idx == 0)
+    {
+        return;
+    }
+
+    arc_deque_erase_node(deque, deque->start_idx + it->node_idx - 1);
 }
 
 /******************************************************************************/
@@ -606,9 +601,13 @@ void arc_deque_erase(struct arc_iterator * it)
 void * arc_deque_data(struct arc_iterator * it)
 {
     struct arc_deque * deque = it->container;
-    long idx = ((long)it->node_ptr) - deque->start_idx;
 
-    return arc_deque_at(deque, (unsigned)idx);
+    if (it->node_idx == 0)
+    {
+        return NULL;
+    }
+
+    return arc_deque_at(deque, it->node_idx - 1);
 }
 
 /******************************************************************************/
@@ -616,14 +615,14 @@ void * arc_deque_data(struct arc_iterator * it)
 int arc_deque_next(struct arc_iterator * it)
 {
     struct arc_deque * deque = it->container;
-    long idx = (long)it->node_ptr + 1;
+    unsigned long idx = it->node_idx + 1;
 
-    if (idx > deque->end_idx)
+    if (idx > deque->size)
     {
         return 0;
     }
 
-    it->node_ptr = (void *)idx;
+    it->node_idx = idx;
 
     return 1;
 }
@@ -632,15 +631,14 @@ int arc_deque_next(struct arc_iterator * it)
 
 int arc_deque_previous(struct arc_iterator * it)
 {
-    struct arc_deque * deque = it->container;
-    long idx = (long)it->node_ptr - 1;
+    unsigned long idx = it->node_idx - 1;
 
-    if (idx < deque->start_idx)
+    if (idx == 0)
     {
         return 0;
     }
 
-    it->node_ptr = (void *)idx;
+    it->node_idx = idx;
 
     return 1;
 }
