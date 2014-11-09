@@ -9,34 +9,10 @@
 
 #include <string.h>
 #include <arc/container/dlist.h>
+#include <arc/container/dlist_def.h>
 #include <arc/common/defines.h>
 
 #include <arc/container/iterator_def.h>
-
-/* Sentinel node definition */
-struct arc_dlist_snode
-{
-    struct arc_dlist_node * next;
-    struct arc_dlist_node * prev;
-};
-
-/* Standard node definition */
-struct arc_dlist_node
-{
-    struct arc_dlist_node * next;
-    struct arc_dlist_node * prev;
-    char data[1];
-};
-
-/* Container definition */
-struct arc_dlist
-{
-    struct arc_dlist_snode front;
-    struct arc_dlist_snode back;
-    int size;
-    size_t data_size;
-    size_t node_size;
-};
 
 /******************************************************************************/
 

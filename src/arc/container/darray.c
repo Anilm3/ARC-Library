@@ -11,22 +11,11 @@
 #include <string.h>
 #include <strings.h>
 #include <arc/container/darray.h>
+#include <arc/container/darray_def.h>
 #include <arc/common/defines.h>
 #include <arc/memory/copy.h>
 
 #include <arc/container/iterator_def.h>
-
-#define INITIAL_BLOCK_SIZE 32
-#define GROWTH_FACTOR 2
-
-/* Container definition */
-struct arc_darray
-{
-    size_t size;
-    size_t allocated_size;
-    size_t data_size;
-    void * data;
-};
 
 /******************************************************************************/
 

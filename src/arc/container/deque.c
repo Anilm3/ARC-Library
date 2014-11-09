@@ -11,24 +11,11 @@
 #include <string.h>
 #include <strings.h>
 #include <arc/container/deque.h>
+#include <arc/container/deque_def.h>
 #include <arc/common/defines.h>
 #include <arc/memory/copy.h>
 
 #include <arc/container/iterator_def.h>
-
-#define BLOCK_SIZE 32
-#define INITIAL_NUM_BLOCKS 8
-
-/* Container definition */
-struct arc_deque
-{
-    size_t size;
-    unsigned long num_blocks;
-    unsigned long start_idx;
-    unsigned long end_idx;
-    size_t data_size;
-    void ** data;
-};
 
 /******************************************************************************/
 
