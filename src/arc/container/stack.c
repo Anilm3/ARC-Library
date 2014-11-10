@@ -109,7 +109,7 @@ int arc_stack_empty(struct arc_stack * stack)
 
 /******************************************************************************/
 
-int arc_stack_size(struct arc_stack * stack)
+size_t arc_stack_size(struct arc_stack * stack)
 {
     return stack->size;
 }

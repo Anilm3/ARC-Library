@@ -125,7 +125,7 @@ int arc_darray_empty(arc_darray_t darray);
  * @param[in] darray Dynamic Array to perform the operation on
  * @return Size of the darray
  */
-unsigned long arc_darray_size(arc_darray_t darray);
+size_t arc_darray_size(arc_darray_t darray);
 /**
  * @brief Clears the contents of the darray
  *

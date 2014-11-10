@@ -16,7 +16,7 @@
 struct arc_deque
 {
     size_t size;
-    unsigned long num_blocks;
+    size_t num_blocks;
     unsigned long start_idx;
     unsigned long end_idx;
     size_t data_size;

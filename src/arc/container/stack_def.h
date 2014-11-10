@@ -24,7 +24,7 @@ struct arc_stack_node
 struct arc_stack
 {
     struct arc_stack_node * top;
-    int size;
+    size_t size;
     size_t data_size;
     size_t node_size;
 };

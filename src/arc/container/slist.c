@@ -110,7 +110,7 @@ void arc_slist_erase_node_after(struct arc_slist * list,
 
 /******************************************************************************/
 
-int arc_slist_size(struct arc_slist * list)
+size_t arc_slist_size(struct arc_slist * list)
 {
     return list->size; 
 }

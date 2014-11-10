@@ -29,7 +29,7 @@ struct arc_dlist
 {
     struct arc_dlist_snode front;
     struct arc_dlist_snode back;
-    int size;
+    size_t size;
     size_t data_size;
     size_t node_size;
 };

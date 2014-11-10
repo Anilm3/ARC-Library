@@ -64,7 +64,7 @@ void arc_dlist_destroy(arc_dlist_t list);
  * @param[in] list List to perform the operation on
  * @return Size of the list
  */
-int arc_dlist_size(arc_dlist_t list);
+size_t arc_dlist_size(arc_dlist_t list);
 /**
  * @brief Returns whether the list is empty or not
  *

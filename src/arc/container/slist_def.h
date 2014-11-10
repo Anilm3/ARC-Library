@@ -27,7 +27,7 @@ struct arc_slist
 {
     struct arc_slist_snode front;
     struct arc_slist_snode back;
-    int size;
+    size_t size;
     size_t data_size;
     size_t node_size;
 };

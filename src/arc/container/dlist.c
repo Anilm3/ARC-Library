@@ -132,7 +132,7 @@ void arc_dlist_erase_node(struct arc_dlist * list,
 
 /******************************************************************************/
 
-int arc_dlist_size(struct arc_dlist * list)
+size_t arc_dlist_size(struct arc_dlist * list)
 {
     return list->size;
 }

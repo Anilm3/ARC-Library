@@ -178,7 +178,7 @@ int arc_darray_empty(struct arc_darray * darray)
 
 /******************************************************************************/
 
-unsigned long arc_darray_size(struct arc_darray * darray)
+size_t arc_darray_size(struct arc_darray * darray)
 {
     return darray->size;
 }

@@ -94,7 +94,7 @@ int arc_stack_empty(arc_stack_t stack);
  * @param[in] stack Stack to perform the operation on
  * @return Size of the stack
  */
-int arc_stack_size(arc_stack_t stack);
+size_t arc_stack_size(arc_stack_t stack);
 /**
  * @brief Clears the contents of the stack
  *
