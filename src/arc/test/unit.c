@@ -243,21 +243,21 @@ int arc_assert_string_equal(const char * left, const char * right)
 
 /******************************************************************************/
 
-int arc_assert_bit_set(unsigned num, int bit)
+int arc_assert_bit_set(unsigned long num, int bit)
 {
     return ((num >> bit) & 1);
 }
 
 /******************************************************************************/
 
-int arc_assert_bit_not_set(int num, int bit)
+int arc_assert_bit_not_set(unsigned long num, int bit)
 {
     return !((num >> bit) & 1);
 }
 
 /******************************************************************************/
 
-int arc_assert_float_equal(float left, float right, float delta)
+int arc_assert_float_equal(float left, float right, double delta)
 {
     return (fabs(left - right) < delta);
 }

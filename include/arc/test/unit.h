@@ -27,64 +27,117 @@ extern "C"{
 #endif 
 
 /**
- * @brief Generic assertion
+ * @brief Generic assertion expecting a function with 0 parameters
  *
  * @param[in] function Function to evaluate
- * @param[in] expected Expected expression to print
- * @param[in] obtained Obtained expression to print
+ * @param[in] expected_fmt Expected format to print
+ * @param[in] expected_var Expected variable to print
+ * @param[in] obtained_fmt Obtained format to print
+ * @param[in] obtained_var Obtained variable to print
  */
-#define ARC_ASSERT_GENERIC0(function, expected, obtained) \
-if (!function) \
+#define ARC_ASSERT_GEN0(function, \
+                        expected_fmt, expected_var, \
+                        obtained_fmt, obtained_var) \
 { \
-    printf("\n%s:%d: Failure\n", __FILE__, __LINE__); \
-    printf("    Expected: " expected); \
-    printf("\n"); \
-    printf("    Obtained: " obtained); \
-    printf("\n"); \
-    arc_unit_set_test_failed(); \
-    return; \
+    if (!function()) \
+    { \
+        printf("\n%s:%d: Failure\n", __FILE__, __LINE__); \
+        printf("    Expected: " expected_fmt "\n", expected_var); \
+        printf("    Obtained: " obtained_fmt "\n", obtained_var); \
+        arc_unit_set_test_failed(); \
+        return; \
+    } \
 }
-
 /**
- * @brief Generic assertion
+ * @brief Generic assertion expecting a function with 1 parameters
  *
  * @param[in] function Function to evaluate
- * @param[in] expected Expected expression to print
- * @param[in] obtained Obtained expression to print
- * @param[in] val Parameter to print (obtained should contain format)
+ * @param[in] type0 Type of variable 0
+ * @param[in] var0 Variable number 0 to be used with the function
+ * @param[in] expected_fmt Expected format to print
+ * @param[in] expected_var Expected variable to print
+ * @param[in] obtained_fmt Obtained format to print
+ * @param[in] obtained_var Obtained variable to print
  */
-#define ARC_ASSERT_GENERIC1(function, expected, obtained, val) \
-if (!function) \
+#define ARC_ASSERT_GEN1(function, \
+                        type0, var0, \
+                        expected_fmt, expected_var, \
+                        obtained_fmt, obtained_var) \
 { \
-    printf("\n%s:%d: Failure\n", __FILE__, __LINE__); \
-    printf("    Expected: " expected); \
-    printf("\n"); \
-    printf("    Obtained: " obtained, val); \
-    printf("\n"); \
-    arc_unit_set_test_failed(); \
-    return; \
+    type0 _0 = (type0)(var0);\
+    if (!function(_0)) \
+    { \
+        printf("\n%s:%d: Failure\n", __FILE__, __LINE__); \
+        printf("    Expected: " expected_fmt "\n", expected_var); \
+        printf("    Obtained: " obtained_fmt "\n", obtained_var); \
+        arc_unit_set_test_failed(); \
+        return; \
+    } \
 }
-
 /**
- * @brief Generic assertion
+ * @brief Generic assertion expecting a function with 2 parameters
  *
  * @param[in] function Function to evaluate
- * @param[in] expected Expected expression to print
- * @param[in] val1 Parameter to print (expected should contain format)
- * @param[in] obtained Obtained expression to print
- * @param[in] val2 Parameter to print (obtained should contain format)
+ * @param[in] type0 Type of variable 0
+ * @param[in] var0 Variable number 0 to be used with the function
+ * @param[in] type1 Type of variable 1
+ * @param[in] var1 Variable number 1 to be used with the function
+ * @param[in] expected_fmt Expected format to print
+ * @param[in] expected_var Expected variable to print
+ * @param[in] obtained_fmt Obtained format to print
+ * @param[in] obtained_var Obtained variable to print
  */
-#define ARC_ASSERT_GENERIC2(function, expected, val1, obtained, val2) \
-if (!function) \
+#define ARC_ASSERT_GEN2(function, \
+                        type0, var0, \
+                        type1, var1, \
+                        expected_fmt, expected_var, \
+                        obtained_fmt, obtained_var) \
 { \
-    printf("\n%s:%d: Failure\n", __FILE__, __LINE__); \
-    printf("    Expected: " expected, val1); \
-    printf("\n"); \
-    printf("    Obtained: " obtained, val2); \
-    printf("\n"); \
-    arc_unit_set_test_failed(); \
-    return; \
-} 
+    type0 _0 = (type0)(var0);\
+    type1 _1 = (type1)(var1);\
+    if (!function(_0, _1)) \
+    { \
+        printf("\n%s:%d: Failure\n", __FILE__, __LINE__); \
+        printf("    Expected: " expected_fmt "\n", expected_var); \
+        printf("    Obtained: " obtained_fmt "\n", obtained_var); \
+        arc_unit_set_test_failed(); \
+        return; \
+    } \
+}
+/**
+ * @brief Generic assertion expecting a function with 3 parameters
+ *
+ * @param[in] function Function to evaluate
+ * @param[in] type0 Type of variable 0
+ * @param[in] var0 Variable number 0 to be used with the function
+ * @param[in] type1 Type of variable 1
+ * @param[in] var1 Variable number 1 to be used with the function
+ * @param[in] type2 Type of variable 2
+ * @param[in] var2 Variable number 2 to be used with the function
+ * @param[in] expected_fmt Expected format to print
+ * @param[in] expected_var Expected variable to print
+ * @param[in] obtained_fmt Obtained format to print
+ * @param[in] obtained_var Obtained variable to print
+ */
+#define ARC_ASSERT_GEN3(function, \
+                        type0, var0, \
+                        type1, var1, \
+                        type2, var2, \
+                        expected_fmt, expected_var, \
+                        obtained_fmt, obtained_var) \
+{ \
+    type0 _0 = (type0)(var0);\
+    type1 _1 = (type1)(var1);\
+    type1 _2 = (type2)(var2);\
+    if (!function(_0, _1, _2)) \
+    { \
+        printf("\n%s:%d: Failure\n", __FILE__, __LINE__); \
+        printf("    Expected: " expected_fmt "\n", expected_var); \
+        printf("    Obtained: " obtained_fmt "\n", obtained_var); \
+        arc_unit_set_test_failed(); \
+        return; \
+    } \
+}
 /**
  * @brief Assertion which always fails
  */
@@ -98,37 +151,40 @@ if (!function) \
  * @param[in] exp Expression to evaluate
  */
 #define ARC_ASSERT_TRUE(exp) \
-    ARC_ASSERT_GENERIC0(arc_assert_true((int)(exp)), \
-                        #exp " == 1", \
-                        #exp " == 0")
+    ARC_ASSERT_GEN1(arc_assert_true, \
+                    int, exp, \
+                    #exp " == %d", 1, \
+                    #exp " == %d", 0) 
 /**
  * @brief Asserts the expression is false
  *
  * @param[in] exp Expression to evaluate
  */
 #define ARC_ASSERT_FALSE(exp) \
-    ARC_ASSERT_GENERIC0(arc_assert_false((int)(exp)), \
-                        #exp " == 0", \
-                        #exp " == 1") 
+    ARC_ASSERT_GEN1(arc_assert_false, \
+                    int, exp, \
+                    #exp " == %d", 0, \
+                    #exp " == %d", 1) 
 /**
  * @brief Asserts the expression is NULL
  *
  * @param[in] exp Expression to evaluate
  */
 #define ARC_ASSERT_POINTER_NULL(exp) \
-    ARC_ASSERT_GENERIC1(arc_assert_pointer_null((void *)(exp)), \
-                                                #exp " == NULL", \
-                                                #exp  " == %p", \
-                                                (void *)(exp))
+    ARC_ASSERT_GEN1(arc_assert_pointer_null, \
+                    void *, exp, \
+                    #exp " == %s", "NULL", \
+                    #exp " == %p", _0) 
 /**
  * @brief Asserts the expression is not NULL
  *
  * @param[in] exp Expression to evaluate
  */
 #define ARC_ASSERT_POINTER_NOT_NULL(exp) \
-    ARC_ASSERT_GENERIC0(arc_assert_pointer_not_null((void *)(exp)), \
-                                                    "exp != NULL", \
-                                                    "exp == NULL")
+    ARC_ASSERT_GEN1(arc_assert_pointer_not_null, \
+                    void *, exp, \
+                    #exp " != %s", "NULL", \
+                    #exp " == %s", "NULL") 
 /**
  * @brief Asserts left and right pointers are equal
  *
@@ -136,12 +192,11 @@ if (!function) \
  * @param[in] right Right value of the equality
  */
 #define ARC_ASSERT_POINTER_EQUAL(left, right) \
-    ARC_ASSERT_GENERIC2(arc_assert_pointer_equal((void *)(left), \
-                                                 (void *)(right)), \
-                                                 #left " == %p", \
-                                                 (void *)(right), \
-                                                 #left " == %p", \
-                                                 (void *)(left))
+    ARC_ASSERT_GEN2(arc_assert_pointer_equal, \
+                    void *, left, \
+                    void *, right, \
+                    #left " == %p", _1, \
+                    #left " == %p", _0) \
 /**
  * @brief Asserts left and right integers are equal
  *
@@ -149,12 +204,11 @@ if (!function) \
  * @param[in] right Right value of the equality
  */
 #define ARC_ASSERT_INT_EQUAL(left, right) \
-    ARC_ASSERT_GENERIC2(arc_assert_int_equal((int)(left), \
-                                             (int)(right)), \
-                                             #left " == %d", \
-                                             (int)(right), \
-                                             #left " == %d", \
-                                             (int)(left))
+    ARC_ASSERT_GEN2(arc_assert_int_equal, \
+                    int, left, \
+                    int, right, \
+                    #left " == %d", _1, \
+                    #left " == %d", _0) \
 /**
  * @brief Asserts left and right unsigned longs are equal
  *
@@ -162,12 +216,11 @@ if (!function) \
  * @param[in] right Right value of the equality
  */
 #define ARC_ASSERT_ULONG_EQUAL(left, right) \
-    ARC_ASSERT_GENERIC2(arc_assert_ulong_equal((unsigned long)(left), \
-                                               (unsigned long)(right)), \
-                                               #left " == %lu", \
-                                               (unsigned long)(right), \
-                                               #left " == %lu", \
-                                               (unsigned long)(left))
+    ARC_ASSERT_GEN2(arc_assert_ulong_equal, \
+                    unsigned long, left, \
+                    unsigned long, right, \
+                    #left " == %lu", _1, \
+                    #left " == %lu", _0) \
 /**
  * @brief Asserts left and right strings are equal
  *
@@ -175,12 +228,11 @@ if (!function) \
  * @param[in] right Right value of the equality
  */
 #define ARC_ASSERT_STRING_EQUAL(left, right) \
-    ARC_ASSERT_GENERIC2(arc_assert_string_equal((const char *)(left), \
-                                                (const char *)(right)), \
-                                                #left " == %s", \
-                                                (const char *)(right), \
-                                                #left " != %s", \
-                                                (const char *)(left))
+    ARC_ASSERT_GEN2(arc_assert_string_equal, \
+                    const char *, left, \
+                    const char *, right, \
+                    #left " == %s", _1, \
+                    #left " == %s", _0) \
 /**
  * @brief Asserts bit is set
  *
@@ -188,10 +240,11 @@ if (!function) \
  * @param[in] bit Bit to evaluate
  */
 #define ARC_ASSERT_BIT_SET(num, bit) \
-    ARC_ASSERT_GENERIC0(arc_assert_bit_set((int)(num), \
-                                           (int)(bit)), \
-                                           #num "(" #bit ") == 1", \
-                                           #num "(" #bit ") == 0")
+    ARC_ASSERT_GEN2(arc_assert_bit_set, \
+                    unsigned long, num, \
+                    int, bit, \
+                    #num "(" #bit ") == %d", 1, \
+                    #num "(" #bit ") == %d", 0) \
 /**
  * @brief Asserts bit is not set
  *
@@ -199,10 +252,11 @@ if (!function) \
  * @param[in] bit Bit to evaluate
  */
 #define ARC_ASSERT_BIT_NOT_SET(num, bit) \
-    ARC_ASSERT_GENERIC0(arc_assert_bit_not_set((int)(num), \
-                                               (int)(bit)), \
-                                               #num "(" #bit ") == 0", \
-                                               #num "(" #bit ") == 1")
+    ARC_ASSERT_GEN2(arc_assert_bit_not_set, \
+                    unsigned long, num, \
+                    int, bit, \
+                    #num "(" #bit ") == %d", 0, \
+                    #num "(" #bit ") == %d", 1) \
 /**
  * @brief Asserts left and right floats are equal
  *
@@ -211,13 +265,12 @@ if (!function) \
  * @param[in] delta Floating point equality threshold
  */
 #define ARC_ASSERT_FLOAT_EQUAL(left, right, delta) \
-    ARC_ASSERT_GENERIC2(arc_assert_float_equal((float)(left), \
-                                               (float)(right), \
-                                               (float)(delta)), \
-                                               #left " +/- " #delta " ~= %f", \
-                                               (double)(right), \
-                                               #left " +/- " #delta " ~= %f", \
-                                               (double)(left))
+    ARC_ASSERT_GEN3(arc_assert_float_equal, \
+                    float, left, \
+                    float, right, \
+                    double, delta, \
+                    #left " +/- " #delta " ~= %f", _1, \
+                    #left " +/- " #delta " ~= %f", _0) \
 /**
  * @brief Asserts left and right doubles are equal
  *
@@ -226,13 +279,12 @@ if (!function) \
  * @param[in] delta Floating point equality threshold
  */
 #define ARC_ASSERT_DOUBLE_EQUAL(left, right, delta) \
-    ARC_ASSERT_GENERIC2(arc_assert_double_equal((double)(left), \
-                                                (double)(right), \
-                                                (double)(delta)), \
-                                                #left " +/- " #delta " ~= %f", \
-                                                (double)(right), \
-                                                #left " +/- " #delta " ~= %f", \
-                                                (double)(left))
+    ARC_ASSERT_GEN3(arc_assert_double_equal, \
+                    double, left, \
+                    double, right, \
+                    double, delta, \
+                    #left " +/- " #delta " ~= %f", _1, \
+                    #left " +/- " #delta " ~= %f", _0) \
 /**
  * @brief Asserts the string contains a character
  *
@@ -240,12 +292,11 @@ if (!function) \
  * @param[in] c Character contained
  */
 #define ARC_ASSERT_STRING_CONTAINS(str, c) \
-    ARC_ASSERT_GENERIC2(arc_assert_string_contains((const char *)(str), \
-                                                   (char)(c)), \
-                                                   #str " contain %c", \
-                                                   (char)(c), \
-                                                   #str " !contain %c", \
-                                                   (char)(c))
+    ARC_ASSERT_GEN2(arc_assert_string_contains, \
+                    const char *, str, \
+                    char, c, \
+                    #str " contain %c", _1, \
+                    #str " !contain %c", _1) \
 /**
  * @brief Asserts the string doesn't contain a character
  *
@@ -253,12 +304,11 @@ if (!function) \
  * @param[in] c Character contained
  */
 #define ARC_ASSERT_STRING_DOESNT_CONTAIN(str, c) \
-    ARC_ASSERT_GENERIC2(arc_assert_string_doesnt_contain((const char *)(str), \
-                                                         (char)(c)), \
-                                                         #str " !contain %c", \
-                                                         (char)(c), \
-                                                         #str " contain %c", \
-                                                         (char)(c))
+    ARC_ASSERT_GEN2(arc_assert_string_doesnt_contain, \
+                    const char *, str, \
+                    char, c, \
+                    #str " !contain %c", _1, \
+                    #str " contain %c", _1) \
 /**
  * @brief Asserts the string starts with a character
  *
@@ -266,12 +316,11 @@ if (!function) \
  * @param[in] c Character contained
  */
 #define ARC_ASSERT_STRING_STARTS_WITH(str, c) \
-    ARC_ASSERT_GENERIC2(arc_assert_string_starts_with((const char *)(str), \
-                                                      (char)(c)), \
-                                                      #str"[0] == %c", \
-                                                      (char)(c), \
-                                                      #str"[0] == %c",\
-                                                      (char)((str)[0]))
+    ARC_ASSERT_GEN2(arc_assert_string_starts_with, \
+                    const char *, str, \
+                    char, c, \
+                    #str"[0] == %c", _1, \
+                    #str"[0] == %c", (char)((str)[0])) 
 /**
  * @brief Asserts the string ends with a character
  *
@@ -279,13 +328,11 @@ if (!function) \
  * @param[in] c Character contained
  */
 #define ARC_ASSERT_STRING_ENDS_WITH(str, c) \
-    ARC_ASSERT_GENERIC2(arc_assert_string_ends_with((const char *)(str), \
-                                                    (char)(c)), \
-                                                    #str"[last] == %c", \
-                                                    (char)(c), \
-                                                    #str"[last] == %c", \
-                                                    (char)((str)[strlen(str) - 1]))
-
+    ARC_ASSERT_GEN2(arc_assert_string_ends_with, \
+                    const char *, str, \
+                    char, c, \
+                    #str"[last] == %c", _1, \
+                    #str"[last] == %c", (char)((str)[strlen(str) - 1]))
 /**
  * @brief Creates a test
  *
@@ -351,9 +398,9 @@ int arc_assert_pointer_equal(void * left, void * right);
 int arc_assert_int_equal(int left, int right);
 int arc_assert_ulong_equal(unsigned long left, unsigned long right);
 int arc_assert_string_equal(const char * left, const char * right);
-int arc_assert_bit_set(unsigned num, int bit);
-int arc_assert_bit_not_set(int num, int bit);
-int arc_assert_float_equal(float left, float right, float delta);
+int arc_assert_bit_set(unsigned long num, int bit);
+int arc_assert_bit_not_set(unsigned long num, int bit);
+int arc_assert_float_equal(float left, float right, double delta);
 int arc_assert_double_equal(double left, double right, double delta);
 int arc_assert_string_contains(const char * str, char c);
 int arc_assert_string_doesnt_contain(const char * str, char c);
