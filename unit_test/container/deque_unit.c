@@ -30,7 +30,7 @@ ARC_UNIT_TEST(empty_test)
 
     ARC_ASSERT_TRUE(arc_deque_empty(deque));
 
-    ARC_ASSERT_INT_EQUAL(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
+    ARC_ASSERT_INT_EQ(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
 
     ARC_ASSERT_FALSE(arc_deque_empty(deque));
 
@@ -44,23 +44,23 @@ ARC_UNIT_TEST(size_test)
     int i = 10;
     arc_deque_t deque = arc_deque_create(sizeof(int));
 
-    ARC_ASSERT_INT_EQUAL(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
+    ARC_ASSERT_INT_EQ(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
 
-    ARC_ASSERT_INT_EQUAL(arc_deque_size(deque), 1);
+    ARC_ASSERT_INT_EQ(arc_deque_size(deque), 1);
     
     for (i = 0; i < 10; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
     }
 
-    ARC_ASSERT_INT_EQUAL(arc_deque_size(deque), 11);
+    ARC_ASSERT_INT_EQ(arc_deque_size(deque), 11);
 
     for (i = 0; i < 5; i++)
     {
         arc_deque_pop_front(deque);
     }
 
-    ARC_ASSERT_INT_EQUAL(arc_deque_size(deque), 6);
+    ARC_ASSERT_INT_EQ(arc_deque_size(deque), 6);
 
     arc_deque_destroy(deque);
 }
@@ -72,13 +72,13 @@ ARC_UNIT_TEST(push_pop_front_front)
 
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
     }
 
     i = 19999;
     while(!arc_deque_empty(deque))
     {
-         ARC_ASSERT_INT_EQUAL(*((int *)arc_deque_front(deque)), i); 
+         ARC_ASSERT_INT_EQ(*((int *)arc_deque_front(deque)), i); 
 
         i -= 1;
 
@@ -95,13 +95,13 @@ ARC_UNIT_TEST(push_pop_back_back)
 
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_deque_push_back(deque, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_deque_push_back(deque, (void *)&i), ARC_SUCCESS);
     }
 
     i = 19999;
     while(!arc_deque_empty(deque))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_deque_back(deque)), i--);
+        ARC_ASSERT_INT_EQ(*((int *)arc_deque_back(deque)), i--);
 
         arc_deque_pop_back(deque);
     }
@@ -116,13 +116,13 @@ ARC_UNIT_TEST(push_pop_front_back)
 
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
     }
 
     i = 0;
     while(!arc_deque_empty(deque))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_deque_back(deque)), i++);
+        ARC_ASSERT_INT_EQ(*((int *)arc_deque_back(deque)), i++);
 
         arc_deque_pop_back(deque);
     }
@@ -137,13 +137,13 @@ ARC_UNIT_TEST(push_pop_back_front)
 
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_deque_push_back(deque, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_deque_push_back(deque, (void *)&i), ARC_SUCCESS);
     }
 
     i = 0;
     while(!arc_deque_empty(deque))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_deque_front(deque)), i++);
+        ARC_ASSERT_INT_EQ(*((int *)arc_deque_front(deque)), i++);
 
         arc_deque_pop_front(deque);
     }
@@ -159,18 +159,18 @@ ARC_UNIT_TEST(mixed_push_front_back_test)
     
     for (i = 10000; i >= 0; i--)
     {
-        ARC_ASSERT_INT_EQUAL(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
     }
 
     for (i = 10001; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_deque_push_back(deque, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_deque_push_back(deque, (void *)&i), ARC_SUCCESS);
     }
 
     i = 0;
     while(!arc_deque_empty(deque))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_deque_front(deque)), i++);
+        ARC_ASSERT_INT_EQ(*((int *)arc_deque_front(deque)), i++);
 
         arc_deque_pop_front(deque);
     }
@@ -186,18 +186,18 @@ ARC_UNIT_TEST(mixed_push_back_front_test)
     
     for (i = 10001; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_deque_push_back(deque, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_deque_push_back(deque, (void *)&i), ARC_SUCCESS);
     }
 
     for (i = 10000; i >= 0; i--)
     {
-        ARC_ASSERT_INT_EQUAL(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
     }
 
     i = 0;
     while(!arc_deque_empty(deque))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_deque_front(deque)), i++);
+        ARC_ASSERT_INT_EQ(*((int *)arc_deque_front(deque)), i++);
 
         arc_deque_pop_front(deque);
     }
@@ -214,17 +214,17 @@ ARC_UNIT_TEST(indexed_access_test)
     
     for (i = 10000; i >= 0; i--)
     {
-        ARC_ASSERT_INT_EQUAL(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
     }
 
     for (i = 10001; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_deque_push_back(deque, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_deque_push_back(deque, (void *)&i), ARC_SUCCESS);
     }
 
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_deque_at(deque, (unsigned)i)), i);
+        ARC_ASSERT_INT_EQ(*((int *)arc_deque_at(deque, (unsigned)i)), i);
     }
 
     arc_deque_destroy(deque);
@@ -240,7 +240,7 @@ ARC_UNIT_TEST(iterators_forward)
 
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
     }
 
     i = 19999;
@@ -249,7 +249,7 @@ ARC_UNIT_TEST(iterators_forward)
 
     while(arc_deque_next(it))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_deque_data(it)), i--);
+        ARC_ASSERT_INT_EQ(*((int *)arc_deque_data(it)), i--);
     }
 
     arc_iterator_destroy(it);
@@ -266,7 +266,7 @@ ARC_UNIT_TEST(iterators_backward)
 
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_deque_push_front(deque, (void *)&i), ARC_SUCCESS);
     }
 
     i = 0;
@@ -275,7 +275,7 @@ ARC_UNIT_TEST(iterators_backward)
 
     while(arc_deque_previous(it))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_deque_data(it)), i++);
+        ARC_ASSERT_INT_EQ(*((int *)arc_deque_data(it)), i++);
     }
 
     arc_iterator_destroy(it);
@@ -292,14 +292,14 @@ ARC_UNIT_TEST(iterators_position)
 
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_deque_push_back(deque, (void *)&i),
+        ARC_ASSERT_INT_EQ(arc_deque_push_back(deque, (void *)&i),
                              ARC_SUCCESS);
     }
 
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_deque_position(it, i), ARC_SUCCESS);
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_deque_data(it)), i);
+        ARC_ASSERT_INT_EQ(arc_deque_position(it, i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(*((int *)arc_deque_data(it)), i);
     }
 
     arc_iterator_destroy(it);
@@ -315,12 +315,12 @@ ARC_UNIT_TEST(iterators_insertion_front)
     ARC_ASSERT_POINTER_NOT_NULL(deque);
 
     arc_deque_before_begin(it);
-    ARC_ASSERT_INT_EQUAL(arc_deque_insert_before(it, (void *)&i), ARC_ERROR);
+    ARC_ASSERT_INT_EQ(arc_deque_insert_before(it, (void *)&i), ARC_ERROR);
 
     for (i = 0; i < 20000; i++)
     {
         arc_deque_before_begin(it);
-        ARC_ASSERT_INT_EQUAL(arc_deque_insert_after(it, (void *)&i), 
+        ARC_ASSERT_INT_EQ(arc_deque_insert_after(it, (void *)&i), 
                              ARC_SUCCESS);
     }
 
@@ -330,11 +330,11 @@ ARC_UNIT_TEST(iterators_insertion_front)
     i = 19999;
     while(arc_deque_next(it))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_deque_data(it)), i);
+        ARC_ASSERT_INT_EQ(*((int *)arc_deque_data(it)), i);
         i--;
     }
 
-    ARC_ASSERT_INT_EQUAL(i, -1);
+    ARC_ASSERT_INT_EQ(i, -1);
 
     arc_iterator_destroy(it);
     arc_deque_destroy(deque);
@@ -350,12 +350,12 @@ ARC_UNIT_TEST(iterators_insertion_back)
 
     arc_deque_after_end(it);
 
-    ARC_ASSERT_INT_EQUAL(arc_deque_insert_after(it, (void *)&i), ARC_ERROR);
+    ARC_ASSERT_INT_EQ(arc_deque_insert_after(it, (void *)&i), ARC_ERROR);
 
     for (i = 0; i < 20000; i++)
     {
         arc_deque_after_end(it);
-        ARC_ASSERT_INT_EQUAL(arc_deque_insert_before(it, (void *)&i), 
+        ARC_ASSERT_INT_EQ(arc_deque_insert_before(it, (void *)&i), 
                              ARC_SUCCESS);
     }
 
@@ -364,11 +364,11 @@ ARC_UNIT_TEST(iterators_insertion_back)
     i = 19999;
     while(arc_deque_previous(it))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_deque_data(it)), i);
+        ARC_ASSERT_INT_EQ(*((int *)arc_deque_data(it)), i);
         i--;
     }
 
-    ARC_ASSERT_INT_EQUAL(i, -1);
+    ARC_ASSERT_INT_EQ(i, -1);
 
     arc_iterator_destroy(it);
     arc_deque_destroy(deque);
@@ -389,33 +389,33 @@ ARC_UNIT_TEST(iterators_insertion_middle)
 
     /* 0 2 4 6 8 */
     i = 1;
-    ARC_ASSERT_INT_EQUAL(arc_deque_position(it, 0), ARC_SUCCESS);
-    ARC_ASSERT_INT_EQUAL(arc_deque_insert_after(it, (void *)&i), ARC_SUCCESS);
+    ARC_ASSERT_INT_EQ(arc_deque_position(it, 0), ARC_SUCCESS);
+    ARC_ASSERT_INT_EQ(arc_deque_insert_after(it, (void *)&i), ARC_SUCCESS);
 
     /* 0 1 2 4 6 8 */
     i = 3;
-    ARC_ASSERT_INT_EQUAL(arc_deque_position(it, 3), ARC_SUCCESS);
-    ARC_ASSERT_INT_EQUAL(arc_deque_insert_before(it, (void *)&i), ARC_SUCCESS);
+    ARC_ASSERT_INT_EQ(arc_deque_position(it, 3), ARC_SUCCESS);
+    ARC_ASSERT_INT_EQ(arc_deque_insert_before(it, (void *)&i), ARC_SUCCESS);
 
     /* 0 1 2 3 4 6 8 */
     i = 5;
-    ARC_ASSERT_INT_EQUAL(arc_deque_position(it, 4), ARC_SUCCESS);
-    ARC_ASSERT_INT_EQUAL(arc_deque_insert_after(it, (void *)&i), ARC_SUCCESS);
+    ARC_ASSERT_INT_EQ(arc_deque_position(it, 4), ARC_SUCCESS);
+    ARC_ASSERT_INT_EQ(arc_deque_insert_after(it, (void *)&i), ARC_SUCCESS);
 
     /* 0 1 2 3 4 5 6 8 */
     i = 7;
-    ARC_ASSERT_INT_EQUAL(arc_deque_position(it, 7), ARC_SUCCESS);
-    ARC_ASSERT_INT_EQUAL(arc_deque_insert_before(it, (void *)&i), ARC_SUCCESS);
+    ARC_ASSERT_INT_EQ(arc_deque_position(it, 7), ARC_SUCCESS);
+    ARC_ASSERT_INT_EQ(arc_deque_insert_before(it, (void *)&i), ARC_SUCCESS);
 
     /* 0 1 2 3 4 5 6 7 8 */
     i = 9;
-    ARC_ASSERT_INT_EQUAL(arc_deque_position(it, 8), ARC_SUCCESS);
-    ARC_ASSERT_INT_EQUAL(arc_deque_insert_after(it, (void *)&i), ARC_SUCCESS);
+    ARC_ASSERT_INT_EQ(arc_deque_position(it, 8), ARC_SUCCESS);
+    ARC_ASSERT_INT_EQ(arc_deque_insert_after(it, (void *)&i), ARC_SUCCESS);
 
     for (i = 0; i < 10; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_deque_position(it, i), ARC_SUCCESS);
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_deque_data(it)), i);
+        ARC_ASSERT_INT_EQ(arc_deque_position(it, i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(*((int *)arc_deque_data(it)), i);
     }
 
     arc_deque_clear(deque);
@@ -428,13 +428,13 @@ ARC_UNIT_TEST(iterators_insertion_middle)
     for (i = 0; i < 20000; i+=2)
     {
         arc_deque_position(it, i);
-        ARC_ASSERT_INT_EQUAL(arc_deque_insert_before(it, (void *)&i), 
+        ARC_ASSERT_INT_EQ(arc_deque_insert_before(it, (void *)&i), 
                                                      ARC_SUCCESS);
     }
 
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(*((unsigned *)arc_deque_at(deque, i)), i);
+        ARC_ASSERT_INT_EQ(*((unsigned *)arc_deque_at(deque, i)), i);
     }
 
     arc_deque_clear(deque);
@@ -447,13 +447,13 @@ ARC_UNIT_TEST(iterators_insertion_middle)
     for (i = 1; i < 20000; i+=2)
     {
         arc_deque_position(it, i - 1);
-        ARC_ASSERT_INT_EQUAL(arc_deque_insert_after(it, (void *)&i), 
+        ARC_ASSERT_INT_EQ(arc_deque_insert_after(it, (void *)&i), 
                                                     ARC_SUCCESS);
     }
 
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(*((unsigned *)arc_deque_at(deque, i)), i);
+        ARC_ASSERT_INT_EQ(*((unsigned *)arc_deque_at(deque, i)), i);
     }
 
     arc_iterator_destroy(it);
@@ -475,13 +475,13 @@ ARC_UNIT_TEST(iterators_erase)
 
     for (i = 0; i < 10000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_deque_position(it, 0), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_deque_position(it, 0), ARC_SUCCESS);
         arc_deque_erase(it);
     }
 
     for (i = 10000; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(*((unsigned *)arc_deque_at(deque, i - 10000)), i);
+        ARC_ASSERT_INT_EQ(*((unsigned *)arc_deque_at(deque, i - 10000)), i);
     }
 
     arc_deque_clear(deque);
@@ -494,13 +494,13 @@ ARC_UNIT_TEST(iterators_erase)
     for (i = 0; i < 10000; i++)
     {
         unsigned long end_idx = arc_deque_size(deque) - 1;
-        ARC_ASSERT_INT_EQUAL(arc_deque_position(it, end_idx), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_deque_position(it, end_idx), ARC_SUCCESS);
         arc_deque_erase(it);
     }
 
     for (i = 0; i < 10000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(*((unsigned *)arc_deque_at(deque, i)), i);
+        ARC_ASSERT_INT_EQ(*((unsigned *)arc_deque_at(deque, i)), i);
     }
 
     arc_deque_clear(deque);
@@ -512,13 +512,13 @@ ARC_UNIT_TEST(iterators_erase)
 
     for (i = 20000; i > 0; i-=2)
     {
-        ARC_ASSERT_INT_EQUAL(arc_deque_position(it, i - 1), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_deque_position(it, i - 1), ARC_SUCCESS);
         arc_deque_erase(it);
     }
 
     for (i = 0; i < 10000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(*((unsigned *)arc_deque_at(deque, i)), i*2);
+        ARC_ASSERT_INT_EQ(*((unsigned *)arc_deque_at(deque, i)), i*2);
     }
 
     arc_iterator_destroy(it);
@@ -534,7 +534,7 @@ ARC_UNIT_TEST(destruction_test)
     for (i = 0; i < 20000; i++)
     {
         double data = i;
-        ARC_ASSERT_INT_EQUAL(arc_deque_push_front(deque, (void *)&data), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_deque_push_front(deque, (void *)&data), ARC_SUCCESS);
     }
 
     arc_deque_destroy(deque);

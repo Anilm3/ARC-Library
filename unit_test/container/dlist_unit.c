@@ -24,18 +24,18 @@ ARC_UNIT_TEST(size_test)
 
     ARC_ASSERT_TRUE(arc_dlist_empty(list));
 
-    ARC_ASSERT_INT_EQUAL(arc_dlist_push_front(list, (void *)&i), ARC_SUCCESS);
+    ARC_ASSERT_INT_EQ(arc_dlist_push_front(list, (void *)&i), ARC_SUCCESS);
 
-    ARC_ASSERT_INT_EQUAL(arc_dlist_size(list), 1);
+    ARC_ASSERT_INT_EQ(arc_dlist_size(list), 1);
     
     ARC_ASSERT_FALSE(arc_dlist_empty(list));
 
     for (i = 0; i < 10; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_dlist_push_front(list, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_dlist_push_front(list, (void *)&i), ARC_SUCCESS);
     }
 
-    ARC_ASSERT_INT_EQUAL(arc_dlist_size(list), 11);
+    ARC_ASSERT_INT_EQ(arc_dlist_size(list), 11);
 
     arc_dlist_destroy(list);
 }
@@ -49,13 +49,13 @@ ARC_UNIT_TEST(push_pop_front_front)
 
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_dlist_push_front(list, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_dlist_push_front(list, (void *)&i), ARC_SUCCESS);
     }
 
     i = 19999;
     while(!arc_dlist_empty(list))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_front(list)), i--);
+        ARC_ASSERT_INT_EQ(*((int *)arc_dlist_front(list)), i--);
 
         arc_dlist_pop_front(list);
     }
@@ -72,13 +72,13 @@ ARC_UNIT_TEST(push_pop_back_back)
 
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_dlist_push_back(list, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_dlist_push_back(list, (void *)&i), ARC_SUCCESS);
     }
 
     i = 19999;
     while(!arc_dlist_empty(list))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_back(list)), i--);
+        ARC_ASSERT_INT_EQ(*((int *)arc_dlist_back(list)), i--);
 
         arc_dlist_pop_back(list);
     }
@@ -95,13 +95,13 @@ ARC_UNIT_TEST(push_pop_back_front)
 
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_dlist_push_back(list, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_dlist_push_back(list, (void *)&i), ARC_SUCCESS);
     }
 
     i = 0;
     while(!arc_dlist_empty(list))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_front(list)), i++);
+        ARC_ASSERT_INT_EQ(*((int *)arc_dlist_front(list)), i++);
 
         arc_dlist_pop_front(list);
     }
@@ -118,13 +118,13 @@ ARC_UNIT_TEST(push_pop_front_back)
 
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_dlist_push_front(list, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_dlist_push_front(list, (void *)&i), ARC_SUCCESS);
     }
 
     i = 0;
     while(!arc_dlist_empty(list))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_back(list)), i++);
+        ARC_ASSERT_INT_EQ(*((int *)arc_dlist_back(list)), i++);
 
         arc_dlist_pop_back(list);
     }
@@ -142,7 +142,7 @@ ARC_UNIT_TEST(iterators_forward)
 
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_dlist_push_front(list, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_dlist_push_front(list, (void *)&i), ARC_SUCCESS);
     }
 
     i = 19999;
@@ -151,7 +151,7 @@ ARC_UNIT_TEST(iterators_forward)
 
     while(arc_dlist_next(it))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_data(it)), i--);
+        ARC_ASSERT_INT_EQ(*((int *)arc_dlist_data(it)), i--);
     }
 
     arc_iterator_destroy(it);
@@ -168,7 +168,7 @@ ARC_UNIT_TEST(iterators_backward)
 
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_dlist_push_front(list, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_dlist_push_front(list, (void *)&i), ARC_SUCCESS);
     }
 
     i = 0;
@@ -177,7 +177,7 @@ ARC_UNIT_TEST(iterators_backward)
 
     while(arc_dlist_previous(it))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_data(it)), i++);
+        ARC_ASSERT_INT_EQ(*((int *)arc_dlist_data(it)), i++);
     }
 
     arc_iterator_destroy(it);
@@ -194,21 +194,21 @@ ARC_UNIT_TEST(iterators_insertion_front)
 
     arc_dlist_before_begin(it);
 
-    ARC_ASSERT_INT_EQUAL(arc_dlist_insert_before(it, (void *)&i), ARC_ERROR);
+    ARC_ASSERT_INT_EQ(arc_dlist_insert_before(it, (void *)&i), ARC_ERROR);
 
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_dlist_insert_after(it, (void *)&i), 
+        ARC_ASSERT_INT_EQ(arc_dlist_insert_after(it, (void *)&i), 
                              ARC_SUCCESS);
     }
 
     i = 19999;
     while(arc_dlist_next(it))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_data(it)), i--);
+        ARC_ASSERT_INT_EQ(*((int *)arc_dlist_data(it)), i--);
     }
 
-    ARC_ASSERT_INT_EQUAL(i, -1);
+    ARC_ASSERT_INT_EQ(i, -1);
 
     arc_iterator_destroy(it);
     arc_dlist_destroy(list);
@@ -224,21 +224,21 @@ ARC_UNIT_TEST(iterators_insertion_back)
 
     arc_dlist_after_end(it);
 
-    ARC_ASSERT_INT_EQUAL(arc_dlist_insert_after(it, (void *)&i), ARC_ERROR);
+    ARC_ASSERT_INT_EQ(arc_dlist_insert_after(it, (void *)&i), ARC_ERROR);
 
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_dlist_insert_before(it, (void *)&i), 
+        ARC_ASSERT_INT_EQ(arc_dlist_insert_before(it, (void *)&i), 
                              ARC_SUCCESS);
     }
 
     i = 19999;
     while(arc_dlist_previous(it))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_dlist_data(it)), i--);
+        ARC_ASSERT_INT_EQ(*((int *)arc_dlist_data(it)), i--);
     }
 
-    ARC_ASSERT_INT_EQUAL(i, -1);
+    ARC_ASSERT_INT_EQ(i, -1);
 
     arc_iterator_destroy(it);
     arc_dlist_destroy(list);
@@ -254,7 +254,7 @@ ARC_UNIT_TEST(destruction)
     
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_dlist_push_front(list, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_dlist_push_front(list, (void *)&i), ARC_SUCCESS);
     }
 
     arc_dlist_destroy(list);

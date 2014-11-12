@@ -158,7 +158,7 @@ endif()
 
 if (SHARED)
     add_library(arc-shared SHARED ${SOURCES})
-    target_link_libraries(arc-shared rt)
+    target_link_libraries(arc-shared rt m)
     set_target_properties(arc-shared PROPERTIES
                           OUTPUT_NAME arc CLEAN_DIRECT_OUTPUT 1)
     install(TARGETS arc-shared
@@ -169,7 +169,7 @@ if (STATIC)
     add_library(arc-static STATIC ${SOURCES})
     set_target_properties(arc-static PROPERTIES
                           OUTPUT_NAME arc CLEAN_DIRECT_OUTPUT 1)
-    target_link_libraries(arc-static rt)
+    target_link_libraries(arc-static rt m)
     install(TARGETS arc-static
             ARCHIVE DESTINATION /usr/local/lib
             LIBRARY DESTINATION /usr/local/lib)

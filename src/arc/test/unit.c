@@ -215,30 +215,178 @@ int arc_assert_pointer_not_null(void * pointer)
 
 /******************************************************************************/
 
-int arc_assert_pointer_equal(void * left, void * right)
+int arc_assert_pointer_eq(void * left, void * right)
 {
     return (left == right);
 }
 
 /******************************************************************************/
 
-int arc_assert_int_equal(int left, int right)
+int arc_assert_int_eq(int left, int right)
 {
     return (left == right);
 }
 
 /******************************************************************************/
 
-int arc_assert_ulong_equal(unsigned long left, unsigned long right)
+int arc_assert_ulong_eq(unsigned long left, unsigned long right)
 {
     return (left == right);
 }
 
 /******************************************************************************/
 
-int arc_assert_string_equal(const char * left, const char * right)
+int arc_assert_float_eq(float left, float right, double delta)
 {
-    return (strcmp(left, right) == 0);
+    return (fabsf(left - right) < delta);
+}
+
+/******************************************************************************/
+
+int arc_assert_double_eq(double left, double right, double delta)
+{
+    return (fabs(left - right) < delta);
+}
+
+
+/******************************************************************************/
+
+int arc_assert_int_ne(int left, int right)
+{
+    return (left != right);
+}
+
+/******************************************************************************/
+
+int arc_assert_ulong_ne(unsigned long left, unsigned long right)
+{
+    return (left != right);
+}
+
+/******************************************************************************/
+
+int arc_assert_float_ne(float left, float right, double delta)
+{
+    return (fabsf(left - right) > delta);
+}
+
+/******************************************************************************/
+
+int arc_assert_double_ne(double left, double right, double delta)
+{
+    return (fabs(left - right) > delta);
+}
+
+/******************************************************************************/
+
+int arc_assert_int_lt(int left, int right)
+{
+    return (left < right);
+}
+
+/******************************************************************************/
+
+int arc_assert_ulong_lt(unsigned long left, unsigned long right)
+{
+    return (left < right);
+}
+
+/******************************************************************************/
+
+int arc_assert_float_lt(float left, float right, double delta)
+{
+    return(fabsf(left - right) > delta) && (left < right);
+}
+
+/******************************************************************************/
+
+int arc_assert_double_lt(double left, double right, double delta)
+{
+    return(fabs(left - right) > delta) && (left < right);
+}
+
+/******************************************************************************/
+
+int arc_assert_int_le(int left, int right)
+{
+    return (left <= right);
+}
+
+/******************************************************************************/
+
+int arc_assert_ulong_le(unsigned long left, unsigned long right)
+{
+    return (left <= right);
+}
+
+/******************************************************************************/
+
+int arc_assert_float_le(float left, float right, double delta)
+{
+    return(fabsf(left - right) < delta) || (left < right);
+}
+
+/******************************************************************************/
+
+int arc_assert_double_le(double left, double right, double delta)
+{
+    return(fabs(left - right) < delta) || (left < right);
+}
+
+/******************************************************************************/
+
+int arc_assert_int_gt(int left, int right)
+{
+    return (left > right);
+}
+
+/******************************************************************************/
+
+int arc_assert_ulong_gt(unsigned long left, unsigned long right)
+{
+    return (left > right);
+}
+
+/******************************************************************************/
+
+int arc_assert_float_gt(float left, float right, double delta)
+{
+    return(fabsf(left - right) > delta) && (left > right);
+}
+
+/******************************************************************************/
+
+int arc_assert_double_gt(double left, double right, double delta)
+{
+    return(fabs(left - right) > delta) && (left > right);
+}
+
+/******************************************************************************/
+
+int arc_assert_int_ge(int left, int right)
+{
+    return (left >= right);
+}
+
+/******************************************************************************/
+
+int arc_assert_ulong_ge(unsigned long left, unsigned long right)
+{
+    return (left >= right);
+}
+
+/******************************************************************************/
+
+int arc_assert_float_ge(float left, float right, double delta)
+{
+    return(fabsf(left - right) < delta) || (left >= right);
+}
+
+/******************************************************************************/
+
+int arc_assert_double_ge(double left, double right, double delta)
+{
+    return(fabs(left - right) < delta) || (left >= right);
 }
 
 /******************************************************************************/
@@ -257,16 +405,16 @@ int arc_assert_bit_not_set(unsigned long num, int bit)
 
 /******************************************************************************/
 
-int arc_assert_float_equal(float left, float right, double delta)
+int arc_assert_string_eq(const char * left, const char * right)
 {
-    return (fabs(left - right) < delta);
+    return (strcmp(left, right) == 0);
 }
 
 /******************************************************************************/
 
-int arc_assert_double_equal(double left, double right, double delta)
+int arc_assert_string_ne(const char * left, const char * right)
 {
-    return (fabs(left - right) < delta);
+    return (strcmp(left, right) != 0);
 }
 
 /******************************************************************************/
@@ -278,21 +426,21 @@ int arc_assert_string_contains(const char * str, char c)
 
 /******************************************************************************/
 
-int arc_assert_string_doesnt_contain(const char * str, char c)
+int arc_assert_string_not_contain(const char * str, char c)
 {
     return (strchr(str, c) == NULL);
 }
 
 /******************************************************************************/
 
-int arc_assert_string_starts_with(const char * str, char c)
+int arc_assert_string_starts(const char * str, char c)
 {
     return (str[0] == c);
 }
 
 /******************************************************************************/
 
-int arc_assert_string_ends_with(const char * str, char c)
+int arc_assert_string_ends(const char * str, char c)
 {
     return (str[strlen(str) - 1] == c);
 }

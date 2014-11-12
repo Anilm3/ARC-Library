@@ -30,7 +30,7 @@ ARC_UNIT_TEST(empty_test)
 
     ARC_ASSERT_TRUE(arc_queue_empty(queue));
 
-    ARC_ASSERT_INT_EQUAL(arc_queue_push(queue, (void *)&i), ARC_SUCCESS);
+    ARC_ASSERT_INT_EQ(arc_queue_push(queue, (void *)&i), ARC_SUCCESS);
 
     ARC_ASSERT_FALSE(arc_queue_empty(queue));
 
@@ -44,23 +44,23 @@ ARC_UNIT_TEST(size_test)
     int i = 10;
     arc_queue_t queue = arc_queue_create(sizeof(int));
 
-    ARC_ASSERT_INT_EQUAL(arc_queue_push(queue, (void *)&i), ARC_SUCCESS);
+    ARC_ASSERT_INT_EQ(arc_queue_push(queue, (void *)&i), ARC_SUCCESS);
 
-    ARC_ASSERT_INT_EQUAL(arc_queue_size(queue), 1);
+    ARC_ASSERT_INT_EQ(arc_queue_size(queue), 1);
     
     for (i = 0; i < 10; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_queue_push(queue, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_queue_push(queue, (void *)&i), ARC_SUCCESS);
     }
 
-    ARC_ASSERT_INT_EQUAL(arc_queue_size(queue), 11);
+    ARC_ASSERT_INT_EQ(arc_queue_size(queue), 11);
 
     for (i = 0; i < 5; i++)
     {
         arc_queue_pop(queue);
     }
 
-    ARC_ASSERT_INT_EQUAL(arc_queue_size(queue), 6);
+    ARC_ASSERT_INT_EQ(arc_queue_size(queue), 6);
 
     arc_queue_destroy(queue);
 }
@@ -72,13 +72,13 @@ ARC_UNIT_TEST(push_pop_test)
 
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_queue_push(queue, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_queue_push(queue, (void *)&i), ARC_SUCCESS);
     }
 
     i = 0;
     while(!arc_queue_empty(queue))
     {
-        ARC_ASSERT_INT_EQUAL(*((int *)arc_queue_front(queue)), i++);
+        ARC_ASSERT_INT_EQ(*((int *)arc_queue_front(queue)), i++);
 
         arc_queue_pop(queue);
     }
@@ -94,7 +94,7 @@ ARC_UNIT_TEST(destruction_test)
     
     for (i = 0; i < 20000; i++)
     {
-        ARC_ASSERT_INT_EQUAL(arc_queue_push(queue, (void *)&i), ARC_SUCCESS);
+        ARC_ASSERT_INT_EQ(arc_queue_push(queue, (void *)&i), ARC_SUCCESS);
     }
 
     arc_queue_destroy(queue);
