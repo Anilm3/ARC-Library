@@ -406,7 +406,6 @@ extern "C"{
                     double, delta, \
                     #left " +/- " #delta " <= %f", _1, \
                     #left " +/- " #delta " ~= %f", _0)
-
 /**
  * @brief Asserts left integer is greater than right integer
  *
