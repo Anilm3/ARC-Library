@@ -128,7 +128,7 @@ extern "C"{
 { \
     type0 _0 = (type0)(var0);\
     type1 _1 = (type1)(var1);\
-    type1 _2 = (type2)(var2);\
+    type2 _2 = (type2)(var2);\
     if (!function(_0, _1, _2)) \
     { \
         printf("\n%s:%d: Failure\n", __FILE__, __LINE__); \
