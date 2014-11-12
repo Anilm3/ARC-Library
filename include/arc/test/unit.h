@@ -639,24 +639,20 @@ extern "C"{
  * @brief Runs the test fixture and prints a report
  */
 #define ARC_UNIT_RUN_TESTS() \
-int main(void) \
+int main(int argc, char *argv[]) \
 { \
-    int retval = 0; \
-    arc_unit_set_system(); \
+    arc_unit_init(argc, argv); \
     arc_unit_set_tests(); \
-    retval = arc_unit_run_fixture(); \
-    arc_unit_print_report(); \
-    arc_unit_cleanup(); \
-    return retval; \
+    return arc_unit_run(); \
 }
 
 /* Internal test fixture functions */
 void arc_unit_add_test(const char * name, void (*fn)(void));
 void arc_unit_add_function(void (*fn)(void));
 
-void arc_unit_set_system(void);
+void arc_unit_init(int argc, char *argv[]);
 void arc_unit_set_tests(void);
-int arc_unit_run_fixture(void);
+int arc_unit_run(void);
 void arc_unit_print_report(void);
 void arc_unit_cleanup(void);
 

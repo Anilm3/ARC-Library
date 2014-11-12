@@ -15,7 +15,7 @@
 
 #include <string.h>
 
-ARC_UNIT_TEST(size_test)
+ARC_UNIT_TEST(size)
 {
     int i = 10;
     arc_dlist_t list = arc_dlist_create(sizeof(int));
@@ -262,7 +262,7 @@ ARC_UNIT_TEST(destruction)
 
 ARC_UNIT_TEST_FIXTURE()
 {
-    ARC_UNIT_ADD_TEST(size_test)
+    ARC_UNIT_ADD_TEST(size)
     ARC_UNIT_ADD_TEST(push_pop_front_front)
     ARC_UNIT_ADD_TEST(push_pop_back_back)
     ARC_UNIT_ADD_TEST(push_pop_back_front)

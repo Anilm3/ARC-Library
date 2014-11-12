@@ -15,6 +15,7 @@
 
 #include <arc/test/unit.h>
 
+#define ARC_UNIT_BLOCK_SIZE 32
 typedef struct
 {
     const char * name;
@@ -31,8 +32,11 @@ static struct
     int passed;
     int failed;
     arc_test_t * user_tests;
+    int just_print_tests;
+    int argc;
+    char **argv;
 }
-info = {0, 0, 256, 0, 0, NULL};
+info = {0, 0, ARC_UNIT_BLOCK_SIZE, 0, 0, NULL, 0, 0, NULL};
 
 /******************************************************************************/
 
@@ -53,7 +57,7 @@ void arc_unit_add_test(const char * name, void (*fn)(void))
     {
         arc_test_t * ptr;
 
-        info.max_length += 256;
+        info.max_length += ARC_UNIT_BLOCK_SIZE;
         ptr = realloc(info.user_tests, sizeof(arc_test_t)*info.max_length);
 
         if (ptr != NULL)
@@ -88,7 +92,7 @@ void arc_unit_add_function(void (*fn)(void))
     {
         arc_test_t * ptr;
 
-        info.max_length += 256;
+        info.max_length += ARC_UNIT_BLOCK_SIZE;
         ptr = realloc(info.user_tests, sizeof(arc_test_t)*info.max_length);
 
         if (ptr != NULL)
@@ -106,8 +110,21 @@ void arc_unit_add_function(void (*fn)(void))
 
 /******************************************************************************/
 
-void arc_unit_set_system(void)
+void arc_unit_init(int argc, char *argv[])
 {
+    int i;
+
+    info.argc = argc;
+    info.argv = argv;
+
+    for (i = 0; i < argc; i++)
+    {
+        if (strcmp(argv[i], "-i") == 0)
+        {
+            info.just_print_tests = 1;
+        }
+    }
+
     info.user_tests = malloc(sizeof(arc_test_t)*info.max_length);
 
     assert(info.user_tests != NULL);
@@ -115,14 +132,23 @@ void arc_unit_set_system(void)
 
 /******************************************************************************/
 
-int arc_unit_run_fixture(void)
+int arc_unit_run(void)
 {
+    int retval = 0;
+
     info.length = info.idx;
 
     for (info.idx = 0; info.idx < info.length; info.idx++)
     {
+
         if (info.user_tests[info.idx].test)
         {
+            if (info.just_print_tests)
+            {
+                printf("%s\n", info.user_tests[info.idx].name);
+                continue;
+            }
+
             printf("Running test : %s", info.user_tests[info.idx].name);
 
             info.user_tests[info.idx].function();
@@ -143,7 +169,16 @@ int arc_unit_run_fixture(void)
         }
     }
 
-    return (info.failed > 0);
+    retval = (info.failed > 0);
+
+    if (!info.just_print_tests)
+    {
+        arc_unit_print_report();
+    }
+
+    arc_unit_cleanup();
+
+    return retval;
 }
 
 /******************************************************************************/

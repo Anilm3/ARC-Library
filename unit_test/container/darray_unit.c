@@ -15,7 +15,7 @@
 
 #include <string.h>
 
-ARC_UNIT_TEST(creation_test)
+ARC_UNIT_TEST(creation)
 {
     arc_darray_t darray = arc_darray_create(sizeof(int));
 
@@ -24,7 +24,7 @@ ARC_UNIT_TEST(creation_test)
     arc_darray_destroy(darray);
 }
 
-ARC_UNIT_TEST(empty_test)
+ARC_UNIT_TEST(empty)
 {
     int i = 10;
     arc_darray_t darray = arc_darray_create(sizeof(int));
@@ -40,7 +40,7 @@ ARC_UNIT_TEST(empty_test)
     arc_darray_destroy(darray);
 }
 
-ARC_UNIT_TEST(size_test)
+ARC_UNIT_TEST(size)
 {
     int i = 10;
     arc_darray_t darray = arc_darray_create(sizeof(int));
@@ -150,7 +150,7 @@ ARC_UNIT_TEST(push_pop_back_front)
     arc_darray_destroy(darray);
 }
 
-ARC_UNIT_TEST(mixed_push_front_back_test)
+ARC_UNIT_TEST(mixed_push_front_back)
 {
     int i;
 
@@ -177,7 +177,7 @@ ARC_UNIT_TEST(mixed_push_front_back_test)
     arc_darray_destroy(darray);
 }
 
-ARC_UNIT_TEST(mixed_push_back_front_test)
+ARC_UNIT_TEST(mixed_push_back_front)
 {
     int i;
 
@@ -205,7 +205,7 @@ ARC_UNIT_TEST(mixed_push_back_front_test)
 }
 
 
-ARC_UNIT_TEST(indexed_access_test)
+ARC_UNIT_TEST(indexed_access)
 {
     int i;
 
@@ -519,7 +519,7 @@ ARC_UNIT_TEST(iterators_erase)
     arc_darray_destroy(darray);
 }
 
-ARC_UNIT_TEST(destruction_test)
+ARC_UNIT_TEST(destruction)
 {
     int i;
 
@@ -537,16 +537,16 @@ ARC_UNIT_TEST(destruction_test)
 
 ARC_UNIT_TEST_FIXTURE()
 {
-    ARC_UNIT_ADD_TEST(creation_test)
-    ARC_UNIT_ADD_TEST(empty_test)
-    ARC_UNIT_ADD_TEST(size_test)
+    ARC_UNIT_ADD_TEST(creation)
+    ARC_UNIT_ADD_TEST(empty)
+    ARC_UNIT_ADD_TEST(size)
     ARC_UNIT_ADD_TEST(push_pop_front_front)
     ARC_UNIT_ADD_TEST(push_pop_back_back)
     ARC_UNIT_ADD_TEST(push_pop_front_back)
     ARC_UNIT_ADD_TEST(push_pop_back_front)
-    ARC_UNIT_ADD_TEST(mixed_push_front_back_test)
-    ARC_UNIT_ADD_TEST(mixed_push_back_front_test)
-    ARC_UNIT_ADD_TEST(indexed_access_test)
+    ARC_UNIT_ADD_TEST(mixed_push_front_back)
+    ARC_UNIT_ADD_TEST(mixed_push_back_front)
+    ARC_UNIT_ADD_TEST(indexed_access)
     ARC_UNIT_ADD_TEST(iterators_forward)
     ARC_UNIT_ADD_TEST(iterators_backward)
     ARC_UNIT_ADD_TEST(iterators_position)
@@ -554,7 +554,7 @@ ARC_UNIT_TEST_FIXTURE()
     ARC_UNIT_ADD_TEST(iterators_insertion_back)
     ARC_UNIT_ADD_TEST(iterators_insertion_middle)
     ARC_UNIT_ADD_TEST(iterators_erase)
-    ARC_UNIT_ADD_TEST(destruction_test)
+    ARC_UNIT_ADD_TEST(destruction)
 }
 
 ARC_UNIT_RUN_TESTS()
