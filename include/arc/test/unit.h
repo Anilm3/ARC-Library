@@ -653,11 +653,8 @@ void arc_unit_add_function(void (*fn)(void));
 void arc_unit_init(int argc, char *argv[]);
 void arc_unit_set_tests(void);
 int arc_unit_run(void);
-void arc_unit_print_report(void);
-void arc_unit_cleanup(void);
 
 void arc_unit_set_test_failed(void);
-void arc_unit_set_test_passed(void);
 
 /* Assertions */
 int arc_assert_true(int exp);

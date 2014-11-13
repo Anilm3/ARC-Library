@@ -16,6 +16,7 @@
 #include <arc/test/unit.h>
 
 #define ARC_UNIT_BLOCK_SIZE 32
+
 typedef struct
 {
     const char * name;
@@ -37,6 +38,12 @@ static struct
     char **argv;
 }
 info = {0, 0, ARC_UNIT_BLOCK_SIZE, 0, 0, NULL, 0, 0, NULL};
+
+/******************************************************************************/
+
+void arc_unit_print_report(void);
+void arc_unit_cleanup(void);
+void arc_unit_set_test_passed(void);
 
 /******************************************************************************/
 
