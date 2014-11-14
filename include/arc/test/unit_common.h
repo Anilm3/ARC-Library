@@ -546,32 +546,6 @@ extern "C"{
                   #left " +/- " #delta " ~= %f", _0, \
                   critical) 
 /**
- * @brief Asserts left and right strings are equal
- *
- * @param[in] left Left value of the comparison
- * @param[in] right Right value of the comparison
- */
-#define ARC_UNIT_STRING_EQ(left, right, critical) \
-    ARC_UNIT_GEN2(arc_unit_string_eq, \
-                  const char *, left, \
-                  const char *, right, \
-                  #left " == %s", _1, \
-                  #left " == %s", _0, \
-                  critical) 
-/**
- * @brief Asserts left and right strings are not equal
- *
- * @param[in] left Left value of the comparison
- * @param[in] right Right value of the comparison
- */
-#define ARC_UNIT_STRING_NE(left, right, critical) \
-    ARC_UNIT_GEN2(arc_unit_string_ne, \
-                  const char *, left, \
-                  const char *, right, \
-                  #left " != %s", _1, \
-                  #left " == %s", _0, \
-                  critical) 
-/**
  * @brief Asserts bit is set
  *
  * @param[in] num Number on which to evaluate the bit
@@ -597,6 +571,32 @@ extern "C"{
                   #num "(" #bit ") == %d", 0, \
                   #num "(" #bit ") == %d", 1, \
                   critical)
+/**
+ * @brief Asserts left and right strings are equal
+ *
+ * @param[in] left Left value of the comparison
+ * @param[in] right Right value of the comparison
+ */
+#define ARC_UNIT_STRING_EQ(left, right, critical) \
+    ARC_UNIT_GEN2(arc_unit_string_eq, \
+                  const char *, left, \
+                  const char *, right, \
+                  #left " == %s", _1, \
+                  #left " == %s", _0, \
+                  critical) 
+/**
+ * @brief Asserts left and right strings are not equal
+ *
+ * @param[in] left Left value of the comparison
+ * @param[in] right Right value of the comparison
+ */
+#define ARC_UNIT_STRING_NE(left, right, critical) \
+    ARC_UNIT_GEN2(arc_unit_string_ne, \
+                  const char *, left, \
+                  const char *, right, \
+                  #left " != %s", _1, \
+                  #left " == %s", _0, \
+                  critical) 
 /**
  * @brief Asserts the string contains a character
  *
@@ -697,6 +697,15 @@ int arc_unit_string_contains(const char * str, char c);
 int arc_unit_string_not_contain(const char * str, char c);
 int arc_unit_string_starts(const char * str, char c);
 int arc_unit_string_ends(const char * str, char c);
+
+void arc_unit_add_test(const char * name, void (*fn)(void));
+void arc_unit_add_function(void (*fn)(void));
+
+void arc_unit_init(int argc, char *argv[]);
+void arc_unit_set_tests(void);
+int arc_unit_run(void);
+
+void arc_unit_set_test_failed(void);
 
 #ifdef __cplusplus
 }
