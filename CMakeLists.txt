@@ -125,6 +125,7 @@ if (BUILD_TYPE STREQUAL "Debug")
     #                     never be executed*.
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wunreachable-code")
     
+    set(CMAKE_CXX_FLAGS "-g")
     # Those marked * sometimes give too many spurious warnings, so I use them 
     # on as-needed basis:
     # http://stackoverflow.com/questions/3375697/useful-gcc-flags-for-c

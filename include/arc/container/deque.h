@@ -15,8 +15,8 @@
  *
  * A deque is very similar to a singly-linked list but it uses a bit less memory
  * and the operations require less instructions to be performed. The main goal
- * of this redundancy is for performance and experimentation purposes as the 
- * simplicity of the structure provides less instructions per operation thus 
+ * of this redundancy is for performance and experimentation purposes as the
+ * simplicity of the structure provides less instructions per operation thus
  * making it easier to implement to be lock-free and thread-safe.
  *
  * @see http://en.wikipedia.org/wiki/Deque_(data_structure)
@@ -30,7 +30,7 @@
 
 #ifdef __cplusplus
 extern "C"{
-#endif 
+#endif
 
 /**
  * @typedef arc_deque_t
@@ -44,9 +44,9 @@ typedef struct arc_deque * arc_deque_t;
 /**
  * @brief Creates a new deque
  *
- * The memory is allocated in the heap and has to be destroyed by the user. The 
+ * The memory is allocated in the heap and has to be destroyed by the user. The
  * data size provided has to coincide with the element type size to be used in
- * the container. 
+ * the container.
  *
  * @param[in] data_size Size of the data element
  * @return New empty deque
@@ -54,7 +54,7 @@ typedef struct arc_deque * arc_deque_t;
  */
 arc_deque_t arc_deque_create(size_t data_size);
 /**
- * @brief Destroys the memory associated to a deque 
+ * @brief Destroys the memory associated to a deque
  *
  * @param[in] deque Deque to perform the operation on
  */

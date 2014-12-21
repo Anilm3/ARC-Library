@@ -17,6 +17,7 @@
 
 void * arc_memcpy(void * dst, void * src, size_t size)
 {
+#if 0
     switch(size)
     {
 #if UCHAR_MAX == 255
@@ -55,4 +56,7 @@ void * arc_memcpy(void * dst, void * src, size_t size)
     }
 
     return dst;
+#else
+    return memcpy(dst, src, size);
+#endif
 }
