@@ -18,8 +18,10 @@ struct arc_deque
     size_t size;
     size_t num_blocks;
     size_t block_size;
-    unsigned long start_idx;
-    unsigned long end_idx;
+    unsigned long start_block_num;
+    unsigned long start_block_idx;
+    unsigned long end_block_num;
+    unsigned long end_block_idx;
     size_t data_size;
     void ** data;
 };
