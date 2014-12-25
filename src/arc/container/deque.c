@@ -101,7 +101,12 @@ static int arc_deque_realloc(struct arc_deque * deque)
 }
 
 /******************************************************************************/
-
+/* This function moves the memory from start to end (both inclusive) one
+   position to the left. It's done by going through each block, starting from
+   the beginning and moving all of the valid elements one position up, and the
+   first element to the last position of the previous block. The first and last
+   blocks are special cases due to having less memory to be copied, or actually
+   being the same block */
 static int arc_deque_move_left(struct arc_deque * deque,
                                unsigned long start_block_num,
                                unsigned long start_block_idx,
@@ -180,7 +185,12 @@ static int arc_deque_move_left(struct arc_deque * deque,
 }
 
 /******************************************************************************/
-
+/* This function moves the memory from start to end (both inclusive) one
+   position to the right. It's done by going through each block, starting from
+   the end and moving the last element to the first position of the block after
+   and the rest of the elements one position down on the same block. The first
+   and last blocks are special cases due to having less memory to be copied or
+   actually being the same block. */
 static int arc_deque_move_right(struct arc_deque * deque,
                                 unsigned long start_block_num,
                                 unsigned long start_block_idx,
@@ -397,7 +407,6 @@ static int arc_deque_insert_node_before(struct arc_deque * deque,
     unsigned long block, end, start;
     unsigned long left_mem, right_mem;
 
-    /** This is too darn slow? */
     start = deque->start_block_num * deque->block_size + deque->start_block_idx;
     end = deque->end_block_num * deque->block_size + deque->end_block_idx;
     block = block_num * deque->block_size + block_idx;
