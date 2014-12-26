@@ -6,29 +6,26 @@
 * There is NO WARRANTY, to the extent permitted by law.                        *
 *                                                                              *
 *******************************************************************************/
-/**
- * @file function.h
- * @author Anil M. Mahtani Mirchandani
- * @date June, 2014
- *
- * @brief Function type definitions
- */
 
-#ifndef ARC_FUNCTION_H_
-#define ARC_FUNCTION_H_
+#include <stdlib.h>
 
-#ifdef __cplusplus
-extern "C"{
-#endif 
+/* Standard node definition */
+struct arc_bstree_node
+{
+    struct arc_bstree_node * parent;
+    struct arc_bstree_node * left;
+    struct arc_bstree_node * right;
+    char data[1];
+};
 
-/**
- * @typedef arc_compare_fn_t
- * @brief Comparison function
- */
-typedef int (*arc_cmp_fn_t)(void *, void *);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
+/* Container definition */
+struct arc_bstree
+{
+    struct arc_bstree_node *root;
+    struct arc_bstree_node *front;
+    struct arc_bstree_node *back;
+    size_t size;
+    size_t data_size;
+    size_t node_size;
+    arc_cmp_fn_t cmp_fn;
+};
