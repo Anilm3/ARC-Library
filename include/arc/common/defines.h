@@ -47,6 +47,8 @@ extern "C"{
 #define ARC_ERROR         -1
 /** @brief Return value to indicate an out of memory error */
 #define ARC_OUT_OF_MEMORY -2
+/** @brief Return value to indicate an element is duplicated in a structure */
+#define ARC_DUPLICATE     -3
 
 /** @brief Returns the offset of the field in the struct */
 #define ARC_OFFSETOF(type, field) ((size_t) &(((type *) 0)->field))

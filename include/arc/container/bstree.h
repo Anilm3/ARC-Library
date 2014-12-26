@@ -53,6 +53,14 @@ void arc_bstree_destroy(arc_bstree_t bstree);
  * @retval 0 If the bstree is not empty
  * @retval 1 If the bstree is empty
  */
+int arc_bstree_insert(arc_bstree_t bstree, void * data);
+/**
+ * @brief Returns whether the bstree is empty or not
+ *
+ * @param[in] bstree Binary search tree to perform the operation on
+ * @retval 0 If the bstree is not empty
+ * @retval 1 If the bstree is empty
+ */
 int arc_bstree_empty(arc_bstree_t bstree);
 /**
  * @brief Returns the size of the bstree

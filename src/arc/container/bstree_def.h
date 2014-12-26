@@ -29,3 +29,6 @@ struct arc_bstree
     size_t node_size;
     arc_cmp_fn_t cmp_fn;
 };
+
+
+static void arc_bstree_free_node_r(struct arc_bstree_node *node);
