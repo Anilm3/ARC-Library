@@ -78,12 +78,87 @@ ARC_UNIT_TEST(size)
     arc_bstree_destroy(bstree);
 }
 
+ARC_UNIT_TEST(find)
+{
+    int i;
+    arc_bstree_t bstree = arc_bstree_create(sizeof(int), int_cmp_fn);
+
+    for (i = 0; i < 20000; i++)
+    {
+        ARC_ASSERT_INT_EQ(arc_bstree_insert(bstree, (void *)&i), ARC_SUCCESS);
+    }
+
+    for (i = 0; i < 20000; i++)
+    {
+        ARC_ASSERT_TRUE(arc_bstree_find(bstree, (void *)&i));
+    }
+
+    for (i = 20000; i < 20100; i++)
+    {
+        ARC_ASSERT_FALSE(arc_bstree_find(bstree, (void *)&i));
+    }
+
+    arc_bstree_destroy(bstree);
+}
+
+ARC_UNIT_TEST(iterators_forward)
+{
+    int i;
+    arc_bstree_t bstree = arc_bstree_create(sizeof(int), int_cmp_fn);
+    arc_iterator_t it = arc_iterator_create(bstree);
+
+    ARC_ASSERT_POINTER_NOT_NULL(bstree);
+
+    for (i = 0; i < 20000; i++)
+    {
+        ARC_ASSERT_INT_EQ(arc_bstree_insert(bstree, (void *)&i), ARC_SUCCESS);
+    }
+
+    i = 0;
+
+    arc_bstree_before_begin(it);
+
+    while(arc_bstree_next(it))
+    {
+        ARC_ASSERT_INT_EQ(*((int *)arc_bstree_data(it)), i++);
+    }
+
+    arc_iterator_destroy(it);
+    arc_bstree_destroy(bstree);
+}
+
+ARC_UNIT_TEST(iterators_backward)
+{
+    int i;
+    arc_bstree_t bstree = arc_bstree_create(sizeof(int), int_cmp_fn);
+    arc_iterator_t it = arc_iterator_create(bstree);
+
+    ARC_ASSERT_POINTER_NOT_NULL(bstree);
+
+    for (i = 0; i < 20000; i++)
+    {
+        ARC_ASSERT_INT_EQ(arc_bstree_insert(bstree, (void *)&i), ARC_SUCCESS);
+    }
+
+    i = 19999;
+
+    arc_bstree_after_end(it);
+
+    while(arc_bstree_previous(it))
+    {
+        ARC_ASSERT_INT_EQ(*((int *)arc_bstree_data(it)), i--);
+    }
+
+    arc_iterator_destroy(it);
+    arc_bstree_destroy(bstree);
+}
+
 ARC_UNIT_TEST(destruction)
 {
     int i;
 
     arc_bstree_t bstree = arc_bstree_create(sizeof(int), double_cmp_fn);
-    
+
     for (i = 0; i < 20000; i++)
     {
         double data = i;
@@ -99,6 +174,9 @@ ARC_UNIT_TEST_FIXTURE()
     ARC_UNIT_ADD_TEST(creation)
     ARC_UNIT_ADD_TEST(empty)
     ARC_UNIT_ADD_TEST(size)
+    ARC_UNIT_ADD_TEST(find)
+    ARC_UNIT_ADD_TEST(iterators_forward)
+    ARC_UNIT_ADD_TEST(iterators_backward)
     ARC_UNIT_ADD_TEST(destruction)
 }
 

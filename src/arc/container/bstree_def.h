@@ -9,6 +9,14 @@
 
 #include <stdlib.h>
 
+/* Sentinel node definition */
+struct arc_bstree_snode
+{
+    struct arc_bstree_node * parent;
+    struct arc_bstree_node * left;
+    struct arc_bstree_node * right;
+};
+
 /* Standard node definition */
 struct arc_bstree_node
 {
@@ -22,8 +30,8 @@ struct arc_bstree_node
 struct arc_bstree
 {
     struct arc_bstree_node *root;
-    struct arc_bstree_node *front;
-    struct arc_bstree_node *back;
+    struct arc_bstree_snode front;
+    struct arc_bstree_snode back;
     size_t size;
     size_t data_size;
     size_t node_size;

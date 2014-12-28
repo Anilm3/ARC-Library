@@ -19,6 +19,7 @@
 
 #include <stdlib.h>
 #include <arc/type/function.h>
+#include <arc/container/iterator.h>
 
 #ifdef __cplusplus
 extern "C"{
@@ -61,6 +62,14 @@ int arc_bstree_insert(arc_bstree_t bstree, void * data);
  * @retval 0 If the bstree is not empty
  * @retval 1 If the bstree is empty
  */
+int arc_bstree_find(arc_bstree_t bstree, void * data);
+/**
+ * @brief Returns whether the bstree is empty or not
+ *
+ * @param[in] bstree Binary search tree to perform the operation on
+ * @retval 0 If the bstree is not empty
+ * @retval 1 If the bstree is empty
+ */
 int arc_bstree_empty(arc_bstree_t bstree);
 /**
  * @brief Returns the size of the bstree
@@ -75,6 +84,15 @@ size_t arc_bstree_size(arc_bstree_t bstree);
  * @param[in] bstree Binary search tree to perform the operation on
  */
 void arc_bstree_clear(arc_bstree_t bstree);
+
+
+void arc_bstree_before_begin(arc_iterator_t it);
+void arc_bstree_begin(arc_iterator_t it);
+void arc_bstree_end(arc_iterator_t it);
+void arc_bstree_after_end(arc_iterator_t it);
+int arc_bstree_next(arc_iterator_t it);
+int arc_bstree_previous(arc_iterator_t it);
+void * arc_bstree_data(arc_iterator_t it);
 
 #ifdef __cplusplus
 }
