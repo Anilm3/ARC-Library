@@ -38,7 +38,8 @@ struct arc_bstree
     arc_cmp_fn_t cmp_fn;
 };
 
-
-static void arc_bstree_free_node_r(struct arc_bstree_node *node);
+static struct arc_bstree_node * arc_bstree_find_node(struct arc_bstree *bstree,
+                                                     void * data);
+static void arc_bstree_free_node(struct arc_bstree_node *node);
 static struct arc_bstree_node *arc_bstree_min(struct arc_bstree_node *node);
 static struct arc_bstree_node *arc_bstree_max(struct arc_bstree_node *node);

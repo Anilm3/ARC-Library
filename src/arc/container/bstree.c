@@ -54,16 +54,16 @@ struct arc_bstree * arc_bstree_create(size_t data_size, arc_cmp_fn_t cmp_fn)
 
 /******************************************************************************/
 
-static void arc_bstree_free_node_r(struct arc_bstree_node *node)
+static void arc_bstree_free_node(struct arc_bstree_node *node)
 {
     if (node->left != NULL)
     {
-        arc_bstree_free_node_r(node->left);
+        arc_bstree_free_node(node->left);
     }
 
     if (node->right != NULL)
     {
-        arc_bstree_free_node_r(node->right);
+        arc_bstree_free_node(node->right);
     }
 
     free(node);
@@ -75,7 +75,7 @@ void arc_bstree_destroy(struct arc_bstree *bstree)
 {
     if (bstree->root != NULL)
     {
-        arc_bstree_free_node_r(bstree->root);
+        arc_bstree_free_node(bstree->root);
     }
 
     free(bstree);
@@ -207,12 +207,14 @@ static struct arc_bstree_node * arc_bstree_find_node(struct arc_bstree *bstree,
 
     return NULL;
 }
+
 /******************************************************************************/
 
 int arc_bstree_find(struct arc_bstree *bstree, void * data)
 {
     return (arc_bstree_find_node(bstree, data) != NULL);
 }
+
 /******************************************************************************/
 
 void arc_bstree_remove(struct arc_bstree *bstree, void * data)
@@ -309,17 +311,7 @@ void arc_bstree_remove(struct arc_bstree *bstree, void * data)
 }
 
 /******************************************************************************/
-#if 0
-static struct arc_bstree_node *arc_bstree_min(struct arc_bstree_node *node)
-{
-    if (node->left != NULL)
-    {
-        return arc_bstree_min(node->left);
-    }
 
-    return node;
-}
-#else
 static struct arc_bstree_node *arc_bstree_min(struct arc_bstree_node *node)
 {
     while (node->left != NULL)
@@ -329,19 +321,9 @@ static struct arc_bstree_node *arc_bstree_min(struct arc_bstree_node *node)
 
     return node;
 }
-#endif
-/******************************************************************************/
-#if 0
-static struct arc_bstree_node *arc_bstree_max(struct arc_bstree_node *node)
-{
-    if (node->right != NULL)
-    {
-        return arc_bstree_max(node->right);
-    }
 
-    return node;
-}
-#else
+/******************************************************************************/
+
 static struct arc_bstree_node *arc_bstree_max(struct arc_bstree_node *node)
 {
     while (node->right != NULL)
@@ -351,7 +333,7 @@ static struct arc_bstree_node *arc_bstree_max(struct arc_bstree_node *node)
 
     return node;
 }
-#endif
+
 /******************************************************************************/
 
 int arc_bstree_empty(struct arc_bstree * bstree)
@@ -370,7 +352,7 @@ size_t arc_bstree_size(struct arc_bstree * bstree)
 
 void arc_bstree_clear(struct arc_bstree *bstree)
 {
-    arc_bstree_free_node_r(bstree->root);
+    arc_bstree_free_node(bstree->root);
 
     bstree->root = NULL;
     bstree->size = 0;
