@@ -168,6 +168,85 @@ ARC_UNIT_TEST(find)
     arc_bstree_destroy(bstree);
 }
 
+#define ARCSIZE 20000
+ARC_UNIT_TEST(remove)
+{
+    unsigned i, val;
+    unsigned visited[20000];
+    arc_bstree_t bstree = arc_bstree_create(sizeof(int), int_cmp_fn);
+    arc_iterator_t it = arc_iterator_create(bstree);
+
+    srand(0);
+
+    memset(visited, 0, sizeof(unsigned)*20000);
+
+    for (i = 0; i < 20000; i++)
+    {
+        while(1)
+        {
+            val = (unsigned)(rand() % 20000);
+            if (!visited[val])
+            {
+                ARC_ASSERT_INT_EQ(arc_bstree_insert(bstree, (void *)&val),
+                                  ARC_SUCCESS);
+                visited[val] = 1;
+                break;
+            }
+        }
+    }
+
+    memset(visited, 0, sizeof(unsigned)*20000);
+
+    for (i = 0; i < 20000/2; i++)
+    {
+        while(1)
+        {
+            val = (unsigned)(rand() % (20000/2));
+            if (!visited[val])
+            {
+                arc_bstree_remove(bstree, (void *)&val);
+                visited[val] = 1;
+                break;
+            }
+        }
+    }
+
+    i = 20000 - 1;
+
+    arc_bstree_after_end(it);
+
+    while(arc_bstree_previous(it))
+    {
+        ARC_ASSERT_INT_EQ(*((int *)arc_bstree_data(it)), i--);
+    }
+
+    ARC_ASSERT_INT_EQ(i, 20000/2 - 1);
+
+    i = 20000/2;
+
+    arc_bstree_before_begin(it);
+
+    while(arc_bstree_next(it))
+    {
+        ARC_ASSERT_INT_EQ(*((int *)arc_bstree_data(it)), i++);
+    }
+
+    ARC_ASSERT_INT_EQ(i, 20000);
+
+    for (i = 0; i < 20000/2; i++)
+    {
+        ARC_ASSERT_FALSE(arc_bstree_find(bstree, (void *)&i));
+    }
+
+    for (i = 20000/2; i < 20000; i++)
+    {
+        ARC_ASSERT_TRUE(arc_bstree_find(bstree, (void *)&i));
+    }
+
+    arc_iterator_destroy(it);
+    arc_bstree_destroy(bstree);
+}
+
 ARC_UNIT_TEST(iterators_forward)
 {
     /* this test generates the equivalent of a list, so we need to be smarter */
@@ -190,6 +269,8 @@ ARC_UNIT_TEST(iterators_forward)
     {
         ARC_ASSERT_INT_EQ(*((int *)arc_bstree_data(it)), i++);
     }
+
+    ARC_ASSERT_INT_EQ(i, 20000);
 
     arc_iterator_destroy(it);
     arc_bstree_destroy(bstree);
@@ -218,6 +299,8 @@ ARC_UNIT_TEST(iterators_backward)
         ARC_ASSERT_INT_EQ(*((int *)arc_bstree_data(it)), i--);
     }
 
+    ARC_ASSERT_INT_EQ(i, -1);
+
     arc_iterator_destroy(it);
     arc_bstree_destroy(bstree);
 }
@@ -245,6 +328,7 @@ ARC_UNIT_TEST_FIXTURE()
     ARC_UNIT_ADD_TEST(size)
     ARC_UNIT_ADD_TEST(pseudorandom_insertions)
     ARC_UNIT_ADD_TEST(find)
+    ARC_UNIT_ADD_TEST(remove)
     ARC_UNIT_ADD_TEST(iterators_forward)
     ARC_UNIT_ADD_TEST(iterators_backward)
     ARC_UNIT_ADD_TEST(destruction)

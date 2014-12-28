@@ -85,6 +85,7 @@ size_t arc_bstree_size(arc_bstree_t bstree);
  */
 void arc_bstree_clear(arc_bstree_t bstree);
 
+void arc_bstree_remove(arc_bstree_t bstree, void * data);
 
 void arc_bstree_before_begin(arc_iterator_t it);
 void arc_bstree_begin(arc_iterator_t it);
