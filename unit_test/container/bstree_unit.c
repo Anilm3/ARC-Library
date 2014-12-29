@@ -15,23 +15,9 @@
 #include <time.h>
 #include <string.h>
 
-int int_cmp_fn(void * a, void * b)
-{
-    int *a_ = a;
-    int *b_ = b;
-
-    return *a_ < *b_;
-}
-int double_cmp_fn(void * a, void * b)
-{
-    double *a_ = a;
-    double *b_ = b;
-
-    return *a_ < *b_;
-}
 ARC_UNIT_TEST(creation)
 {
-    arc_bstree_t bstree = arc_bstree_create(sizeof(int), int_cmp_fn);
+    arc_bstree_t bstree = arc_bstree_create(sizeof(int), arc_cmp_int);
 
     ARC_ASSERT_POINTER_NOT_NULL(bstree);
 
@@ -41,7 +27,7 @@ ARC_UNIT_TEST(creation)
 ARC_UNIT_TEST(empty)
 {
     int i = 10;
-    arc_bstree_t bstree = arc_bstree_create(sizeof(int), int_cmp_fn);
+    arc_bstree_t bstree = arc_bstree_create(sizeof(int), arc_cmp_int);
 
     ARC_ASSERT_TRUE(arc_bstree_empty(bstree));
 
@@ -55,7 +41,7 @@ ARC_UNIT_TEST(empty)
 ARC_UNIT_TEST(size)
 {
     int i = 10;
-    arc_bstree_t bstree = arc_bstree_create(sizeof(int), int_cmp_fn);
+    arc_bstree_t bstree = arc_bstree_create(sizeof(int), arc_cmp_int);
 
     ARC_ASSERT_INT_EQ(arc_bstree_insert(bstree, (void *)&i), ARC_SUCCESS);
 
@@ -82,7 +68,7 @@ ARC_UNIT_TEST(size)
 ARC_UNIT_TEST(pseudorandom_insertions)
 {
     unsigned i, data;
-    arc_bstree_t bstree = arc_bstree_create(sizeof(int), int_cmp_fn);
+    arc_bstree_t bstree = arc_bstree_create(sizeof(int), arc_cmp_int);
     arc_iterator_t it = arc_iterator_create(bstree);
 
     /* 0 for repeatable random sequence */
@@ -148,7 +134,7 @@ ARC_UNIT_TEST(pseudorandom_insertions)
 ARC_UNIT_TEST(find)
 {
     int i;
-    arc_bstree_t bstree = arc_bstree_create(sizeof(int), int_cmp_fn);
+    arc_bstree_t bstree = arc_bstree_create(sizeof(int), arc_cmp_int);
 
     for (i = 0; i < 20000; i++)
     {
@@ -173,7 +159,7 @@ ARC_UNIT_TEST(remove)
 {
     unsigned i, val;
     unsigned visited[20000];
-    arc_bstree_t bstree = arc_bstree_create(sizeof(int), int_cmp_fn);
+    arc_bstree_t bstree = arc_bstree_create(sizeof(int), arc_cmp_int);
     arc_iterator_t it = arc_iterator_create(bstree);
 
     srand(0);
@@ -197,11 +183,11 @@ ARC_UNIT_TEST(remove)
 
     memset(visited, 0, sizeof(unsigned)*20000);
 
-    for (i = 0; i < 20000/2; i++)
+    for (i = 0; i < 10000; i++)
     {
         while(1)
         {
-            val = (unsigned)(rand() % (20000/2));
+            val = (unsigned)(rand() % 10000);
             if (!visited[val])
             {
                 arc_bstree_remove(bstree, (void *)&val);
@@ -211,7 +197,7 @@ ARC_UNIT_TEST(remove)
         }
     }
 
-    i = 20000 - 1;
+    i = 19999;
 
     arc_bstree_after_end(it);
 
@@ -220,9 +206,9 @@ ARC_UNIT_TEST(remove)
         ARC_ASSERT_INT_EQ(*((int *)arc_bstree_data(it)), i--);
     }
 
-    ARC_ASSERT_INT_EQ(i, 20000/2 - 1);
+    ARC_ASSERT_INT_EQ(i, 9999);
 
-    i = 20000/2;
+    i = 10000;
 
     arc_bstree_before_begin(it);
 
@@ -233,12 +219,12 @@ ARC_UNIT_TEST(remove)
 
     ARC_ASSERT_INT_EQ(i, 20000);
 
-    for (i = 0; i < 20000/2; i++)
+    for (i = 0; i < 10000; i++)
     {
         ARC_ASSERT_FALSE(arc_bstree_find(bstree, (void *)&i));
     }
 
-    for (i = 20000/2; i < 20000; i++)
+    for (i = 10000; i < 20000; i++)
     {
         ARC_ASSERT_TRUE(arc_bstree_find(bstree, (void *)&i));
     }
@@ -251,7 +237,7 @@ ARC_UNIT_TEST(iterators_forward)
 {
     /* this test generates the equivalent of a list, so we need to be smarter */
     int i;
-    arc_bstree_t bstree = arc_bstree_create(sizeof(int), int_cmp_fn);
+    arc_bstree_t bstree = arc_bstree_create(sizeof(int), arc_cmp_int);
     arc_iterator_t it = arc_iterator_create(bstree);
 
     ARC_ASSERT_POINTER_NOT_NULL(bstree);
@@ -280,7 +266,7 @@ ARC_UNIT_TEST(iterators_backward)
 {
     /* this test generates the equivalent of a list, so we need to be smarter */
     int i;
-    arc_bstree_t bstree = arc_bstree_create(sizeof(int), int_cmp_fn);
+    arc_bstree_t bstree = arc_bstree_create(sizeof(int), arc_cmp_int);
     arc_iterator_t it = arc_iterator_create(bstree);
 
     ARC_ASSERT_POINTER_NOT_NULL(bstree);
@@ -309,7 +295,7 @@ ARC_UNIT_TEST(destruction)
 {
     int i;
 
-    arc_bstree_t bstree = arc_bstree_create(sizeof(int), double_cmp_fn);
+    arc_bstree_t bstree = arc_bstree_create(sizeof(double), arc_cmp_double);
 
     for (i = 0; i < 20000; i++)
     {

@@ -37,9 +37,28 @@ struct arc_bstree
     size_t node_size;
     arc_cmp_fn_t cmp_fn;
 };
-
+/**
+ * @brief Clears the contents of the bstree
+ *
+ * @param[in] bstree Binary search tree to perform the operation on
+ */
 static struct arc_bstree_node * arc_bstree_find_node(struct arc_bstree *bstree,
                                                      void * data);
+/**
+ * @brief Clears the contents of the bstree
+ *
+ * @param[in] bstree Binary search tree to perform the operation on
+ */
 static void arc_bstree_free_node(struct arc_bstree_node *node);
+/**
+ * @brief Clears the contents of the bstree
+ *
+ * @param[in] bstree Binary search tree to perform the operation on
+ */
 static struct arc_bstree_node *arc_bstree_min(struct arc_bstree_node *node);
+/**
+ * @brief Clears the contents of the bstree
+ *
+ * @param[in] bstree Binary search tree to perform the operation on
+ */
 static struct arc_bstree_node *arc_bstree_max(struct arc_bstree_node *node);

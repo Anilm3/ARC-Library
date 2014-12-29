@@ -27,6 +27,16 @@ extern "C"{
  */
 typedef int (*arc_cmp_fn_t)(void *, void *);
 
+int arc_cmp_char(void * a, void * b);
+int arc_cmp_schar(void * a, void * b);
+int arc_cmp_uchar(void * a, void * b);
+int arc_cmp_int(void * a, void * b);
+int arc_cmp_uint(void * a, void * b);
+int arc_cmp_long(void * a, void * b);
+int arc_cmp_ulong(void * a, void * b);
+int arc_cmp_float(void * a, void * b);
+int arc_cmp_double(void * a, void * b);
+
 #ifdef __cplusplus
 }
 #endif

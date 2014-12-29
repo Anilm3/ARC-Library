@@ -85,97 +85,50 @@ void arc_bstree_destroy(struct arc_bstree *bstree)
 
 int arc_bstree_insert(struct arc_bstree *bstree, void * data)
 {
-    unsigned left_only = 1, right_only = 1;
+    struct arc_bstree_node *parent = NULL;
     struct arc_bstree_node *node = bstree->root;
-
-    if (node == NULL)
-    {
-        bstree->root = malloc(bstree->node_size);
-
-        if (bstree->root == NULL)
-        {
-            return ARC_ERROR;
-        }
-
-        bstree->front.parent = bstree->root;
-        bstree->back.parent = bstree->root;
-        bstree->root->parent = NULL;
-        bstree->root->left   = NULL;
-        bstree->root->right  = NULL;
-        bstree->size++;
-
-        memcpy(bstree->root->data, data, bstree->data_size);
-
-        return ARC_SUCCESS;
-    }
+    struct arc_bstree_node **node_ref = &(bstree->root);
 
     while (1)
     {
-        if ((*bstree->cmp_fn)((void *)node->data, data))
+        if (node != NULL)
         {
-            if (node->right != NULL)
+            if ((*bstree->cmp_fn)(node->data, data))
             {
+                parent = node;
+                node_ref = &(node->right);
                 node = node->right;
-                left_only = 0;
-                continue;
             }
-
-            node->right = malloc(bstree->node_size);
-
-            if (node->right == NULL)
+            else if ((*bstree->cmp_fn)(data, node->data))
             {
-                return ARC_ERROR;
-            }
-
-            node->right->parent = node;
-            node->right->left   = NULL;
-            node->right->right  = NULL;
-
-            bstree->size++;
-
-            memcpy(node->right->data, data, bstree->data_size);
-
-            if (right_only)
-            {
-                bstree->back.parent = node->right;
-            }
-
-            break;
-        }
-        else if ((*bstree->cmp_fn)(data, (void *)node->data))
-        {
-            if (node->left != NULL)
-            {
+                parent = node;
+                node_ref = &(node->left);
                 node = node->left;
-                right_only = 0;
-                continue;
             }
-
-            node->left = malloc(bstree->node_size);
-
-            if (node->left == NULL)
+            else
             {
-                return ARC_ERROR;
+                return ARC_DUPLICATE;
             }
-
-            node->left->parent = node;
-            node->left->left   = NULL;
-            node->left->right  = NULL;
-
-            bstree->size++;
-
-            memcpy(node->left->data, data, bstree->data_size);
-
-            if (left_only)
-            {
-                bstree->front.parent = node->left;
-            }
-
-            break;
         }
         else
         {
-            return ARC_DUPLICATE;
+            node = malloc(bstree->node_size);
+
+            if (node == NULL)
+            {
+                return ARC_OUT_OF_MEMORY;
+            }
+
+            node->parent = parent;
+            node->left   = NULL;
+            node->right  = NULL;
+            bstree->size++;
+
+            memcpy(node->data, data, bstree->data_size);
+
+            *node_ref = node;
+
+            break;
         }
     }
 
@@ -264,29 +217,18 @@ void arc_bstree_remove(struct arc_bstree *bstree, void * data)
     {
         struct arc_bstree_node * successor = arc_bstree_min(node->right);
 
-        if (successor->right != NULL)
+        if (successor->parent->left == successor)
         {
-            if (successor->parent->left == successor)
-            {
-                successor->parent->left = successor->right;
-            }
-            else
-            {
-                successor->parent->right = successor->right;
-            }
-
-            successor->right->parent = successor->parent;
+            successor->parent->left = successor->right;
         }
         else
         {
-            if (successor->parent->left == successor)
-            {
-                successor->parent->left = NULL;
-            }
-            else
-            {
-                successor->parent->right = NULL;
-            }
+            successor->parent->right = successor->right;
+        }
+
+        if (successor->right != NULL)
+        {
+            successor->right->parent = successor->parent;
         }
 
         successor->parent = node->parent;
@@ -363,7 +305,10 @@ void arc_bstree_clear(struct arc_bstree *bstree)
 void arc_bstree_before_begin(struct arc_iterator * it)
 {
     struct arc_bstree * bstree = it->container;
-    bstree->front.parent = arc_bstree_min(bstree->root);
+
+    bstree->front.parent = (bstree->root != NULL ?
+                            arc_bstree_min(bstree->root) : NULL);
+
     it->node_ptr = &(bstree->front);
 }
 
@@ -372,7 +317,10 @@ void arc_bstree_before_begin(struct arc_iterator * it)
 void arc_bstree_begin(struct arc_iterator * it)
 {
     struct arc_bstree * bstree = it->container;
-    bstree->front.parent = arc_bstree_min(bstree->root);
+
+    bstree->front.parent = (bstree->root != NULL ?
+                            arc_bstree_min(bstree->root) : NULL);
+
     it->node_ptr = bstree->front.parent;
 }
 
@@ -381,7 +329,10 @@ void arc_bstree_begin(struct arc_iterator * it)
 void arc_bstree_end(struct arc_iterator * it)
 {
     struct arc_bstree * bstree = it->container;
-    bstree->back.parent = arc_bstree_max(bstree->root);
+
+    bstree->back.parent = (bstree->root != NULL ?
+                            arc_bstree_max(bstree->root) : NULL);
+
     it->node_ptr = bstree->back.parent;
 }
 
@@ -390,7 +341,10 @@ void arc_bstree_end(struct arc_iterator * it)
 void arc_bstree_after_end(struct arc_iterator * it)
 {
     struct arc_bstree * bstree = it->container;
-    bstree->back.parent = arc_bstree_max(bstree->root);
+
+    bstree->back.parent = (bstree->root != NULL ?
+                            arc_bstree_max(bstree->root) : NULL);
+
     it->node_ptr = &(bstree->back);
 }
 

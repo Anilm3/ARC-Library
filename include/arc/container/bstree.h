@@ -84,15 +84,53 @@ size_t arc_bstree_size(arc_bstree_t bstree);
  * @param[in] bstree Binary search tree to perform the operation on
  */
 void arc_bstree_clear(arc_bstree_t bstree);
-
+/**
+ * @brief Clears the contents of the bstree
+ *
+ * @param[in] bstree Binary search tree to perform the operation on
+ */
 void arc_bstree_remove(arc_bstree_t bstree, void * data);
-
+/**
+ * @brief Clears the contents of the bstree
+ *
+ * @param[in] bstree Binary search tree to perform the operation on
+ */
 void arc_bstree_before_begin(arc_iterator_t it);
+/**
+ * @brief Clears the contents of the bstree
+ *
+ * @param[in] bstree Binary search tree to perform the operation on
+ */
 void arc_bstree_begin(arc_iterator_t it);
+/**
+ * @brief Clears the contents of the bstree
+ *
+ * @param[in] bstree Binary search tree to perform the operation on
+ */
 void arc_bstree_end(arc_iterator_t it);
+/**
+ * @brief Clears the contents of the bstree
+ *
+ * @param[in] bstree Binary search tree to perform the operation on
+ */
 void arc_bstree_after_end(arc_iterator_t it);
+/**
+ * @brief Clears the contents of the bstree
+ *
+ * @param[in] bstree Binary search tree to perform the operation on
+ */
 int arc_bstree_next(arc_iterator_t it);
+/**
+ * @brief Clears the contents of the bstree
+ *
+ * @param[in] bstree Binary search tree to perform the operation on
+ */
 int arc_bstree_previous(arc_iterator_t it);
+/**
+ * @brief Clears the contents of the bstree
+ *
+ * @param[in] bstree Binary search tree to perform the operation on
+ */
 void * arc_bstree_data(arc_iterator_t it);
 
 #ifdef __cplusplus
