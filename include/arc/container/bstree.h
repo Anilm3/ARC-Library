@@ -132,7 +132,12 @@ int arc_bstree_previous(arc_iterator_t it);
  * @param[in] bstree Binary search tree to perform the operation on
  */
 void * arc_bstree_data(arc_iterator_t it);
-
+/**
+ * @brief Clears the contents of the bstree
+ *
+ * @param[in] bstree Binary search tree to perform the operation on
+ */
+void arc_bstree_erase(struct arc_iterator * it);
 #ifdef __cplusplus
 }
 #endif

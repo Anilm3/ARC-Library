@@ -44,6 +44,10 @@ struct arc_bstree
  */
 static struct arc_bstree_node * arc_bstree_find_node(struct arc_bstree *bstree,
                                                      void * data);
+
+static void arc_bstree_remove_node(struct arc_bstree *bstree,
+                                   struct arc_bstree_node *node);
+
 /**
  * @brief Clears the contents of the bstree
  *
