@@ -401,6 +401,7 @@ int arc_bstree_previous(struct arc_iterator * it)
 
     return 1;
 }
+
 /******************************************************************************/
 
 int arc_bstree_next(struct arc_iterator * it)
@@ -464,6 +465,17 @@ void * arc_bstree_data(struct arc_iterator * it)
 
 /******************************************************************************/
 
+int arc_bstree_position(struct arc_iterator * it, void * data)
+{
+    struct arc_bstree * bstree = it->container;
+    struct arc_bstree_node * node = arc_bstree_find_node(bstree, data);
+
+    it->node_ptr = node;
+
+    return (node != NULL);
+}
+
+/******************************************************************************/
 void arc_bstree_erase(struct arc_iterator * it)
 {
     struct arc_bstree * bstree = it->container;

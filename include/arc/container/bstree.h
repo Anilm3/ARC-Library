@@ -133,11 +133,20 @@ int arc_bstree_previous(arc_iterator_t it);
  */
 void * arc_bstree_data(arc_iterator_t it);
 /**
+ * @brief Returns whether the bstree is empty or not
+ *
+ * @param[in] bstree Binary search tree to perform the operation on
+ * @retval 0 If the bstree is not empty
+ * @retval 1 If the bstree is empty
+ */
+int arc_bstree_position(arc_iterator_t it, void * data);
+/**
  * @brief Clears the contents of the bstree
  *
  * @param[in] bstree Binary search tree to perform the operation on
  */
-void arc_bstree_erase(struct arc_iterator * it);
+void arc_bstree_erase(arc_iterator_t it);
+
 #ifdef __cplusplus
 }
 #endif
