@@ -7,6 +7,10 @@
 *                                                                              *
 *******************************************************************************/
 
+/**
+ * @struct arc_iterator
+ * @brief Iterator definition
+ */
 struct arc_iterator
 {
     void * container;

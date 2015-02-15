@@ -15,21 +15,21 @@
  *
  * A double linked list is a structure in which the data is linked together in
  * both directions. The implementation of the structure is highly based on
- * iterators (called simply nodes) in order to provide mechanisms to access all 
+ * iterators (called simply nodes) in order to provide mechanisms to access all
  * the elements in the structure.
  *
  * @see http://en.wikipedia.org/wiki/Doubly_linked_list
  */
- 
+
 #ifndef ARC_DLIST_H_
 #define ARC_DLIST_H_
 
-#include <stdlib.h> 
+#include <stdlib.h>
 #include <arc/container/iterator.h>
 
 #ifdef __cplusplus
 extern "C"{
-#endif 
+#endif
 
 /**
  * @typedef arc_dlist_t
@@ -43,7 +43,7 @@ typedef struct arc_dlist * arc_dlist_t;
 /**
  * @brief Creates a new list
  *
- * The memory is allocated in the heap and has to be destroyed by the user. The 
+ * The memory is allocated in the heap and has to be destroyed by the user. The
  * data size provided has to coincide with the element type size to be used in
  * the container.
  *
@@ -53,7 +53,7 @@ typedef struct arc_dlist * arc_dlist_t;
  */
 arc_dlist_t arc_dlist_create(size_t data_size);
 /**
- * @brief Destroys the memory associated to a list 
+ * @brief Destroys the memory associated to a list
  *
  * @param[in] list List to perform the operation on
  */

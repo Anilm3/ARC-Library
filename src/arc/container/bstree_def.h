@@ -38,31 +38,38 @@ struct arc_bstree
     arc_cmp_fn_t cmp_fn;
 };
 /**
- * @brief Clears the contents of the bstree
+ * @brief Finds and returns a node in the bstree
  *
  * @param[in] bstree Binary search tree to perform the operation on
+ * @param[in] data Data element to be found
+ * @return 0 If the element was not found
+ * @retval 1 If the element was found
  */
 static struct arc_bstree_node * arc_bstree_find_node(struct arc_bstree *bstree,
                                                      void * data);
-
-static void arc_bstree_remove_node(struct arc_bstree *bstree,
-                                   struct arc_bstree_node *node);
-
 /**
- * @brief Clears the contents of the bstree
+ * @brief Removes a node from the bstree
  *
  * @param[in] bstree Binary search tree to perform the operation on
+ * @param[in] data node node to be removed
+ */
+static void arc_bstree_remove_node(struct arc_bstree *bstree,
+                                   struct arc_bstree_node *node);
+/**
+ * @brief Recursively frees a node of the bstree
+ *
+ * @param[in] data node node to be freed
  */
 static void arc_bstree_free_node(struct arc_bstree_node *node);
 /**
- * @brief Clears the contents of the bstree
+ * @brief Finds the minimum element in the subtree
  *
- * @param[in] bstree Binary search tree to perform the operation on
+ * @param[in] node Binary search tree to perform the operation on
  */
 static struct arc_bstree_node *arc_bstree_min(struct arc_bstree_node *node);
 /**
- * @brief Clears the contents of the bstree
+ * @brief Finds the maximum element in the subtree
  *
- * @param[in] bstree Binary search tree to perform the operation on
+ * @param[in] node Binary search tree to perform the operation on
  */
 static struct arc_bstree_node *arc_bstree_max(struct arc_bstree_node *node);
