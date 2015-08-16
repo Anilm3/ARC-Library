@@ -91,13 +91,15 @@ int arc_bstree_insert(struct arc_bstree *bstree, void * data)
 
     while (node != NULL)
     {
-        if ((*bstree->cmp_fn)(node->data, data))
+        int cmp_result = (*bstree->cmp_fn)(node->data, data);
+
+        if (cmp_result == -1)
         {
             parent = node;
             node_ref = &(node->right);
             node = node->right;
         }
-        else if ((*bstree->cmp_fn)(data, node->data))
+        else if (cmp_result == 1)
         {
             parent = node;
             node_ref = &(node->left);
@@ -137,11 +139,12 @@ static struct arc_bstree_node * arc_bstree_find_node(struct arc_bstree *bstree,
 
     while (node != NULL)
     {
-        if ((*bstree->cmp_fn)((void *)node->data, data))
+        int cmp_result = (*bstree->cmp_fn)((void *)node->data, data);
+        if (cmp_result == -1)
         {
             node = node->right;
         }
-        else if ((*bstree->cmp_fn)(data, (void *)node->data))
+        else if (cmp_result == 1)
         {
             node = node->left;
         }

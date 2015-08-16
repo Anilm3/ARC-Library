@@ -1,0 +1,22 @@
+/*! \page page_bstree BSTree
+
+\code
+ Queue Node
++------------+
+|next        |
++------------+
+|alignment   |
++------------+
+|data[0]     | <-+
++------------+   |
+|alignment   |   | user data
++------------+   | memory
+|            |   |
+|extra memory|   |
+|            | <-+
++------------+
+\endcode
+
+\section section_complexity Complexity
+
+*/
