@@ -6,6 +6,8 @@
 * There is NO WARRANTY, to the extent permitted by law.                        *
 *                                                                              *
 *******************************************************************************/
+#ifndef ARC_DEQUE_DEF_H_
+#define ARC_DEQUE_DEF_H_
 
 #include <stdlib.h>
 
@@ -125,3 +127,5 @@ static int arc_deque_insert_node_before(struct arc_deque * deque,
 static void arc_deque_erase_node(struct arc_deque * deque,
                                  unsigned long block_num,
                                  unsigned long block_idx);
+
+#endif

@@ -6,6 +6,8 @@
 * There is NO WARRANTY, to the extent permitted by law.                        *
 *                                                                              *
 *******************************************************************************/
+#ifndef ARC_STACK_DEF_H_
+#define ARC_STACK_DEF_H_
 
 #include <string.h>
 #include <stdlib.h>
@@ -28,3 +30,5 @@ struct arc_stack
     size_t data_size;
     size_t node_size;
 };
+
+#endif

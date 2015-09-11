@@ -19,7 +19,7 @@
 
 #ifdef __cplusplus
 extern "C"{
-#endif 
+#endif
 
 /**
  * @typedef arc_compare_fn_t
@@ -36,6 +36,13 @@ int arc_cmp_long(void * a, void * b);
 int arc_cmp_ulong(void * a, void * b);
 int arc_cmp_float(void * a, void * b);
 int arc_cmp_double(void * a, void * b);
+
+
+/**
+ * @typedef arc_hash_fn_t
+ * @brief Hash function
+ */
+typedef unsigned long (*arc_hash_fn_t)(void *, size_t);
 
 #ifdef __cplusplus
 }

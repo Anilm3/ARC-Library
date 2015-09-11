@@ -54,7 +54,7 @@ void arc_htable_destroy(struct arc_htable * htable)
 
 int arc_htable_insert(struct arc_htable * htable, void * key, void * data)
 {
-    unsigned long hvalue = htable->hash_fn(key) % NUM_BUCKETS;
+    unsigned long hvalue = htable->hash_fn(key, htable->key_size) % NUM_BUCKETS;
     arc_slist_t list = htable->buckets[hvalue];
     struct arc_htable_node node;
     int duplicate = 0;
@@ -112,7 +112,7 @@ int arc_htable_insert(struct arc_htable * htable, void * key, void * data)
 
 void * arc_htable_retrieve(struct arc_htable * htable, void * key)
 {
-    unsigned long hvalue = htable->hash_fn(key) % NUM_BUCKETS;
+    unsigned long hvalue = htable->hash_fn(key, htable->key_size) % NUM_BUCKETS;
     arc_slist_t list = htable->buckets[hvalue];
     void *data = NULL;
 
@@ -182,7 +182,7 @@ void arc_htable_clear(struct arc_htable * htable)
 
 void arc_htable_remove(struct arc_htable * htable, void * key)
 {
-    unsigned long hvalue = htable->hash_fn(key) % NUM_BUCKETS;
+    unsigned long hvalue = htable->hash_fn(key, htable->key_size) % NUM_BUCKETS;
     arc_slist_t list = htable->buckets[hvalue];
 
     if (list != NULL)

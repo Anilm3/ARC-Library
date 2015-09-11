@@ -53,6 +53,8 @@ extern "C"{
 /** @brief Returns the offset of the field in the struct */
 #define ARC_OFFSETOF(type, field) ((size_t) &(((type *) 0)->field))
 
+/** @brief Used to mark variables as unused */
+#define ARC_UNUSED(x) (void)(x)
 #ifdef __cplusplus
 }
 #endif

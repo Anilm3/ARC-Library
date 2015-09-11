@@ -6,6 +6,8 @@
 * There is NO WARRANTY, to the extent permitted by law.                        *
 *                                                                              *
 *******************************************************************************/
+#ifndef ARC_BSTREE_DEF_H_
+#define ARC_BSTREE_DEF_H_
 
 #include <stdlib.h>
 
@@ -73,3 +75,5 @@ static struct arc_bstree_node *arc_bstree_min(struct arc_bstree_node *node);
  * @param[in] node Binary search tree to perform the operation on
  */
 static struct arc_bstree_node *arc_bstree_max(struct arc_bstree_node *node);
+
+#endif

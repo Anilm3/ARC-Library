@@ -7,6 +7,9 @@
 *                                                                              *
 *******************************************************************************/
 
+#ifndef ARC_SLIST_DEF_H_
+#define ARC_SLIST_DEF_H_
+
 #include <stdlib.h>
 
 /* Sentinel node definition */
@@ -31,3 +34,5 @@ struct arc_slist
     size_t data_size;
     size_t node_size;
 };
+
+#endif

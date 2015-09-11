@@ -7,6 +7,8 @@
 *                                                                              *
 *******************************************************************************/
 
+#ifndef ARC_ITERATOR_DEF_H_
+#define ARC_ITERATOR_DEF_H_
 /**
  * @struct arc_iterator
  * @brief Iterator definition
@@ -18,3 +20,5 @@ struct arc_iterator
     unsigned long node_num;
     unsigned long node_idx;
 };
+
+#endif

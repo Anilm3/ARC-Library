@@ -44,7 +44,7 @@ typedef struct arc_bstree * arc_bstree_t;
  * @brief Creates a new bstree
  *
  * @param[in] data_size Size of the data element
- * @param[in] cmp_fn Comparison function (<)
+ * @param[in] cmp_fn Comparison function (-1, 0, 1)
  * @return New empty bstree
  * @retval NULL if memory cannot be allocated
  */

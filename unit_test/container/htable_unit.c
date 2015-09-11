@@ -14,8 +14,9 @@
 
 #include <string.h>
 
-unsigned long hash_function(void *key)
+unsigned long hash_function(void *key, size_t size)
 {
+    ARC_UNUSED(size);
     return  (unsigned long)*((int *)key);
 }
 
