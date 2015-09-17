@@ -58,6 +58,30 @@ static struct arc_bstree_node * arc_bstree_find_node(struct arc_bstree *bstree,
 static void arc_bstree_remove_node(struct arc_bstree *bstree,
                                    struct arc_bstree_node *node);
 /**
+ * @brief Transform the tree into a vine and return size
+ *
+ * @see https://en.wikipedia.org/wiki/Day%E2%80%93Stout%E2%80%93Warren_algorithm
+ *
+ * @param[in] node (subtree) to apply the operation on
+ */
+static void arc_bstree_tree_to_vine(struct arc_bstree_node *node);
+/**
+ * @brief Convert the vine into a balanced tree
+ *
+ * @see https://en.wikipedia.org/wiki/Day%E2%80%93Stout%E2%80%93Warren_algorithm
+ *
+ * @param[in] node (subtree) to apply the operation on
+ */
+static void arc_bstree_vine_to_tree(struct arc_bstree_node *node, size_t size);
+/**
+ * @brief Compress "count" spine nodes in the tree
+ *
+ * @see https://en.wikipedia.org/wiki/Day%E2%80%93Stout%E2%80%93Warren_algorithm
+ *
+ * @param[in] node (subtree) to apply the operation on
+ */
+static void arc_bstree_compress(struct arc_bstree_node *node, size_t size);
+/**
  * @brief Recursively frees a node of the bstree
  *
  * @param[in] data node node to be freed

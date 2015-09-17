@@ -7,6 +7,7 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <math.h>
 #include <stdio.h>
 #include <string.h>
 #include <strings.h>
@@ -16,6 +17,37 @@
 #include <arc/container/bstree_def.h>
 #include <arc/container/iterator_def.h>
 
+/******************************************************************************/
+/*
+static int arc_bstree_print_num_nodes_level(struct arc_bstree_node * node,
+                                            int level)
+{
+    if (node == NULL) return 0;
+
+    if (level == 0)
+    {
+        return 1;
+    }
+
+    return arc_bstree_print_num_nodes_level(node->left, level - 1) +
+           arc_bstree_print_num_nodes_level(node->right, level - 1);
+}
+*/
+
+/******************************************************************************/
+/*
+static void arc_bstree_print_num_nodes(struct arc_bstree_node * root)
+{
+    int level = 0;
+    int retval = 1;
+
+    while (retval)
+    {
+        retval = arc_bstree_print_num_nodes_level(root, level++);
+        printf("%d\n", retval);
+    }
+}
+*/
 /******************************************************************************/
 
 struct arc_bstree * arc_bstree_create(size_t data_size, arc_cmp_fn_t cmp_fn)
@@ -239,6 +271,95 @@ static void arc_bstree_remove_node(struct arc_bstree *bstree,
 
     free(node);
     bstree->size--;
+}
+
+/******************************************************************************/
+
+static void arc_bstree_tree_to_vine(struct arc_bstree_node *node)
+{
+    struct arc_bstree_node *tail = node;
+    struct arc_bstree_node *rest = tail->right;
+
+    while (rest != NULL)
+    {
+        if (rest->left == NULL)
+        {
+            tail = rest;
+            rest = rest->right;
+        }
+        else
+        {
+            struct arc_bstree_node *temp = rest->left;
+            rest->left = temp->right;
+            temp->right = rest;
+            rest = temp;
+            tail->right = temp;
+        }
+    }
+}
+
+/******************************************************************************/
+
+static void arc_bstree_vine_to_tree(struct arc_bstree_node *node, size_t size)
+{
+    size_t leaves = size + 1 - ((size_t)pow(2, floor(log2((double)size + 1))));
+
+    arc_bstree_compress(node, leaves);
+
+    size = size - leaves;
+
+    while (size > 1)
+    {
+        arc_bstree_compress(node, (size_t)floor((double)size / 2.0));
+        size = (size_t)floor((double)size / 2.0);
+    }
+}
+
+/******************************************************************************/
+
+static void arc_bstree_compress(struct arc_bstree_node *node, size_t count)
+{
+    size_t i;
+    struct arc_bstree_node *scanner = node;
+
+    for (i = 0; i < count; i++)
+    {
+        struct arc_bstree_node *child = scanner->right;
+
+        scanner->right = child->right;
+        if (child->right != NULL)
+        {
+            child->right->parent = scanner;
+        }
+
+        scanner = scanner->right;
+        child->right = scanner->left;
+        if (scanner->left != NULL)
+        {
+            scanner->left->parent = child;
+        }
+
+        scanner->left = child;
+        if (child != NULL)
+        {
+            child->parent = scanner;
+        }
+    }
+}
+
+/******************************************************************************/
+
+void arc_bstree_rebalance(arc_bstree_t bstree)
+{
+    struct arc_bstree_node pseudo_root = {NULL, NULL, NULL, {0}};
+
+    pseudo_root.right = bstree->root;
+
+    arc_bstree_tree_to_vine(&pseudo_root);
+
+    arc_bstree_vine_to_tree(&pseudo_root, bstree->size);
+
+    bstree->root = pseudo_root.right;
 }
 
 /******************************************************************************/

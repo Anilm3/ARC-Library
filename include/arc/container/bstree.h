@@ -96,6 +96,14 @@ size_t arc_bstree_size(arc_bstree_t bstree);
  */
 void arc_bstree_clear(arc_bstree_t bstree);
 /**
+ * @brief Creates an optimal BST using the Day–Stout–Warren algorithm
+ *
+ * @see https://en.wikipedia.org/wiki/Day%E2%80%93Stout%E2%80%93Warren_algorithm
+ *
+ * @param[in] bstree Binary search tree to perform the operation on
+ */
+void arc_bstree_rebalance(arc_bstree_t bstree);
+/**
  * @brief Removes an element from the bstree
  *
  * @param[in] bstree Binary search tree to perform the operation on

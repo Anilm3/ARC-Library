@@ -13,7 +13,6 @@
 #include <arc/container/darray.h>
 #include <arc/container/darray_def.h>
 #include <arc/common/defines.h>
-#include <arc/memory/copy.h>
 
 #include <arc/container/iterator_def.h>
 
