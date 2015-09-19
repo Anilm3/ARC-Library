@@ -7,9 +7,12 @@
 *                                                                              *
 *******************************************************************************/
 /**
- * @file deque.h
+ * @addtogroup Deque
+ * @{
+ *
  * @author Anil M. Mahtani Mirchandani
  * @date June, 2014
+ * @ingroup Container
  *
  * @brief Deque
  *
@@ -225,4 +228,6 @@ int arc_deque_previous(arc_iterator_t it);
 }
 #endif
 
-#endif
+#endif /* ARC_DEQUE_H_ */
+
+/** @} */

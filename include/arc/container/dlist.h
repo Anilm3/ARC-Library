@@ -7,9 +7,12 @@
 *                                                                              *
 *******************************************************************************/
 /**
- * @file dlist.h
+ * @addtogroup DList
+ * @{
+ *
  * @author Anil M. Mahtani Mirchandani
  * @date June, 2014
+ * @ingroup Container
  *
  * @brief Doubly-linked list
  *
@@ -207,4 +210,6 @@ int arc_dlist_previous(arc_iterator_t it);
 }
 #endif
 
-#endif
+#endif /* ARC_DLIST_H_ */
+
+/** @} */

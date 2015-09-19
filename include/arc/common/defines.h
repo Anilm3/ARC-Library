@@ -7,9 +7,12 @@
 *                                                                              *
 *******************************************************************************/
 /**
+ * @addtogroup Defines
+ * @{
+ *
  * @author Anil M. Mahtani Mirchandani
- * @file defines.h
  * @date June, 2014
+ * @ingroup Common
  *
  * @brief General defines
  */
@@ -32,7 +35,7 @@
 
 #ifdef __cplusplus
 extern "C"{
-#endif 
+#endif
 
 #ifdef ARC_C99
 # include <stdint.h>
@@ -59,4 +62,6 @@ extern "C"{
 }
 #endif
 
-#endif
+#endif /* ARC_DEFINES_H_ */
+
+/** @} */

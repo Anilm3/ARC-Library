@@ -7,9 +7,12 @@
 *                                                                              *
 *******************************************************************************/
 /**
- * @file unit_common.h
+ * @addtogroup Unit_Common
+ * @{
+ *
  * @author Anil M. Mahtani Mirchandani
  * @date June, 2014
+ * @ingroup Test
  *
  * @brief Unit test framework
  *
@@ -24,7 +27,7 @@
 
 #ifdef __cplusplus
 extern "C"{
-#endif 
+#endif
 
 /**
  * @brief Generic assertion expecting a function with 0 parameters
@@ -160,7 +163,7 @@ extern "C"{
                   int, exp, \
                   #exp " == %d", 1, \
                   #exp " == %d", 0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts the expression is false
  *
@@ -171,7 +174,7 @@ extern "C"{
                   int, exp, \
                   #exp " == %d", 0, \
                   #exp " == %d", 1, \
-                  critical)  
+                  critical)
 /**
  * @brief Asserts the expression is NULL
  *
@@ -182,7 +185,7 @@ extern "C"{
                   void *, exp, \
                   #exp " == %s", "NULL", \
                   #exp " == %p", _0, \
-                  critical)  
+                  critical)
 /**
  * @brief Asserts the expression is not NULL
  *
@@ -193,7 +196,7 @@ extern "C"{
                   void *, exp, \
                   #exp " != %s", "NULL", \
                   #exp " == %s", "NULL", \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts left and right pointers are equal
  *
@@ -206,7 +209,7 @@ extern "C"{
                   void *, right, \
                   #left " == %p", _1, \
                   #left " == %p", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts left and right integers are equal
  *
@@ -219,7 +222,7 @@ extern "C"{
                   int, right, \
                   #left " == %d", _1, \
                   #left " == %d", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts left and right unsigned longs are equal
  *
@@ -232,7 +235,7 @@ extern "C"{
                   unsigned long, right, \
                   #left " == %lu", _1, \
                   #left " == %lu", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts left and right floats are equal
  *
@@ -247,7 +250,7 @@ extern "C"{
                   double, delta, \
                   #left " +/- " #delta " ~= %f", _1, \
                   #left " +/- " #delta " ~= %f", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts left and right doubles are equal
  *
@@ -262,7 +265,7 @@ extern "C"{
                   double, delta, \
                   #left " +/- " #delta " ~= %f", _1, \
                   #left " +/- " #delta " ~= %f", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts left and right integers are not equal
  *
@@ -275,7 +278,7 @@ extern "C"{
                   int, right, \
                   #left " != %d", _1, \
                   #left " == %d", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts left and right unsigned longs are not equal
  *
@@ -288,7 +291,7 @@ extern "C"{
                   unsigned long, right, \
                   #left " != %lu", _1, \
                   #left " == %lu", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts left and right floats are not equal
  *
@@ -303,7 +306,7 @@ extern "C"{
                   double, delta, \
                   #left " +/- " #delta " != %f", _1, \
                   #left " +/- " #delta " ~= %f", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts left and right doubles are not equal
  *
@@ -318,7 +321,7 @@ extern "C"{
                   double, delta, \
                   #left " +/- " #delta " != %f", _1, \
                   #left " +/- " #delta " ~= %f", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts left integer is less than right integer
  *
@@ -331,7 +334,7 @@ extern "C"{
                   int, right, \
                   #left " < %d", _1, \
                   #left " == %d", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts left unsigned long is less than right unsigned long
  *
@@ -344,7 +347,7 @@ extern "C"{
                   unsigned long, right, \
                   #left " < %lu", _1, \
                   #left " == %lu", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts left float is less than right float
  *
@@ -359,7 +362,7 @@ extern "C"{
                   double, delta, \
                   #left " +/- " #delta " < %f", _1, \
                   #left " +/- " #delta " ~= %f", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts left double is less than right double
  *
@@ -374,7 +377,7 @@ extern "C"{
                   double, delta, \
                   #left " +/- " #delta " < %f", _1, \
                   #left " +/- " #delta " ~= %f", _0, \
-                  critical) 
+                  critical)
 
 /**
  * @brief Asserts left integer is less or equal than right integer
@@ -388,7 +391,7 @@ extern "C"{
                   int, right, \
                   #left " <= %d", _1, \
                   #left " == %d", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts left unsigned long is less or equal than right unsigned long
  *
@@ -401,7 +404,7 @@ extern "C"{
                   unsigned long, right, \
                   #left " <= %lu", _1, \
                   #left " == %lu", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts left float is less or equal than right float
  *
@@ -416,7 +419,7 @@ extern "C"{
                   double, delta, \
                   #left " +/- " #delta " <= %f", _1, \
                   #left " +/- " #delta " ~= %f", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts left double is less or equal than right double
  *
@@ -431,7 +434,7 @@ extern "C"{
                   double, delta, \
                   #left " +/- " #delta " <= %f", _1, \
                   #left " +/- " #delta " ~= %f", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts left integer is greater than right integer
  *
@@ -444,7 +447,7 @@ extern "C"{
                   int, right, \
                   #left " > %d", _1, \
                   #left " == %d", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts unsigned long integer is greaterthan right unsigned long
  *
@@ -457,7 +460,7 @@ extern "C"{
                   unsigned long, right, \
                   #left " > %lu", _1, \
                   #left " == %lu", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts float integer is greater than float integer
  *
@@ -472,7 +475,7 @@ extern "C"{
                   double, delta, \
                   #left " +/- " #delta " > %f", _1, \
                   #left " +/- " #delta " ~= %f", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts left double is greater than right double
  *
@@ -487,7 +490,7 @@ extern "C"{
                   double, delta, \
                   #left " +/- " #delta " > %f", _1, \
                   #left " +/- " #delta " ~= %f", _0, \
-                  critical) 
+                  critical)
 
 /**
  * @brief Asserts left integer is greater or equal than right integer
@@ -501,7 +504,7 @@ extern "C"{
                   int, right, \
                   #left " >= %d", _1, \
                   #left " == %d", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts left unsigned long is greater or equal than right unsigned long
  *
@@ -514,7 +517,7 @@ extern "C"{
                   unsigned long, right, \
                   #left " >= %lu", _1, \
                   #left " == %lu", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts left float is greater or equal than right float
  *
@@ -529,7 +532,7 @@ extern "C"{
                   double, delta, \
                   #left " +/- " #delta " >= %f", _1, \
                   #left " +/- " #delta " ~= %f", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts left double is greater or equal than right double
  *
@@ -544,7 +547,7 @@ extern "C"{
                   double, delta, \
                   #left " +/- " #delta " >= %f", _1, \
                   #left " +/- " #delta " ~= %f", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts bit is set
  *
@@ -557,7 +560,7 @@ extern "C"{
                   int, bit, \
                   #num "(" #bit ") == %d", 1, \
                   #num "(" #bit ") == %d", 0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts bit is not set
  *
@@ -583,7 +586,7 @@ extern "C"{
                   const char *, right, \
                   #left " == %s", _1, \
                   #left " == %s", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts left and right strings are not equal
  *
@@ -596,7 +599,7 @@ extern "C"{
                   const char *, right, \
                   #left " != %s", _1, \
                   #left " == %s", _0, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts the string contains a character
  *
@@ -609,7 +612,7 @@ extern "C"{
                   char, c, \
                   #str " contain %c", _1, \
                   #str " !contain %c", _1, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts the string doesn't contain a character
  *
@@ -622,7 +625,7 @@ extern "C"{
                   char, c, \
                   #str " !contain %c", _1, \
                   #str " contain %c", _1, \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts the string starts with a character
  *
@@ -635,7 +638,7 @@ extern "C"{
                   char, c, \
                   #str"[0] == %c", _1, \
                   #str"[0] == %c", (char)((str)[0]), \
-                  critical) 
+                  critical)
 /**
  * @brief Asserts the string ends with a character
  *
@@ -648,7 +651,7 @@ extern "C"{
                   char, c, \
                   #str"[last] == %c", _1, \
                   #str"[last] == %c", (char)((str)[strlen(str) - 1]), \
-                  critical) 
+                  critical)
 
 /* Operators */
 int arc_unit_true(int exp);
@@ -711,4 +714,6 @@ void arc_unit_set_test_failed(void);
 }
 #endif
 
-#endif
+#endif /* ARC_UNIT_COMMON_H_ */
+
+/** @} */

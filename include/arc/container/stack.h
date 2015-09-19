@@ -7,16 +7,19 @@
 *                                                                              *
 *******************************************************************************/
 /**
- * @file stack.h
+ * @addtogroup Stack
+ * @{
+ *
  * @author Anil M. Mahtani Mirchandani
  * @date June, 2014
+ * @ingroup Container
  *
  * @brief Stack
  *
  * A stack is very similar to a singly-linked list but it uses a bit less memory
  * and the operations require less instructions to be performed. The main goal
- * of this redundancy is for performance and experimentation purposes as the 
- * simplicity of the structure provides less instructions per operation thus 
+ * of this redundancy is for performance and experimentation purposes as the
+ * simplicity of the structure provides less instructions per operation thus
  * making it easier to implement to be lock-free and thread-safe.
  *
  * @see http://en.wikipedia.org/wiki/Stack_(abstract_data_type)
@@ -29,13 +32,13 @@
 
 #ifdef __cplusplus
 extern "C"{
-#endif 
+#endif
 
 /**
  * @typedef arc_stack_t
  * @brief Stack definition
  *
- * The stack is defined as a pointer to be used with the creation and 
+ * The stack is defined as a pointer to be used with the creation and
  * destruction functions, direct stack allocations are not allowed.
  */
 typedef struct arc_stack * arc_stack_t;
@@ -43,9 +46,9 @@ typedef struct arc_stack * arc_stack_t;
 /**
  * @brief Creates a new stack
  *
- * The memory is allocated in the heap and has to be destroyed by the user. The 
+ * The memory is allocated in the heap and has to be destroyed by the user. The
  * data size provided has to coincide with the element type size to be used in
- * the container. 
+ * the container.
  *
  * @param[in] data_size Size of the data element
  * @return New empty stack
@@ -53,7 +56,7 @@ typedef struct arc_stack * arc_stack_t;
  */
 arc_stack_t arc_stack_create(size_t data_size);
 /**
- * @brief Destroys the memory associated to a stack 
+ * @brief Destroys the memory associated to a stack
  *
  * @param[in] stack Stack to perform the operation on
  */
@@ -106,4 +109,7 @@ void arc_stack_clear(arc_stack_t stack);
 }
 #endif
 
-#endif
+#endif /* ARC_STACK_H_ */
+
+/** @} */
+

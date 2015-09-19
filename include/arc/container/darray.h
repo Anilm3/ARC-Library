@@ -7,16 +7,19 @@
 *                                                                              *
 *******************************************************************************/
 /**
- * @file darray.h
+ * @addtogroup DArray
+ * @{
+ *
  * @author Anil M. Mahtani Mirchandani
  * @date June, 2014
+ * @ingroup Container
  *
  * @brief Dynamic Array
  *
  * A darray is very similar to a singly-linked list but it uses a bit less memory
  * and the operations require less instructions to be performed. The main goal
- * of this redundancy is for performance and experimentation purposes as the 
- * simplicity of the structure provides less instructions per operation thus 
+ * of this redundancy is for performance and experimentation purposes as the
+ * simplicity of the structure provides less instructions per operation thus
  * making it easier to implement to be lock-free and thread-safe.
  *
  * @see http://en.wikipedia.org/wiki/Dynamic_array
@@ -30,7 +33,7 @@
 
 #ifdef __cplusplus
 extern "C"{
-#endif 
+#endif
 
 /**
  * @typedef arc_darray_t
@@ -44,9 +47,9 @@ typedef struct arc_darray * arc_darray_t;
 /**
  * @brief Creates a new darray
  *
- * The memory is allocated in the heap and has to be destroyed by the user. The 
+ * The memory is allocated in the heap and has to be destroyed by the user. The
  * data size provided has to coincide with the element type size to be used in
- * the container. 
+ * the container.
  *
  * @param[in] data_size Size of the data element
  * @return New empty darray
@@ -54,7 +57,7 @@ typedef struct arc_darray * arc_darray_t;
  */
 arc_darray_t arc_darray_create(size_t data_size);
 /**
- * @brief Destroys the memory associated to a darray 
+ * @brief Destroys the memory associated to a darray
  *
  * @param[in] darray Dynamic Array to perform the operation on
  */
@@ -225,4 +228,6 @@ int arc_darray_previous(arc_iterator_t it);
 }
 #endif
 
-#endif
+#endif /* ARC_DARRAY_H_ */
+
+/** @} */

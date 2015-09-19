@@ -7,9 +7,12 @@
 *                                                                              *
 *******************************************************************************/
 /**
- * @file slist.h
+ * @addtogroup SList
+ * @{
+ *
  * @author Anil M. Mahtani Mirchandani
  * @date June, 2014
+ * @ingroup Container
  *
  * @brief Singly-linked list
  *
@@ -20,16 +23,16 @@
  *
  * @see http://en.wikipedia.org/wiki/Linked_list#Singly_linked_list
  */
- 
+
 #ifndef ARC_SLIST_H_
 #define ARC_SLIST_H_
 
-#include <stdlib.h> 
+#include <stdlib.h>
 #include <arc/container/iterator.h>
 
 #ifdef __cplusplus
 extern "C"{
-#endif 
+#endif
 
 /**
  * @typedef arc_slist_t
@@ -43,7 +46,7 @@ typedef struct arc_slist * arc_slist_t;
 /**
  * @brief Creates a new list
  *
- * The memory is allocated in the heap and has to be destroyed by the user. The 
+ * The memory is allocated in the heap and has to be destroyed by the user. The
  * data size provided has to coincide with the element type size to be used in
  * the container.
  *
@@ -53,7 +56,7 @@ typedef struct arc_slist * arc_slist_t;
  */
 arc_slist_t arc_slist_create(size_t data_size);
 /**
- * @brief Destroys the memory associated to a list 
+ * @brief Destroys the memory associated to a list
  *
  * @param[in] list List to perform the operation on
  */
@@ -162,4 +165,6 @@ int arc_slist_next(arc_iterator_t it);
 }
 #endif
 
-#endif
+#endif /* ARC_SLIST_H_ */
+
+/** @} */

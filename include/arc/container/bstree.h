@@ -7,11 +7,14 @@
 *                                                                              *
 *******************************************************************************/
 /**
- * @file bstree.h
+ * @addtogroup BSTree
+ * @{
+ *
  * @author Anil M. Mahtani Mirchandani
  * @date December, 2014
+ * @ingroup Container
  *
- * @brief BSTree
+ * @brief Binary Search Tree
  *
  * A binary search tree is a data structure in which each node contains a right
  * and a left link. The right link points to a node containing a value bigger
@@ -186,3 +189,5 @@ int arc_bstree_previous(arc_iterator_t it);
 #endif
 
 #endif /* ARC_BSTREE_H_ */
+
+/** @} */

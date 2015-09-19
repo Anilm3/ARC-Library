@@ -7,9 +7,12 @@
 *                                                                              *
 *******************************************************************************/
 /**
- * @file function.h
+ * @addtogroup Function
+ * @{
+ *
  * @author Anil M. Mahtani Mirchandani
  * @date June, 2014
+ * @ingroup Type
  *
  * @brief Function type definitions
  */
@@ -48,4 +51,6 @@ typedef unsigned long (*arc_hash_fn_t)(void *, size_t);
 }
 #endif
 
-#endif
+#endif /* ARC_FUNCTION_H_ */
+
+/** @} */

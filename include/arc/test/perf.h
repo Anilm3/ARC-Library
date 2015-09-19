@@ -7,9 +7,12 @@
 *                                                                              *
 *******************************************************************************/
 /**
- * @file perf.h
+ * @addtogroup Perf
+ * @{
+ *
  * @author Anil M. Mahtani Mirchandani
  * @date June, 2014
+ * @ingroup Test
  *
  * @brief Performance test framework
  */
@@ -18,10 +21,10 @@
 #define ARC_PERF_H_
 
 #include <stdio.h>
- 
+
 #ifdef __cplusplus
 extern "C"{
-#endif 
+#endif
 
 /**
  * @brief Creates a test
@@ -81,4 +84,6 @@ void arc_perf_cleanup(void);
 }
 #endif
 
-#endif
+#endif /* ARC_PERF_H_ */
+
+/** @} */

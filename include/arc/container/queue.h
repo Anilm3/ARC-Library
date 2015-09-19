@@ -7,16 +7,19 @@
 *                                                                              *
 *******************************************************************************/
 /**
- * @file queue.h
+ * @addtogroup Queue
+ * @{
+ *
  * @author Anil M. Mahtani Mirchandani
  * @date June, 2014
+ * @ingroup Container
  *
  * @brief Queue
  *
  * A queue is very similar to a singly-linked list but it uses a bit less memory
  * and the operations require less instructions to be performed. The main goal
- * of this redundancy is for performance and experimentation purposes as the 
- * simplicity of the structure provides less instructions per operation thus 
+ * of this redundancy is for performance and experimentation purposes as the
+ * simplicity of the structure provides less instructions per operation thus
  * making it easier to implement to be lock-free and thread-safe.
  *
  * @see http://en.wikipedia.org/wiki/Queue_(data_structure)
@@ -29,7 +32,7 @@
 
 #ifdef __cplusplus
 extern "C"{
-#endif 
+#endif
 
 /**
  * @typedef arc_queue_t
@@ -43,9 +46,9 @@ typedef struct arc_queue * arc_queue_t;
 /**
  * @brief Creates a new queue
  *
- * The memory is allocated in the heap and has to be destroyed by the user. The 
+ * The memory is allocated in the heap and has to be destroyed by the user. The
  * data size provided has to coincide with the element type size to be used in
- * the container. 
+ * the container.
  *
  * @param[in] data_size Size of the data element
  * @return New empty queue
@@ -53,7 +56,7 @@ typedef struct arc_queue * arc_queue_t;
  */
 arc_queue_t arc_queue_create(size_t data_size);
 /**
- * @brief Destroys the memory associated to a queue 
+ * @brief Destroys the memory associated to a queue
  *
  * @param[in] queue Queue to perform the operation on
  */
@@ -113,4 +116,6 @@ void arc_queue_clear(arc_queue_t queue);
 }
 #endif
 
-#endif
+#endif /* ARC_QUEUE_H_ */
+
+/** @} */

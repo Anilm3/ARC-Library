@@ -1,3 +1,4 @@
+/** @defgroup Test */
 /*! \page page_test Test
 This page is just an introduction to testing frameworks provided.
 - \subpage page_unit_test "Unit testing"

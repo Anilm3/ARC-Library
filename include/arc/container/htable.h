@@ -7,11 +7,14 @@
 *                                                                              *
 *******************************************************************************/
 /**
- * @file htable.h
+ * @addtogroup HTable
+ * @{
+ *
  * @author Anil M. Mahtani Mirchandani
  * @date August, 2015
+ * @ingroup Container
  *
- * @brief HTable
+ * @brief Hash Table
  *
  * @see https://en.wikipedia.org/wiki/Hash_table
  */
@@ -107,3 +110,5 @@ void arc_htable_remove(arc_htable_t htable, void * key);
 #endif
 
 #endif /* ARC_HTABLE_H_ */
+
+/** @} */

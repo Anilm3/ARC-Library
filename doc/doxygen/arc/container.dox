@@ -1,3 +1,4 @@
+/** @defgroup Container */
 /*! \page page_container Container
 This page is just an introduction to containers.
 - \subpage page_deque "Double-ended queue (Deque)"
@@ -6,4 +7,5 @@ This page is just an introduction to containers.
 - \subpage page_darray "Dynamic array (DArray)"
 - \subpage page_stack "Stack"
 - \subpage page_queue "Queue"
+- \subpage page_bstree "BSTree"
 */

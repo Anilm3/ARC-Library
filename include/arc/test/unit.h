@@ -7,9 +7,12 @@
 *                                                                              *
 *******************************************************************************/
 /**
- * @file unit.h
+ * @addtogroup Unit
+ * @{
+ *
  * @author Anil M. Mahtani Mirchandani
  * @date June, 2014
+ * @ingroup Test
  *
  * @brief Unit test framework
  *
@@ -25,7 +28,7 @@
 
 #ifdef __cplusplus
 extern "C"{
-#endif 
+#endif
 
 /**
  * @brief Assertion which always fails
@@ -569,4 +572,6 @@ int main(int argc, char *argv[]) \
 }
 #endif
 
-#endif
+#endif /* ARC_UNIT_H_ */
+
+/** @} */

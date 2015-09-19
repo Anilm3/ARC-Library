@@ -7,9 +7,12 @@
 *                                                                              *
 *******************************************************************************/
 /**
- * @file iterator.h
+ * @addtogroup Iterator
+ * @{
+ *
  * @author Anil M. Mahtani Mirchandani
  * @date June, 2014
+ * @ingroup Container
  *
  * @brief Generic iterator
  *
@@ -19,28 +22,28 @@
  *
  * @see http://en.wikipedia.org/wiki/Iterator
  */
- 
+
 #ifndef ARC_ITERATOR_H_
 #define ARC_ITERATOR_H_
 
-#include <stdlib.h> 
+#include <stdlib.h>
 
 #ifdef __cplusplus
 extern "C"{
-#endif 
+#endif
 
 /**
  * @typedef arc_iterator_t
  * @brief List definition
  *
- * The iterator is defined as a pointer to be used with the creation and 
+ * The iterator is defined as a pointer to be used with the creation and
  * destruction functions, direct stack allocations are not allowed.
  */
 typedef struct arc_iterator * arc_iterator_t;
 /**
  * @brief Creates a new iterator
  *
- * The memory is allocated in the heap and has to be destroyed by the user. 
+ * The memory is allocated in the heap and has to be destroyed by the user.
  *
  * @param[in] container Container to iterate through
  * @return New iterator for the specified container
@@ -48,7 +51,7 @@ typedef struct arc_iterator * arc_iterator_t;
  */
 arc_iterator_t arc_iterator_create(void * container);
 /**
- * @brief Destroys the memory associated to a iterator 
+ * @brief Destroys the memory associated to a iterator
  *
  * @param[in] it Iterator to delete
  */
@@ -58,4 +61,6 @@ void arc_iterator_destroy(arc_iterator_t it);
 }
 #endif
 
-#endif
+#endif /* ARC_ITERATOR_H_ */
+
+/** @} */
