@@ -3,7 +3,7 @@
 First of all take a look at the \subpage page_coding "coding conventions" followed by ARC, then you're ready to go and check the documentation for each of the components:
 - \subpage page_container
 - \subpage page_test
-
+- <a href="../coverage/index.html">Coverage</a>
 
 \section main_build_system Build System
 
