@@ -22,6 +22,8 @@
  * simplicity of the structure provides less instructions per operation thus
  * making it easier to implement to be lock-free and thread-safe.
  *
+ * For more information and examples check the documentation (\ref page_darray).
+ *
  * @see http://en.wikipedia.org/wiki/Dynamic_array
  */
 

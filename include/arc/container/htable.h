@@ -16,6 +16,11 @@
  *
  * @brief Hash Table
  *
+ * Implementation of a static hash table.
+ *
+ * For more information and examples check the documentation
+ * (\ref page_dhtable).
+ *
  * @see https://en.wikipedia.org/wiki/Hash_table
  */
 

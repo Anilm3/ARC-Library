@@ -21,6 +21,8 @@
  * iterators (called simply nodes) in order to provide mechanisms to access all
  * the elements in the structure.
  *
+ * For more information and examples check the documentation (\ref page_dlist).
+ *
  * @see http://en.wikipedia.org/wiki/Doubly_linked_list
  */
 

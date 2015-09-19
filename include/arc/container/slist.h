@@ -21,6 +21,8 @@
  * iterators in order to provide mechanisms to access all the elements in the
  * structure.
  *
+ * For more information and examples check the documentation (\ref page_slist).
+ *
  * @see http://en.wikipedia.org/wiki/Linked_list#Singly_linked_list
  */
 

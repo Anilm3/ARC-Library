@@ -22,6 +22,8 @@
  * containing a value smaller than the current nodes value, hence the data
  * structure is inherently ordered.
  *
+ * For more information and examples check the documentation (\ref page_bstree).
+ *
  * @see http://en.wikipedia.org/wiki/Binary_search_tree
  */
 

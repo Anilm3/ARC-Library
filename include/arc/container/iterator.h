@@ -20,6 +20,9 @@
  * data structure. It is not allowed to use the same iterator for other data
  * structures other than the one specified for the iterator
  *
+ * For more information and examples check the documentation
+ * (\ref page_iterator).
+ *
  * @see http://en.wikipedia.org/wiki/Iterator
  */
 
