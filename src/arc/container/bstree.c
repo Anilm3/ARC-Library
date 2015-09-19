@@ -360,6 +360,7 @@ void arc_bstree_rebalance(arc_bstree_t bstree)
     arc_bstree_vine_to_tree(&pseudo_root, bstree->size);
 
     bstree->root = pseudo_root.right;
+    bstree->root->parent = NULL;
 }
 
 /******************************************************************************/
