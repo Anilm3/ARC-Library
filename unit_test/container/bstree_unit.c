@@ -120,6 +120,34 @@ ARC_UNIT_TEST(find)
     arc_bstree_destroy(bstree);
 }
 
+ARC_UNIT_TEST(rebalance)
+{
+    unsigned i;
+    arc_bstree_t bstree = arc_bstree_create(sizeof(int), arc_cmp_int);
+    arc_iterator_t it = arc_iterator_create(bstree);
+
+    ARC_ASSERT_POINTER_NOT_NULL(bstree);
+
+    for (i = 0; i < 32; i++)
+    {
+        ARC_ASSERT_INT_EQ(arc_bstree_insert(bstree, (void *)&i), ARC_SUCCESS);
+    }
+
+    arc_bstree_rebalance(bstree);
+
+    arc_bstree_before_begin(it);
+
+    i = 0;
+    while(arc_bstree_next(it))
+    {
+        ARC_ASSERT_INT_EQ(*((unsigned *)arc_bstree_data(it)), i);
+        i++;
+    }
+
+    arc_iterator_destroy(it);
+    arc_bstree_destroy(bstree);
+}
+
 ARC_UNIT_TEST(remove)
 {
     unsigned i, val;
@@ -370,6 +398,7 @@ ARC_UNIT_TEST_FIXTURE()
     ARC_UNIT_ADD_TEST(size)
     ARC_UNIT_ADD_TEST(insertion)
     ARC_UNIT_ADD_TEST(find)
+    ARC_UNIT_ADD_TEST(rebalance)
     ARC_UNIT_ADD_TEST(remove)
     ARC_UNIT_ADD_TEST(iterators_forward)
     ARC_UNIT_ADD_TEST(iterators_backward)
