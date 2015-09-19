@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>ARC-Library: ARC Library Documentation</title>
+<title>ARC-Library: Stack</title>
 
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
@@ -51,7 +51,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
   <div id="navrow1" class="tabs">
     <ul class="tablist">
-      <li class="current"><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -83,25 +83,32 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
 </div>
 <script type="text/javascript">
-  initNavTree('index.html','');
+  initNavTree('page_stack.html','');
 </script>
 <div id="doc-content">
 <div class="header">
   <div class="headertitle">
-<div class="title">ARC Library Documentation </div>  </div>
+<div class="title">Stack </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>First of all take a look at the <a class="el" href="page_coding.html">coding conventions</a> followed by ARC, then you're ready to go and check the documentation for each of the components:</p>
-<ul>
-<li><a class="el" href="page_container.html">Container</a></li>
-<li><a class="el" href="page_test.html">Test</a></li>
-</ul>
-<h2><a class="anchor" id="main_build_system"></a>
-Build System</h2>
-<p>Since creating this library is meant to be a fun time for me, as well as organizing all the code I had to be used in other projects, I decided to go for a non-recursive make build system. I really enjoy working with Make directly as it gives you much more control over the build system and it forces you to fully understand and realize how the compilation of each component is being done and how the compiler and linker really work.</p>
-<p>I worked a few days on it and reached a state where the system compiled but it didn't really feel right. I started investigating and reading a bit more in order to understand how I could improve my Makefiles so as to reduce the boilerplate code on each intermediate makefile and make the inclusion of dependencies, executables, libraries, etc, a bit more generic. After some work, I have to admit it was a lot of fun, but I realized that the non-recursive make approach was making me focus more on the build system than on the code.</p>
-<p>So for now I've decided to do a fast switch to CMake, which requires just one file and it's incredibly easy to use but to be fair I've been using it for a while now at work so I'm pretty familiar with it. Using CMake has only advantages when compared to non-recursive make as it makes portability much easier and you don't even have to worry about dependency management, but then again is not as much fun and I'm quite certain non-recursive make is faster. </p>
+<div class="textblock"><div class="fragment"><pre class="fragment">  Stack Node                
++------------+              
+|next        |              
++------------+              
+|alignment   |              
++------------+              
+|data[0]     | &lt;-+          
++------------+   |          
+|alignment   |   | user data
++------------+   | memory   
+|            |   |          
+|extra memory|   |          
+|            | &lt;-+          
++------------+              
+</pre></div><h2><a class="anchor" id="section_complexity"></a>
+Complexity</h2>
 </div></div><!-- contents -->
+</div>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -116,9 +123,10 @@ Build System</h2>
 </iframe>
 </div>
 
-</div>
   <div id="nav-path" class="navpath">
     <ul>
+      <li class="navelem"><a class="el" href="index.html">ARC Library Documentation</a>      </li>
+      <li class="navelem"><a class="el" href="page_container.html">Container</a>      </li>
 
     <li class="footer">Generated on Sat Sep 19 2015 23:03:27 for ARC-Library by
     <a href="http://www.doxygen.org/index.html">
