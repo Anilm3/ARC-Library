@@ -1,0 +1,699 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info.cleaned - src/arc/container/bstree.c</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">src/arc/container</a> - bstree.c<span style="font-size: 80%;"> (source / <a href="bstree.c.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info.cleaned</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">246</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2015-09-19 23:12:23</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">26</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Legend:</td>
+            <td class="headerValueLeg">            Lines:
+            <span class="coverLegendCov">hit</span>
+            <span class="coverLegendNoCov">not hit</span>
+</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*******************************************************************************</a>
+<span class="lineNum">       2 </span>            : * Copyright (C) 2014 Anil Motilal Mahtani Mirchandani(anil.mmm@gmail.com)      *
+<span class="lineNum">       3 </span>            : *                                                                              *
+<span class="lineNum">       4 </span>            : * License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;*
+<span class="lineNum">       5 </span>            : * This is free software: you are free to change and redistribute it.           *
+<span class="lineNum">       6 </span>            : * There is NO WARRANTY, to the extent permitted by law.                        *
+<span class="lineNum">       7 </span>            : *                                                                              *
+<span class="lineNum">       8 </span>            : *******************************************************************************/
+<span class="lineNum">       9 </span>            : 
+<span class="lineNum">      10 </span>            : #include &lt;math.h&gt;
+<span class="lineNum">      11 </span>            : #include &lt;stdio.h&gt;
+<span class="lineNum">      12 </span>            : #include &lt;string.h&gt;
+<span class="lineNum">      13 </span>            : #include &lt;strings.h&gt;
+<span class="lineNum">      14 </span>            : #include &lt;arc/container/bstree.h&gt;
+<span class="lineNum">      15 </span>            : #include &lt;arc/common/defines.h&gt;
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : #include &lt;arc/container/bstree_def.h&gt;
+<span class="lineNum">      18 </span>            : #include &lt;arc/container/iterator_def.h&gt;
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : /******************************************************************************/
+<span class="lineNum">      21 </span>            : /*
+<span class="lineNum">      22 </span>            : static int arc_bstree_print_num_nodes_level(struct arc_bstree_node * node,
+<span class="lineNum">      23 </span>            :                                             int level)
+<span class="lineNum">      24 </span>            : {
+<span class="lineNum">      25 </span>            :     if (node == NULL) return 0;
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            :     if (level == 0)
+<span class="lineNum">      28 </span>            :     {
+<span class="lineNum">      29 </span>            :         return 1;
+<span class="lineNum">      30 </span>            :     }
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            :     return arc_bstree_print_num_nodes_level(node-&gt;left, level - 1) +
+<span class="lineNum">      33 </span>            :            arc_bstree_print_num_nodes_level(node-&gt;right, level - 1);
+<span class="lineNum">      34 </span>            : }
+<span class="lineNum">      35 </span>            : */
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            : /******************************************************************************/
+<span class="lineNum">      38 </span>            : /*
+<span class="lineNum">      39 </span>            : static void arc_bstree_print_num_nodes(struct arc_bstree_node * root)
+<span class="lineNum">      40 </span>            : {
+<span class="lineNum">      41 </span>            :     int level = 0;
+<span class="lineNum">      42 </span>            :     int retval = 1;
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            :     while (retval)
+<span class="lineNum">      45 </span>            :     {
+<span class="lineNum">      46 </span>            :         retval = arc_bstree_print_num_nodes_level(root, level++);
+<span class="lineNum">      47 </span>            :         printf(&quot;%d\n&quot;, retval);
+<span class="lineNum">      48 </span>            :     }
+<span class="lineNum">      49 </span>            : }
+<span class="lineNum">      50 </span>            : */
+<a name="51"><span class="lineNum">      51 </span>            : /******************************************************************************/</a>
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span><span class="lineNoCov">          0 : struct arc_bstree * arc_bstree_create(size_t data_size, arc_cmp_fn_t cmp_fn)</span>
+<span class="lineNum">      54 </span>            : {
+<span class="lineNum">      55 </span>            :     size_t aligned_size;
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :     struct arc_bstree * bstree = malloc(sizeof(struct arc_bstree));</span>
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span><span class="lineNoCov">          0 :     if (bstree == NULL)</span>
+<span class="lineNum">      59 </span>            :     {
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 :         return NULL;</span>
+<span class="lineNum">      61 </span>            :     }
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            :     /* The aligned size is the current size of the data block including the
+<span class="lineNum">      64 </span>            :        space occupied by the alignment */
+<span class="lineNum">      65 </span><span class="lineNoCov">          0 :     aligned_size = sizeof(struct arc_bstree_node) -</span>
+<span class="lineNum">      66 </span>            :                    ARC_OFFSETOF(struct arc_bstree_node, data);
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 :     aligned_size = (aligned_size &gt; data_size ? 0 : data_size - aligned_size);</span>
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :     bstree-&gt;root = NULL;</span>
+<span class="lineNum">      71 </span><span class="lineNoCov">          0 :     bstree-&gt;size = 0;</span>
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 :     bstree-&gt;data_size = data_size;</span>
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 :     bstree-&gt;node_size = aligned_size + sizeof(struct arc_bstree_node);</span>
+<span class="lineNum">      74 </span><span class="lineNoCov">          0 :     bstree-&gt;cmp_fn = cmp_fn;</span>
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :     bstree-&gt;front.parent = NULL;</span>
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :     bstree-&gt;front.left = NULL;</span>
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 :     bstree-&gt;front.right = NULL;</span>
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span><span class="lineNoCov">          0 :     bstree-&gt;back.parent = NULL;</span>
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 :     bstree-&gt;back.left = NULL;</span>
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 :     bstree-&gt;back.right = NULL;</span>
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :     return bstree;</span>
+<span class="lineNum">      85 </span>            : }
+<span class="lineNum">      86 </span>            : 
+<a name="87"><span class="lineNum">      87 </span>            : /******************************************************************************/</a>
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span><span class="lineNoCov">          0 : static void arc_bstree_free_node(struct arc_bstree_node *node)</span>
+<span class="lineNum">      90 </span>            : {
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 :     if (node-&gt;left != NULL)</span>
+<span class="lineNum">      92 </span>            :     {
+<span class="lineNum">      93 </span><span class="lineNoCov">          0 :         arc_bstree_free_node(node-&gt;left);</span>
+<span class="lineNum">      94 </span>            :     }
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :     if (node-&gt;right != NULL)</span>
+<span class="lineNum">      97 </span>            :     {
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :         arc_bstree_free_node(node-&gt;right);</span>
+<span class="lineNum">      99 </span>            :     }
+<span class="lineNum">     100 </span>            : 
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :     free(node);</span>
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     103 </span>            : 
+<a name="104"><span class="lineNum">     104 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 : void arc_bstree_destroy(struct arc_bstree *bstree)</span>
+<span class="lineNum">     107 </span>            : {
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :     if (bstree-&gt;root != NULL)</span>
+<span class="lineNum">     109 </span>            :     {
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :         arc_bstree_free_node(bstree-&gt;root);</span>
+<span class="lineNum">     111 </span>            :     }
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :     free(bstree);</span>
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     115 </span>            : 
+<a name="116"><span class="lineNum">     116 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 : int arc_bstree_insert(struct arc_bstree *bstree, void * data)</span>
+<span class="lineNum">     119 </span>            : {
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 :     struct arc_bstree_node *parent = NULL;</span>
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :     struct arc_bstree_node *node = bstree-&gt;root;</span>
+<span class="lineNum">     122 </span><span class="lineNoCov">          0 :     struct arc_bstree_node **node_ref = &amp;(bstree-&gt;root);</span>
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span><span class="lineNoCov">          0 :     while (node != NULL)</span>
+<span class="lineNum">     125 </span>            :     {
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :         int cmp_result = (*bstree-&gt;cmp_fn)(node-&gt;data, data);</span>
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 :         if (cmp_result == -1)</span>
+<span class="lineNum">     129 </span>            :         {
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :             parent = node;</span>
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :             node_ref = &amp;(node-&gt;right);</span>
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :             node = node-&gt;right;</span>
+<span class="lineNum">     133 </span>            :         }
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :         else if (cmp_result == 1)</span>
+<span class="lineNum">     135 </span>            :         {
+<span class="lineNum">     136 </span><span class="lineNoCov">          0 :             parent = node;</span>
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :             node_ref = &amp;(node-&gt;left);</span>
+<span class="lineNum">     138 </span><span class="lineNoCov">          0 :             node = node-&gt;left;</span>
+<span class="lineNum">     139 </span>            :         }
+<span class="lineNum">     140 </span>            :         else
+<span class="lineNum">     141 </span>            :         {
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 :             return ARC_DUPLICATE;</span>
+<span class="lineNum">     143 </span>            :         }
+<span class="lineNum">     144 </span>            :     }
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :     node = malloc(bstree-&gt;node_size);</span>
+<span class="lineNum">     147 </span>            : 
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 :     if (node == NULL)</span>
+<span class="lineNum">     149 </span>            :     {
+<span class="lineNum">     150 </span><span class="lineNoCov">          0 :         return ARC_OUT_OF_MEMORY;</span>
+<span class="lineNum">     151 </span>            :     }
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span><span class="lineNoCov">          0 :     node-&gt;parent = parent;</span>
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :     node-&gt;left   = NULL;</span>
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :     node-&gt;right  = NULL;</span>
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :     bstree-&gt;size++;</span>
+<span class="lineNum">     157 </span>            : 
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :     memcpy(node-&gt;data, data, bstree-&gt;data_size);</span>
+<span class="lineNum">     159 </span>            : 
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :     *node_ref = node;</span>
+<span class="lineNum">     161 </span>            : 
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :     return ARC_SUCCESS;</span>
+<span class="lineNum">     163 </span>            : }
+<span class="lineNum">     164 </span>            : 
+<a name="165"><span class="lineNum">     165 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 : static struct arc_bstree_node * arc_bstree_find_node(struct arc_bstree *bstree,</span>
+<span class="lineNum">     168 </span>            :                                                      void * data)
+<span class="lineNum">     169 </span>            : {
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :     struct arc_bstree_node *node = bstree-&gt;root;</span>
+<span class="lineNum">     171 </span>            : 
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 :     while (node != NULL)</span>
+<span class="lineNum">     173 </span>            :     {
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 :         int cmp_result = (*bstree-&gt;cmp_fn)((void *)node-&gt;data, data);</span>
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :         if (cmp_result == -1)</span>
+<span class="lineNum">     176 </span>            :         {
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :             node = node-&gt;right;</span>
+<span class="lineNum">     178 </span>            :         }
+<span class="lineNum">     179 </span><span class="lineNoCov">          0 :         else if (cmp_result == 1)</span>
+<span class="lineNum">     180 </span>            :         {
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :             node = node-&gt;left;</span>
+<span class="lineNum">     182 </span>            :         }
+<span class="lineNum">     183 </span>            :         else
+<span class="lineNum">     184 </span>            :         {
+<span class="lineNum">     185 </span><span class="lineNoCov">          0 :             return node;</span>
+<span class="lineNum">     186 </span>            :         }
+<span class="lineNum">     187 </span>            :     }
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 :     return NULL;</span>
+<span class="lineNum">     190 </span>            : }
+<span class="lineNum">     191 </span>            : 
+<a name="192"><span class="lineNum">     192 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     193 </span>            : 
+<span class="lineNum">     194 </span><span class="lineNoCov">          0 : int arc_bstree_find(struct arc_bstree *bstree, void * data)</span>
+<span class="lineNum">     195 </span>            : {
+<span class="lineNum">     196 </span><span class="lineNoCov">          0 :     return (arc_bstree_find_node(bstree, data) != NULL);</span>
+<span class="lineNum">     197 </span>            : }
+<span class="lineNum">     198 </span>            : 
+<a name="199"><span class="lineNum">     199 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     200 </span>            : 
+<span class="lineNum">     201 </span><span class="lineNoCov">          0 : static void arc_bstree_remove_node(struct arc_bstree *bstree,</span>
+<span class="lineNum">     202 </span>            :                                    struct arc_bstree_node *node)
+<span class="lineNum">     203 </span>            : {
+<span class="lineNum">     204 </span>            :     struct arc_bstree_node **node_ref;
+<span class="lineNum">     205 </span>            : 
+<span class="lineNum">     206 </span><span class="lineNoCov">          0 :     if (node-&gt;parent == NULL)</span>
+<span class="lineNum">     207 </span>            :     {
+<span class="lineNum">     208 </span><span class="lineNoCov">          0 :         node_ref = &amp;(bstree-&gt;root);</span>
+<span class="lineNum">     209 </span>            :     }
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :     else if (node == node-&gt;parent-&gt;left)</span>
+<span class="lineNum">     211 </span>            :     {
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 :         node_ref = &amp;(node-&gt;parent-&gt;left);</span>
+<span class="lineNum">     213 </span>            :     }
+<span class="lineNum">     214 </span>            :     else
+<span class="lineNum">     215 </span>            :     {
+<span class="lineNum">     216 </span><span class="lineNoCov">          0 :         node_ref = &amp;(node-&gt;parent-&gt;right);</span>
+<span class="lineNum">     217 </span>            :     }
+<span class="lineNum">     218 </span>            : 
+<span class="lineNum">     219 </span>            :     /* Leaf node */
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :     if (node-&gt;left == NULL || node-&gt;right == NULL)</span>
+<span class="lineNum">     221 </span>            :     {
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 :         if (node-&gt;right != NULL)</span>
+<span class="lineNum">     223 </span>            :         {
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :             *node_ref = node-&gt;right;</span>
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :             node-&gt;right-&gt;parent = node-&gt;parent;</span>
+<span class="lineNum">     226 </span>            :         }
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :         else if (node-&gt;left != NULL)</span>
+<span class="lineNum">     228 </span>            :         {
+<span class="lineNum">     229 </span><span class="lineNoCov">          0 :             *node_ref = node-&gt;left;</span>
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 :             node-&gt;left-&gt;parent = node-&gt;parent;</span>
+<span class="lineNum">     231 </span>            :         }
+<span class="lineNum">     232 </span>            :         else
+<span class="lineNum">     233 </span>            :         {
+<span class="lineNum">     234 </span><span class="lineNoCov">          0 :             *node_ref = NULL;</span>
+<span class="lineNum">     235 </span>            :         }
+<span class="lineNum">     236 </span>            :     }
+<span class="lineNum">     237 </span>            :     else
+<span class="lineNum">     238 </span>            :     {
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :         struct arc_bstree_node * successor = arc_bstree_min(node-&gt;right);</span>
+<span class="lineNum">     240 </span>            : 
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 :         if (successor-&gt;parent-&gt;left == successor)</span>
+<span class="lineNum">     242 </span>            :         {
+<span class="lineNum">     243 </span><span class="lineNoCov">          0 :             successor-&gt;parent-&gt;left = successor-&gt;right;</span>
+<span class="lineNum">     244 </span>            :         }
+<span class="lineNum">     245 </span>            :         else
+<span class="lineNum">     246 </span>            :         {
+<span class="lineNum">     247 </span><span class="lineNoCov">          0 :             successor-&gt;parent-&gt;right = successor-&gt;right;</span>
+<span class="lineNum">     248 </span>            :         }
+<span class="lineNum">     249 </span>            : 
+<span class="lineNum">     250 </span><span class="lineNoCov">          0 :         if (successor-&gt;right != NULL)</span>
+<span class="lineNum">     251 </span>            :         {
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :             successor-&gt;right-&gt;parent = successor-&gt;parent;</span>
+<span class="lineNum">     253 </span>            :         }
+<span class="lineNum">     254 </span>            : 
+<span class="lineNum">     255 </span><span class="lineNoCov">          0 :         successor-&gt;parent = node-&gt;parent;</span>
+<span class="lineNum">     256 </span><span class="lineNoCov">          0 :         successor-&gt;right = node-&gt;right;</span>
+<span class="lineNum">     257 </span><span class="lineNoCov">          0 :         successor-&gt;left = node-&gt;left;</span>
+<span class="lineNum">     258 </span>            : 
+<span class="lineNum">     259 </span><span class="lineNoCov">          0 :         if (successor-&gt;right != NULL)</span>
+<span class="lineNum">     260 </span>            :         {
+<span class="lineNum">     261 </span><span class="lineNoCov">          0 :             successor-&gt;right-&gt;parent = successor;</span>
+<span class="lineNum">     262 </span>            :         }
+<span class="lineNum">     263 </span>            : 
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 :         if (successor-&gt;left != NULL)</span>
+<span class="lineNum">     265 </span>            :         {
+<span class="lineNum">     266 </span><span class="lineNoCov">          0 :             successor-&gt;left-&gt;parent = successor;</span>
+<span class="lineNum">     267 </span>            :         }
+<span class="lineNum">     268 </span>            : 
+<span class="lineNum">     269 </span><span class="lineNoCov">          0 :         *node_ref = successor;</span>
+<span class="lineNum">     270 </span>            :     }
+<span class="lineNum">     271 </span>            : 
+<span class="lineNum">     272 </span><span class="lineNoCov">          0 :     free(node);</span>
+<span class="lineNum">     273 </span><span class="lineNoCov">          0 :     bstree-&gt;size--;</span>
+<span class="lineNum">     274 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     275 </span>            : 
+<a name="276"><span class="lineNum">     276 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     277 </span>            : 
+<span class="lineNum">     278 </span><span class="lineNoCov">          0 : static void arc_bstree_tree_to_vine(struct arc_bstree_node *node)</span>
+<span class="lineNum">     279 </span>            : {
+<span class="lineNum">     280 </span><span class="lineNoCov">          0 :     struct arc_bstree_node *tail = node;</span>
+<span class="lineNum">     281 </span><span class="lineNoCov">          0 :     struct arc_bstree_node *rest = tail-&gt;right;</span>
+<span class="lineNum">     282 </span>            : 
+<span class="lineNum">     283 </span><span class="lineNoCov">          0 :     while (rest != NULL)</span>
+<span class="lineNum">     284 </span>            :     {
+<span class="lineNum">     285 </span><span class="lineNoCov">          0 :         if (rest-&gt;left == NULL)</span>
+<span class="lineNum">     286 </span>            :         {
+<span class="lineNum">     287 </span><span class="lineNoCov">          0 :             tail = rest;</span>
+<span class="lineNum">     288 </span><span class="lineNoCov">          0 :             rest = rest-&gt;right;</span>
+<span class="lineNum">     289 </span>            :         }
+<span class="lineNum">     290 </span>            :         else
+<span class="lineNum">     291 </span>            :         {
+<span class="lineNum">     292 </span><span class="lineNoCov">          0 :             struct arc_bstree_node *temp = rest-&gt;left;</span>
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :             rest-&gt;left = temp-&gt;right;</span>
+<span class="lineNum">     294 </span><span class="lineNoCov">          0 :             temp-&gt;right = rest;</span>
+<span class="lineNum">     295 </span><span class="lineNoCov">          0 :             rest = temp;</span>
+<span class="lineNum">     296 </span><span class="lineNoCov">          0 :             tail-&gt;right = temp;</span>
+<span class="lineNum">     297 </span>            :         }
+<span class="lineNum">     298 </span>            :     }
+<span class="lineNum">     299 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     300 </span>            : 
+<a name="301"><span class="lineNum">     301 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     302 </span>            : 
+<span class="lineNum">     303 </span><span class="lineNoCov">          0 : static void arc_bstree_vine_to_tree(struct arc_bstree_node *node, size_t size)</span>
+<span class="lineNum">     304 </span>            : {
+<span class="lineNum">     305 </span><span class="lineNoCov">          0 :     size_t leaves = size + 1 - ((size_t)pow(2, floor(log2((double)size + 1))));</span>
+<span class="lineNum">     306 </span>            : 
+<span class="lineNum">     307 </span><span class="lineNoCov">          0 :     arc_bstree_compress(node, leaves);</span>
+<span class="lineNum">     308 </span>            : 
+<span class="lineNum">     309 </span><span class="lineNoCov">          0 :     size = size - leaves;</span>
+<span class="lineNum">     310 </span>            : 
+<span class="lineNum">     311 </span><span class="lineNoCov">          0 :     while (size &gt; 1)</span>
+<span class="lineNum">     312 </span>            :     {
+<span class="lineNum">     313 </span><span class="lineNoCov">          0 :         arc_bstree_compress(node, (size_t)floor((double)size / 2.0));</span>
+<span class="lineNum">     314 </span><span class="lineNoCov">          0 :         size = (size_t)floor((double)size / 2.0);</span>
+<span class="lineNum">     315 </span>            :     }
+<span class="lineNum">     316 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     317 </span>            : 
+<a name="318"><span class="lineNum">     318 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     319 </span>            : 
+<span class="lineNum">     320 </span><span class="lineNoCov">          0 : static void arc_bstree_compress(struct arc_bstree_node *node, size_t count)</span>
+<span class="lineNum">     321 </span>            : {
+<span class="lineNum">     322 </span>            :     size_t i;
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 :     struct arc_bstree_node *scanner = node;</span>
+<span class="lineNum">     324 </span>            : 
+<span class="lineNum">     325 </span><span class="lineNoCov">          0 :     for (i = 0; i &lt; count; i++)</span>
+<span class="lineNum">     326 </span>            :     {
+<span class="lineNum">     327 </span><span class="lineNoCov">          0 :         struct arc_bstree_node *child = scanner-&gt;right;</span>
+<span class="lineNum">     328 </span>            : 
+<span class="lineNum">     329 </span><span class="lineNoCov">          0 :         scanner-&gt;right = child-&gt;right;</span>
+<span class="lineNum">     330 </span><span class="lineNoCov">          0 :         if (child-&gt;right != NULL)</span>
+<span class="lineNum">     331 </span>            :         {
+<span class="lineNum">     332 </span><span class="lineNoCov">          0 :             child-&gt;right-&gt;parent = scanner;</span>
+<span class="lineNum">     333 </span>            :         }
+<span class="lineNum">     334 </span>            : 
+<span class="lineNum">     335 </span><span class="lineNoCov">          0 :         scanner = scanner-&gt;right;</span>
+<span class="lineNum">     336 </span><span class="lineNoCov">          0 :         child-&gt;right = scanner-&gt;left;</span>
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 :         if (scanner-&gt;left != NULL)</span>
+<span class="lineNum">     338 </span>            :         {
+<span class="lineNum">     339 </span><span class="lineNoCov">          0 :             scanner-&gt;left-&gt;parent = child;</span>
+<span class="lineNum">     340 </span>            :         }
+<span class="lineNum">     341 </span>            : 
+<span class="lineNum">     342 </span><span class="lineNoCov">          0 :         scanner-&gt;left = child;</span>
+<span class="lineNum">     343 </span><span class="lineNoCov">          0 :         if (child != NULL)</span>
+<span class="lineNum">     344 </span>            :         {
+<span class="lineNum">     345 </span><span class="lineNoCov">          0 :             child-&gt;parent = scanner;</span>
+<span class="lineNum">     346 </span>            :         }
+<span class="lineNum">     347 </span>            :     }
+<span class="lineNum">     348 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     349 </span>            : 
+<a name="350"><span class="lineNum">     350 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     351 </span>            : 
+<span class="lineNum">     352 </span><span class="lineNoCov">          0 : void arc_bstree_rebalance(arc_bstree_t bstree)</span>
+<span class="lineNum">     353 </span>            : {
+<span class="lineNum">     354 </span><span class="lineNoCov">          0 :     struct arc_bstree_node pseudo_root = {NULL, NULL, NULL, {0}};</span>
+<span class="lineNum">     355 </span>            : 
+<span class="lineNum">     356 </span><span class="lineNoCov">          0 :     pseudo_root.right = bstree-&gt;root;</span>
+<span class="lineNum">     357 </span>            : 
+<span class="lineNum">     358 </span><span class="lineNoCov">          0 :     arc_bstree_tree_to_vine(&amp;pseudo_root);</span>
+<span class="lineNum">     359 </span>            : 
+<span class="lineNum">     360 </span><span class="lineNoCov">          0 :     arc_bstree_vine_to_tree(&amp;pseudo_root, bstree-&gt;size);</span>
+<span class="lineNum">     361 </span>            : 
+<span class="lineNum">     362 </span><span class="lineNoCov">          0 :     bstree-&gt;root = pseudo_root.right;</span>
+<span class="lineNum">     363 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     364 </span>            : 
+<a name="365"><span class="lineNum">     365 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     366 </span>            : 
+<span class="lineNum">     367 </span><span class="lineNoCov">          0 : void arc_bstree_remove(struct arc_bstree *bstree, void * data)</span>
+<span class="lineNum">     368 </span>            : {
+<span class="lineNum">     369 </span>            :     struct arc_bstree_node *node;
+<span class="lineNum">     370 </span>            : 
+<span class="lineNum">     371 </span><span class="lineNoCov">          0 :     node = arc_bstree_find_node(bstree, data);</span>
+<span class="lineNum">     372 </span>            : 
+<span class="lineNum">     373 </span><span class="lineNoCov">          0 :     if (node == NULL)</span>
+<span class="lineNum">     374 </span>            :     {
+<span class="lineNum">     375 </span><span class="lineNoCov">          0 :         return;</span>
+<span class="lineNum">     376 </span>            :     }
+<span class="lineNum">     377 </span>            : 
+<span class="lineNum">     378 </span><span class="lineNoCov">          0 :     arc_bstree_remove_node(bstree, node);</span>
+<span class="lineNum">     379 </span>            : }
+<span class="lineNum">     380 </span>            : 
+<a name="381"><span class="lineNum">     381 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     382 </span>            : 
+<span class="lineNum">     383 </span><span class="lineNoCov">          0 : static struct arc_bstree_node *arc_bstree_min(struct arc_bstree_node *node)</span>
+<span class="lineNum">     384 </span>            : {
+<span class="lineNum">     385 </span><span class="lineNoCov">          0 :     while (node-&gt;left != NULL)</span>
+<span class="lineNum">     386 </span>            :     {
+<span class="lineNum">     387 </span><span class="lineNoCov">          0 :         node = node-&gt;left;</span>
+<span class="lineNum">     388 </span>            :     }
+<span class="lineNum">     389 </span>            : 
+<span class="lineNum">     390 </span><span class="lineNoCov">          0 :     return node;</span>
+<span class="lineNum">     391 </span>            : }
+<span class="lineNum">     392 </span>            : 
+<a name="393"><span class="lineNum">     393 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     394 </span>            : 
+<span class="lineNum">     395 </span><span class="lineNoCov">          0 : static struct arc_bstree_node *arc_bstree_max(struct arc_bstree_node *node)</span>
+<span class="lineNum">     396 </span>            : {
+<span class="lineNum">     397 </span><span class="lineNoCov">          0 :     while (node-&gt;right != NULL)</span>
+<span class="lineNum">     398 </span>            :     {
+<span class="lineNum">     399 </span><span class="lineNoCov">          0 :         node = node-&gt;right;</span>
+<span class="lineNum">     400 </span>            :     }
+<span class="lineNum">     401 </span>            : 
+<span class="lineNum">     402 </span><span class="lineNoCov">          0 :     return node;</span>
+<span class="lineNum">     403 </span>            : }
+<span class="lineNum">     404 </span>            : 
+<a name="405"><span class="lineNum">     405 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     406 </span>            : 
+<span class="lineNum">     407 </span><span class="lineNoCov">          0 : int arc_bstree_empty(struct arc_bstree * bstree)</span>
+<span class="lineNum">     408 </span>            : {
+<span class="lineNum">     409 </span><span class="lineNoCov">          0 :     return bstree-&gt;size == 0;</span>
+<span class="lineNum">     410 </span>            : }
+<span class="lineNum">     411 </span>            : 
+<a name="412"><span class="lineNum">     412 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     413 </span>            : 
+<span class="lineNum">     414 </span><span class="lineNoCov">          0 : size_t arc_bstree_size(struct arc_bstree * bstree)</span>
+<span class="lineNum">     415 </span>            : {
+<span class="lineNum">     416 </span><span class="lineNoCov">          0 :     return bstree-&gt;size;</span>
+<span class="lineNum">     417 </span>            : }
+<span class="lineNum">     418 </span>            : 
+<a name="419"><span class="lineNum">     419 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     420 </span>            : 
+<span class="lineNum">     421 </span><span class="lineNoCov">          0 : void arc_bstree_clear(struct arc_bstree *bstree)</span>
+<span class="lineNum">     422 </span>            : {
+<span class="lineNum">     423 </span><span class="lineNoCov">          0 :     arc_bstree_free_node(bstree-&gt;root);</span>
+<span class="lineNum">     424 </span>            : 
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 :     bstree-&gt;root = NULL;</span>
+<span class="lineNum">     426 </span><span class="lineNoCov">          0 :     bstree-&gt;size = 0;</span>
+<span class="lineNum">     427 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     428 </span>            : 
+<a name="429"><span class="lineNum">     429 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     430 </span>            : 
+<span class="lineNum">     431 </span><span class="lineNoCov">          0 : void arc_bstree_before_begin(struct arc_iterator * it)</span>
+<span class="lineNum">     432 </span>            : {
+<span class="lineNum">     433 </span><span class="lineNoCov">          0 :     struct arc_bstree * bstree = it-&gt;container;</span>
+<span class="lineNum">     434 </span>            : 
+<span class="lineNum">     435 </span><span class="lineNoCov">          0 :     bstree-&gt;front.parent = (bstree-&gt;root != NULL ?</span>
+<span class="lineNum">     436 </span><span class="lineNoCov">          0 :                             arc_bstree_min(bstree-&gt;root) : NULL);</span>
+<span class="lineNum">     437 </span>            : 
+<span class="lineNum">     438 </span><span class="lineNoCov">          0 :     it-&gt;node_ptr = &amp;(bstree-&gt;front);</span>
+<span class="lineNum">     439 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     440 </span>            : 
+<a name="441"><span class="lineNum">     441 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     442 </span>            : 
+<span class="lineNum">     443 </span><span class="lineNoCov">          0 : void arc_bstree_begin(struct arc_iterator * it)</span>
+<span class="lineNum">     444 </span>            : {
+<span class="lineNum">     445 </span><span class="lineNoCov">          0 :     struct arc_bstree * bstree = it-&gt;container;</span>
+<span class="lineNum">     446 </span>            : 
+<span class="lineNum">     447 </span><span class="lineNoCov">          0 :     bstree-&gt;front.parent = (bstree-&gt;root != NULL ?</span>
+<span class="lineNum">     448 </span><span class="lineNoCov">          0 :                             arc_bstree_min(bstree-&gt;root) : NULL);</span>
+<span class="lineNum">     449 </span>            : 
+<span class="lineNum">     450 </span><span class="lineNoCov">          0 :     it-&gt;node_ptr = bstree-&gt;front.parent;</span>
+<span class="lineNum">     451 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     452 </span>            : 
+<a name="453"><span class="lineNum">     453 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     454 </span>            : 
+<span class="lineNum">     455 </span><span class="lineNoCov">          0 : void arc_bstree_end(struct arc_iterator * it)</span>
+<span class="lineNum">     456 </span>            : {
+<span class="lineNum">     457 </span><span class="lineNoCov">          0 :     struct arc_bstree * bstree = it-&gt;container;</span>
+<span class="lineNum">     458 </span>            : 
+<span class="lineNum">     459 </span><span class="lineNoCov">          0 :     bstree-&gt;back.parent = (bstree-&gt;root != NULL ?</span>
+<span class="lineNum">     460 </span><span class="lineNoCov">          0 :                             arc_bstree_max(bstree-&gt;root) : NULL);</span>
+<span class="lineNum">     461 </span>            : 
+<span class="lineNum">     462 </span><span class="lineNoCov">          0 :     it-&gt;node_ptr = bstree-&gt;back.parent;</span>
+<span class="lineNum">     463 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     464 </span>            : 
+<a name="465"><span class="lineNum">     465 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     466 </span>            : 
+<span class="lineNum">     467 </span><span class="lineNoCov">          0 : void arc_bstree_after_end(struct arc_iterator * it)</span>
+<span class="lineNum">     468 </span>            : {
+<span class="lineNum">     469 </span><span class="lineNoCov">          0 :     struct arc_bstree * bstree = it-&gt;container;</span>
+<span class="lineNum">     470 </span>            : 
+<span class="lineNum">     471 </span><span class="lineNoCov">          0 :     bstree-&gt;back.parent = (bstree-&gt;root != NULL ?</span>
+<span class="lineNum">     472 </span><span class="lineNoCov">          0 :                             arc_bstree_max(bstree-&gt;root) : NULL);</span>
+<span class="lineNum">     473 </span>            : 
+<span class="lineNum">     474 </span><span class="lineNoCov">          0 :     it-&gt;node_ptr = &amp;(bstree-&gt;back);</span>
+<span class="lineNum">     475 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     476 </span>            : 
+<a name="477"><span class="lineNum">     477 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     478 </span>            : 
+<span class="lineNum">     479 </span><span class="lineNoCov">          0 : int arc_bstree_previous(struct arc_iterator * it)</span>
+<span class="lineNum">     480 </span>            : {
+<span class="lineNum">     481 </span><span class="lineNoCov">          0 :     struct arc_bstree * bstree = it-&gt;container;</span>
+<span class="lineNum">     482 </span><span class="lineNoCov">          0 :     struct arc_bstree_node * node = it-&gt;node_ptr;</span>
+<span class="lineNum">     483 </span>            : 
+<span class="lineNum">     484 </span><span class="lineNoCov">          0 :     if (node == NULL)</span>
+<span class="lineNum">     485 </span>            :     {
+<span class="lineNum">     486 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     487 </span>            :     }
+<span class="lineNum">     488 </span>            : 
+<span class="lineNum">     489 </span><span class="lineNoCov">          0 :     if (node-&gt;parent == NULL)</span>
+<span class="lineNum">     490 </span>            :     {
+<span class="lineNum">     491 </span><span class="lineNoCov">          0 :         if (node-&gt;left == NULL)</span>
+<span class="lineNum">     492 </span>            :         {
+<span class="lineNum">     493 </span><span class="lineNoCov">          0 :             it-&gt;node_ptr = &amp;(bstree-&gt;front);</span>
+<span class="lineNum">     494 </span><span class="lineNoCov">          0 :             return 0;</span>
+<span class="lineNum">     495 </span>            :         }
+<span class="lineNum">     496 </span>            : 
+<span class="lineNum">     497 </span><span class="lineNoCov">          0 :         it-&gt;node_ptr = arc_bstree_max(node-&gt;left);</span>
+<span class="lineNum">     498 </span>            :     }
+<span class="lineNum">     499 </span>            :     else
+<span class="lineNum">     500 </span>            :     {
+<span class="lineNum">     501 </span><span class="lineNoCov">          0 :         if (node-&gt;left != NULL)</span>
+<span class="lineNum">     502 </span>            :         {
+<span class="lineNum">     503 </span><span class="lineNoCov">          0 :             it-&gt;node_ptr = arc_bstree_max(node-&gt;left);</span>
+<span class="lineNum">     504 </span>            :         }
+<span class="lineNum">     505 </span><span class="lineNoCov">          0 :         else if (node == node-&gt;parent-&gt;left)</span>
+<span class="lineNum">     506 </span>            :         {
+<span class="lineNum">     507 </span><span class="lineNoCov">          0 :             while (node-&gt;parent-&gt;parent != NULL)</span>
+<span class="lineNum">     508 </span>            :             {
+<span class="lineNum">     509 </span><span class="lineNoCov">          0 :                 if (node-&gt;parent == node-&gt;parent-&gt;parent-&gt;right)</span>
+<span class="lineNum">     510 </span>            :                 {
+<span class="lineNum">     511 </span><span class="lineNoCov">          0 :                     it-&gt;node_ptr = node-&gt;parent-&gt;parent;</span>
+<span class="lineNum">     512 </span><span class="lineNoCov">          0 :                     return 1;</span>
+<span class="lineNum">     513 </span>            :                 }
+<span class="lineNum">     514 </span><span class="lineNoCov">          0 :                 node = node-&gt;parent;</span>
+<span class="lineNum">     515 </span>            :             }
+<span class="lineNum">     516 </span>            : 
+<span class="lineNum">     517 </span><span class="lineNoCov">          0 :             it-&gt;node_ptr = &amp;(bstree-&gt;front);</span>
+<span class="lineNum">     518 </span><span class="lineNoCov">          0 :             return 0;</span>
+<span class="lineNum">     519 </span>            :         }
+<span class="lineNum">     520 </span>            :         else /*if (node == node-&gt;parent-&gt;right)*/
+<span class="lineNum">     521 </span>            :         {
+<span class="lineNum">     522 </span><span class="lineNoCov">          0 :             it-&gt;node_ptr = node-&gt;parent;</span>
+<span class="lineNum">     523 </span>            :         }
+<span class="lineNum">     524 </span>            :     }
+<span class="lineNum">     525 </span>            : 
+<span class="lineNum">     526 </span><span class="lineNoCov">          0 :     return 1;</span>
+<span class="lineNum">     527 </span>            : }
+<span class="lineNum">     528 </span>            : 
+<a name="529"><span class="lineNum">     529 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     530 </span>            : 
+<span class="lineNum">     531 </span><span class="lineNoCov">          0 : int arc_bstree_next(struct arc_iterator * it)</span>
+<span class="lineNum">     532 </span>            : {
+<span class="lineNum">     533 </span><span class="lineNoCov">          0 :     struct arc_bstree * bstree = it-&gt;container;</span>
+<span class="lineNum">     534 </span><span class="lineNoCov">          0 :     struct arc_bstree_node * node = it-&gt;node_ptr;</span>
+<span class="lineNum">     535 </span>            : 
+<span class="lineNum">     536 </span><span class="lineNoCov">          0 :     if (node == NULL)</span>
+<span class="lineNum">     537 </span>            :     {
+<span class="lineNum">     538 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     539 </span>            :     }
+<span class="lineNum">     540 </span>            : 
+<span class="lineNum">     541 </span><span class="lineNoCov">          0 :     if (node-&gt;parent == NULL)</span>
+<span class="lineNum">     542 </span>            :     {
+<span class="lineNum">     543 </span><span class="lineNoCov">          0 :         if (node-&gt;right == NULL)</span>
+<span class="lineNum">     544 </span>            :         {
+<span class="lineNum">     545 </span><span class="lineNoCov">          0 :             it-&gt;node_ptr = &amp;(bstree-&gt;back);</span>
+<span class="lineNum">     546 </span><span class="lineNoCov">          0 :             return 0;</span>
+<span class="lineNum">     547 </span>            :         }
+<span class="lineNum">     548 </span>            : 
+<span class="lineNum">     549 </span><span class="lineNoCov">          0 :         it-&gt;node_ptr = arc_bstree_min(node-&gt;right);</span>
+<span class="lineNum">     550 </span>            :     }
+<span class="lineNum">     551 </span>            :     else
+<span class="lineNum">     552 </span>            :     {
+<span class="lineNum">     553 </span><span class="lineNoCov">          0 :         if (node-&gt;right != NULL)</span>
+<span class="lineNum">     554 </span>            :         {
+<span class="lineNum">     555 </span><span class="lineNoCov">          0 :             it-&gt;node_ptr = arc_bstree_min(node-&gt;right);</span>
+<span class="lineNum">     556 </span>            :         }
+<span class="lineNum">     557 </span><span class="lineNoCov">          0 :         else if (node == node-&gt;parent-&gt;right)</span>
+<span class="lineNum">     558 </span>            :         {
+<span class="lineNum">     559 </span><span class="lineNoCov">          0 :             while (node-&gt;parent-&gt;parent != NULL)</span>
+<span class="lineNum">     560 </span>            :             {
+<span class="lineNum">     561 </span><span class="lineNoCov">          0 :                 if (node-&gt;parent == node-&gt;parent-&gt;parent-&gt;left)</span>
+<span class="lineNum">     562 </span>            :                 {
+<span class="lineNum">     563 </span><span class="lineNoCov">          0 :                     it-&gt;node_ptr = node-&gt;parent-&gt;parent;</span>
+<span class="lineNum">     564 </span><span class="lineNoCov">          0 :                     return 1;</span>
+<span class="lineNum">     565 </span>            :                 }
+<span class="lineNum">     566 </span><span class="lineNoCov">          0 :                 node = node-&gt;parent;</span>
+<span class="lineNum">     567 </span>            :             }
+<span class="lineNum">     568 </span>            : 
+<span class="lineNum">     569 </span><span class="lineNoCov">          0 :             it-&gt;node_ptr = &amp;(bstree-&gt;back);</span>
+<span class="lineNum">     570 </span><span class="lineNoCov">          0 :             return 0;</span>
+<span class="lineNum">     571 </span>            :         }
+<span class="lineNum">     572 </span>            :         else /*if (node == node-&gt;parent-&gt;left)*/
+<span class="lineNum">     573 </span>            :         {
+<span class="lineNum">     574 </span><span class="lineNoCov">          0 :             it-&gt;node_ptr = node-&gt;parent;</span>
+<span class="lineNum">     575 </span>            :         }
+<span class="lineNum">     576 </span>            :     }
+<span class="lineNum">     577 </span>            : 
+<span class="lineNum">     578 </span><span class="lineNoCov">          0 :     return 1;</span>
+<span class="lineNum">     579 </span>            : }
+<span class="lineNum">     580 </span>            : 
+<a name="581"><span class="lineNum">     581 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     582 </span>            : 
+<span class="lineNum">     583 </span><span class="lineNoCov">          0 : void * arc_bstree_data(struct arc_iterator * it)</span>
+<span class="lineNum">     584 </span>            : {
+<span class="lineNum">     585 </span><span class="lineNoCov">          0 :     struct arc_bstree_node * current = it-&gt;node_ptr;</span>
+<span class="lineNum">     586 </span>            : 
+<span class="lineNum">     587 </span><span class="lineNoCov">          0 :     return &amp;(current-&gt;data);</span>
+<span class="lineNum">     588 </span>            : }
+<span class="lineNum">     589 </span>            : 
+<a name="590"><span class="lineNum">     590 </span>            : /******************************************************************************/</a>
+<span class="lineNum">     591 </span>            : 
+<span class="lineNum">     592 </span><span class="lineNoCov">          0 : int arc_bstree_position(struct arc_iterator * it, void * data)</span>
+<span class="lineNum">     593 </span>            : {
+<span class="lineNum">     594 </span><span class="lineNoCov">          0 :     struct arc_bstree * bstree = it-&gt;container;</span>
+<span class="lineNum">     595 </span><span class="lineNoCov">          0 :     struct arc_bstree_node * node = arc_bstree_find_node(bstree, data);</span>
+<span class="lineNum">     596 </span>            : 
+<span class="lineNum">     597 </span><span class="lineNoCov">          0 :     it-&gt;node_ptr = node;</span>
+<span class="lineNum">     598 </span>            : 
+<span class="lineNum">     599 </span><span class="lineNoCov">          0 :     return (node != NULL);</span>
+<span class="lineNum">     600 </span>            : }
+<a name="601"><span class="lineNum">     601 </span>            : </a>
+<span class="lineNum">     602 </span>            : /******************************************************************************/
+<span class="lineNum">     603 </span><span class="lineNoCov">          0 : void arc_bstree_erase(struct arc_iterator * it)</span>
+<span class="lineNum">     604 </span>            : {
+<span class="lineNum">     605 </span><span class="lineNoCov">          0 :     struct arc_bstree * bstree = it-&gt;container;</span>
+<span class="lineNum">     606 </span><span class="lineNoCov">          0 :     struct arc_bstree_node * current = it-&gt;node_ptr;</span>
+<span class="lineNum">     607 </span>            : 
+<span class="lineNum">     608 </span><span class="lineNoCov">          0 :     if (it-&gt;node_ptr != (struct arc_bstree_node *)&amp;(bstree-&gt;front) &amp;&amp;</span>
+<span class="lineNum">     609 </span><span class="lineNoCov">          0 :         it-&gt;node_ptr != (struct arc_bstree_node *)&amp;(bstree-&gt;back))</span>
+<span class="lineNum">     610 </span>            :     {
+<span class="lineNum">     611 </span><span class="lineNoCov">          0 :         arc_bstree_remove_node(bstree, current);</span>
+<span class="lineNum">     612 </span>            :     }
+<span class="lineNum">     613 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     614 </span>            : 
+<span class="lineNum">     615 </span>            : /******************************************************************************/
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
