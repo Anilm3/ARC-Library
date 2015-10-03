@@ -104,6 +104,7 @@ ARC_UNIT_TEST(removal)
     arc_htable_destroy(htable);
 }
 
+/* TODO: Add rehashing unit test to which doesn't lead to perfect hash */
 ARC_UNIT_TEST(rehash)
 {
     int i = 10;

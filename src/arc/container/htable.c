@@ -97,33 +97,12 @@ void arc_htable_destroy(struct arc_htable * htable)
 
 /******************************************************************************/
 
-int arc_htable_insert(struct arc_htable * htable, void * key, void * data)
+void arc_htable_insert_node(struct arc_htable *htable,
+                            struct arc_slist *list,
+                            struct arc_htable_node *node)
 {
-    arc_hkey_t hvalue;
-    arc_slist_t list;
-    struct arc_iterator it, it_prev;
-    struct arc_htable_node node;
     int duplicate = 0;
-
-    hvalue = htable->hash_fn(key, htable->key_size) % htable->num_buckets;
-    list = &htable->buckets[hvalue];
-
-    node.key = malloc(htable->key_size);
-
-    if (node.key == NULL)
-    {
-        return ARC_OUT_OF_MEMORY;
-    }
-
-    node.data = malloc(htable->data_size);
-
-    if (node.data == NULL)
-    {
-        return ARC_OUT_OF_MEMORY;
-    }
-
-    memcpy(node.key, key, htable->key_size);
-    memcpy(node.data, data, htable->data_size);
+    struct arc_iterator it, it_prev;
 
     arc_iterator_initialize(&it_prev, list);
     arc_slist_before_begin(&it_prev);
@@ -136,7 +115,7 @@ int arc_htable_insert(struct arc_htable * htable, void * key, void * data)
         while(arc_slist_next(&it))
         {
             struct arc_htable_node * list_node = arc_slist_data(&it);
-            int cmp_res = memcmp(list_node->key, key, htable->key_size);
+            int cmp_res = memcmp(list_node->key, node->key, htable->key_size);
             if(cmp_res == 0)
             {
                 duplicate = 1;
@@ -156,8 +135,35 @@ int arc_htable_insert(struct arc_htable * htable, void * key, void * data)
     if (!duplicate)
     {
         htable->size++;
-        arc_slist_insert_after(&it_prev, &node);
+        arc_slist_insert_after(&it_prev, node);
     }
+}
+
+int arc_htable_insert(struct arc_htable * htable, void * key, void * data)
+{
+    arc_hkey_t hvalue;
+    struct arc_htable_node node;
+
+    hvalue = htable->hash_fn(key, htable->key_size) % htable->num_buckets;
+
+    node.key = malloc(htable->key_size);
+
+    if (node.key == NULL)
+    {
+        return ARC_OUT_OF_MEMORY;
+    }
+
+    node.data = malloc(htable->data_size);
+
+    if (node.data == NULL)
+    {
+        return ARC_OUT_OF_MEMORY;
+    }
+
+    memcpy(node.key, key, htable->key_size);
+    memcpy(node.data, data, htable->data_size);
+
+    arc_htable_insert_node(htable, &htable->buckets[hvalue], &node);
 
     return ARC_SUCCESS;
 }
@@ -322,8 +328,8 @@ int arc_htable_rehash(struct arc_htable * htable, size_t num_buckets)
 
                 hvalue = htable->hash_fn(node->key, htable->key_size) %
                          num_buckets;
-
-                arc_slist_push_front(&buckets[hvalue], node);
+                arc_htable_insert_node(htable, &buckets[hvalue], node);
+/*                arc_slist_push_front(&buckets[hvalue], node); */
             }
 
             arc_iterator_finalize(&it);
