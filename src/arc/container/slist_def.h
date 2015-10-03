@@ -35,4 +35,6 @@ struct arc_slist
     size_t node_size;
 };
 
+int arc_slist_initialize(struct arc_slist *list, size_t data_size);
+void arc_slist_finalize(struct arc_slist *list);
 #endif
