@@ -24,7 +24,7 @@
 #include <arc/container/htable.h>
 #include <arc/container/slist.h>
 #include <arc/container/htable_def.h>
-
+#include <arc/container/iterator_def.h>
 /******************************************************************************/
 
 size_t arc_htable_max(struct arc_htable * htable)
@@ -100,7 +100,7 @@ int arc_htable_insert(struct arc_htable * htable, void * key, void * data)
 {
     arc_hkey_t hvalue;
     arc_slist_t list;
-    arc_iterator_t it;
+    struct arc_iterator it;
     struct arc_htable_node node;
     int duplicate = 0;
 
@@ -127,13 +127,13 @@ int arc_htable_insert(struct arc_htable * htable, void * key, void * data)
     /* TODO: Optimize by creating stack iterators */
     if (arc_slist_size(list) > 0)
     {
-        it = arc_iterator_create(list);
+        arc_iterator_initialize(&it, list);
 
-        arc_slist_before_begin(it);
+        arc_slist_before_begin(&it);
 
-        while(arc_slist_next(it))
+        while(arc_slist_next(&it))
         {
-            struct arc_htable_node * list_node = arc_slist_data(it);
+            struct arc_htable_node * list_node = arc_slist_data(&it);
             if(memcmp(list_node->key, key, htable->key_size) == 0)
             {
                 duplicate = 1;
@@ -141,7 +141,7 @@ int arc_htable_insert(struct arc_htable * htable, void * key, void * data)
             }
         }
 
-        arc_iterator_destroy(it);
+        arc_iterator_finalize(&it);
     }
 
     if (!duplicate)
@@ -167,13 +167,14 @@ void * arc_htable_retrieve(struct arc_htable * htable, void * key)
     if (list != NULL)
     {
         /* TODO: Optimize by creating stack iterators */
-        arc_iterator_t it = arc_iterator_create(list);
+        struct arc_iterator it;
+        arc_iterator_initialize(&it, list);
 
-        arc_slist_before_begin(it);
+        arc_slist_before_begin(&it);
 
-        while(arc_slist_next(it))
+        while(arc_slist_next(&it))
         {
-            struct arc_htable_node * node = arc_slist_data(it);
+            struct arc_htable_node * node = arc_slist_data(&it);
             if(memcmp(node->key, key, htable->key_size) == 0)
             {
                 data = node->data;
@@ -181,7 +182,7 @@ void * arc_htable_retrieve(struct arc_htable * htable, void * key)
             }
         }
 
-        arc_iterator_destroy(it);
+        arc_iterator_finalize(&it);
     }
 
     return data;
@@ -212,18 +213,19 @@ void arc_htable_clear(struct arc_htable * htable)
         arc_slist_t list = htable->buckets[i];
         if (list != NULL)
         {
-            arc_iterator_t it = arc_iterator_create(list);
+            struct arc_iterator it;
+            arc_iterator_initialize(&it, list);
 
-            arc_slist_before_begin(it);
+            arc_slist_before_begin(&it);
 
-            while(arc_slist_next(it))
+            while(arc_slist_next(&it))
             {
-                struct arc_htable_node * node = arc_slist_data(it);
+                struct arc_htable_node * node = arc_slist_data(&it);
                 free(node->key);
                 free(node->data);
             }
 
-            arc_iterator_destroy(it);
+            arc_iterator_finalize(&it);
 
             arc_slist_destroy(list);
 
@@ -246,28 +248,29 @@ void arc_htable_remove(struct arc_htable * htable, void * key)
 
     if (list != NULL)
     {
-        arc_iterator_t it = arc_iterator_create(list);
-        arc_iterator_t it_prev = arc_iterator_create(list);
+        struct arc_iterator it, it_prev;
+        arc_iterator_initialize(&it, list);
+        arc_iterator_initialize(&it_prev, list);
 
-        arc_slist_before_begin(it);
-        arc_slist_before_begin(it_prev);
+        arc_slist_before_begin(&it);
+        arc_slist_before_begin(&it_prev);
 
-        while(arc_slist_next(it))
+        while(arc_slist_next(&it))
         {
-            struct arc_htable_node * node = arc_slist_data(it);
+            struct arc_htable_node * node = arc_slist_data(&it);
             if(memcmp(node->key, key, htable->key_size) == 0)
             {
                 free(node->key);
                 free(node->data);
-                arc_slist_erase_after(it_prev);
+                arc_slist_erase_after(&it_prev);
                 break;
             }
 
-            arc_slist_next(it_prev);
+            arc_slist_next(&it_prev);
         }
 
-        arc_iterator_destroy(it);
-        arc_iterator_destroy(it_prev);
+        arc_iterator_finalize(&it);
+        arc_iterator_finalize(&it_prev);
     }
 
 
@@ -296,13 +299,14 @@ int arc_htable_rehash(struct arc_htable * htable, size_t num_buckets)
 
         if (arc_slist_size(htable->buckets[i]) > 0)
         {
-            arc_iterator_t it = arc_iterator_create(htable->buckets[i]);
+            struct arc_iterator it;
+            arc_iterator_initialize(&it, htable->buckets[i]);
 
-            arc_slist_before_begin(it);
+            arc_slist_before_begin(&it);
 
-            while(arc_slist_next(it))
+            while(arc_slist_next(&it))
             {
-                struct arc_htable_node * node = arc_slist_data(it);
+                struct arc_htable_node * node = arc_slist_data(&it);
 
                 hvalue = htable->hash_fn(node->key, htable->key_size) %
                          num_buckets;
@@ -310,7 +314,7 @@ int arc_htable_rehash(struct arc_htable * htable, size_t num_buckets)
                 arc_slist_push_front(buckets[hvalue], node);
             }
 
-            arc_iterator_destroy(it);
+            arc_iterator_finalize(&it);
         }
 
         arc_slist_destroy(htable->buckets[i]);
