@@ -28,7 +28,7 @@
 #define ARC_HTABLE_H_
 
 #include <stdlib.h>
-#include <arc/type/function.h>
+#include <arc/type/hash.h>
 #include <arc/container/iterator.h>
 
 #ifdef __cplusplus
@@ -45,13 +45,15 @@ typedef struct arc_htable * arc_htable_t;
 /**
  * @brief Creates a new htable
  *
+ * @param[in] num_buckets Number of buckets in the hash table
  * @param[in] key_size Size of the key
  * @param[in] data_size Size of the data element
  * @param[in] hash_fn Hash function for the key type
  * @return New empty htable
  * @retval NULL if memory cannot be allocated
  */
-arc_htable_t arc_htable_create(size_t key_size,
+arc_htable_t arc_htable_create(size_t num_buckets,
+                               size_t key_size,
                                size_t data_size,
                                arc_hash_fn_t hash_fn);
 /**
@@ -109,6 +111,15 @@ void arc_htable_clear(arc_htable_t htable);
  * @param[in] key Key of the data element to be removed
  */
 void arc_htable_remove(arc_htable_t htable, void * key);
+/**
+ * @brief Reestructures the table to contain the specified number of buckets
+ *
+ * @param[in] htable Hash table to perform the operation on
+ * @param[in] num_buckets Number of buckets in the hash table
+ * @retval ARC_SUCCESS If the rehashing was completed successfully
+ * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
+ */
+int arc_htable_rehash(arc_htable_t htable, size_t num_buckets);
 
 #ifdef __cplusplus
 }

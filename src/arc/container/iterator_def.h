@@ -21,4 +21,7 @@ struct arc_iterator
     unsigned long node_idx;
 };
 
+int arc_iterator_initialize(struct arc_iterator *it, void *container);
+void arc_iterator_finalize(struct arc_iterator *it);
+
 #endif

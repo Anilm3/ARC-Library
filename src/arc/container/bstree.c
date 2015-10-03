@@ -33,7 +33,6 @@ static int arc_bstree_print_num_nodes_level(struct arc_bstree_node * node,
            arc_bstree_print_num_nodes_level(node->right, level - 1);
 }
 */
-
 /******************************************************************************/
 /*
 static void arc_bstree_print_num_nodes(struct arc_bstree_node * root)
@@ -46,6 +45,18 @@ static void arc_bstree_print_num_nodes(struct arc_bstree_node * root)
         retval = arc_bstree_print_num_nodes_level(root, level++);
         printf("%d\n", retval);
     }
+}
+*/
+/******************************************************************************/
+/*
+static int arc_bstree_print(struct arc_bstree_node * root)
+{
+    if (root == NULL)
+    {
+        return 0;
+    }
+
+    return 1 + arc_bstree_print(root->left) + arc_bstree_print(root->right);
 }
 */
 /******************************************************************************/

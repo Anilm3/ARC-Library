@@ -22,16 +22,14 @@
 #include <arc/type/function.h>
 #include <arc/container/slist.h>
 
-#define NUM_BUCKETS 32
-
-
 struct arc_htable
 {
-    size_t data_size;
+    size_t num_buckets;
     size_t key_size;
+    size_t data_size;
     size_t size;
     arc_hash_fn_t hash_fn;
-    arc_slist_t buckets[NUM_BUCKETS];
+    arc_slist_t *buckets;
 };
 
 struct arc_htable_node
@@ -39,5 +37,8 @@ struct arc_htable_node
     void *key;
     void *data;
 };
+
+double arc_htable_variance(struct arc_htable * htable);
+size_t arc_htable_max(struct arc_htable * htable);
 
 #endif

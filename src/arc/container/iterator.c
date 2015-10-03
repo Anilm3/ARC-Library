@@ -15,6 +15,28 @@
 
 /******************************************************************************/
 
+int arc_iterator_initialize(struct arc_iterator *it, void *container)
+{
+    it->container = container;
+    it->node_ptr = NULL;
+    it->node_num = 0;
+    it->node_idx = 0;
+
+    return ARC_SUCCESS;
+}
+
+/******************************************************************************/
+
+void arc_iterator_finalize(struct arc_iterator *it)
+{
+    it->container = NULL;
+    it->node_ptr = NULL;
+    it->node_num = 0;
+    it->node_idx = 0;
+}
+
+/******************************************************************************/
+
 struct arc_iterator * arc_iterator_create(void * container)
 {
     struct arc_iterator * it = malloc(sizeof(struct arc_iterator));
@@ -24,18 +46,15 @@ struct arc_iterator * arc_iterator_create(void * container)
         return NULL;
     }
 
-    it->container = container;
-    it->node_ptr = NULL;
-    it->node_num = 0;
-    it->node_idx = 0;
+    arc_iterator_initialize(it, container);
 
     return it;
 }
-
 /******************************************************************************/
 
-void arc_iterator_destroy(struct arc_iterator *  it)
+void arc_iterator_destroy(struct arc_iterator *it)
 {
+    arc_iterator_finalize(it);
     free(it);
 }
 

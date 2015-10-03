@@ -10,22 +10,18 @@
 #include <stdio.h>
 #include <arc/container/htable.h>
 #include <arc/test/unit.h>
+#include <arc/type/hash.h>
 #include <arc/common/defines.h>
 
 #include <string.h>
 
-unsigned long hash_function(void *key, size_t size)
-{
-    ARC_UNUSED(size);
-    return  (unsigned long)*((int *)key);
-}
-
 ARC_UNIT_TEST(size)
 {
     int i = 10;
-    arc_htable_t htable = arc_htable_create(sizeof(int),
+    arc_htable_t htable = arc_htable_create(32,
                                             sizeof(int),
-                                            hash_function);
+                                            sizeof(int),
+                                            arc_hash_pearson);
 
     ARC_ASSERT_POINTER_NOT_NULL(htable);
 
@@ -35,7 +31,7 @@ ARC_UNIT_TEST(size)
                       ARC_SUCCESS);
 
     ARC_ASSERT_INT_EQ(arc_htable_size(htable), 1);
-    
+
     ARC_ASSERT_FALSE(arc_htable_empty(htable));
 
     for (i = 0; i < 10; i++)
@@ -52,9 +48,10 @@ ARC_UNIT_TEST(size)
 ARC_UNIT_TEST(retrieval)
 {
     int i = 10;
-    arc_htable_t htable = arc_htable_create(sizeof(int),
+    arc_htable_t htable = arc_htable_create(32,
                                             sizeof(int),
-                                            hash_function);
+                                            sizeof(int),
+                                            arc_hash_pearson);
 
     ARC_ASSERT_POINTER_NOT_NULL(htable);
 
@@ -80,9 +77,10 @@ ARC_UNIT_TEST(retrieval)
 ARC_UNIT_TEST(removal)
 {
     int i = 10;
-    arc_htable_t htable = arc_htable_create(sizeof(int),
+    arc_htable_t htable = arc_htable_create(32,
                                             sizeof(int),
-                                            hash_function);
+                                            sizeof(int),
+                                            arc_hash_pearson);
 
     ARC_ASSERT_POINTER_NOT_NULL(htable);
 
@@ -106,11 +104,43 @@ ARC_UNIT_TEST(removal)
     arc_htable_destroy(htable);
 }
 
+ARC_UNIT_TEST(rehash)
+{
+    int i = 10;
+    arc_htable_t htable = arc_htable_create(32,
+                                            sizeof(int),
+                                            sizeof(int),
+                                            arc_hash_pearson);
+
+    ARC_ASSERT_POINTER_NOT_NULL(htable);
+
+    ARC_ASSERT_TRUE(arc_htable_empty(htable));
+
+    for (i = 0; i < 100; i++)
+    {
+        ARC_ASSERT_INT_EQ(arc_htable_insert(htable, (void *)&i, (void *)&i),
+                          ARC_SUCCESS);
+    }
+
+    ARC_ASSERT_INT_EQ(arc_htable_size(htable), 100);
+
+    ARC_ASSERT_INT_EQ(arc_htable_rehash(htable, 100), ARC_SUCCESS);
+
+    for (i = 0; i < 100; i++)
+    {
+        int *data = arc_htable_retrieve(htable, (void *)&i);
+        ARC_ASSERT_INT_EQ(*data, i);
+    }
+
+    arc_htable_destroy(htable);
+}
+
 ARC_UNIT_TEST_FIXTURE()
 {
     ARC_UNIT_ADD_TEST(size)
     ARC_UNIT_ADD_TEST(retrieval)
     ARC_UNIT_ADD_TEST(removal)
+    ARC_UNIT_ADD_TEST(rehash)
 }
 
 ARC_UNIT_RUN_TESTS()
