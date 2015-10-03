@@ -101,7 +101,7 @@ int arc_htable_insert(struct arc_htable * htable, void * key, void * data)
 {
     arc_hkey_t hvalue;
     arc_slist_t list;
-    struct arc_iterator it;
+    struct arc_iterator it, it_prev;
     struct arc_htable_node node;
     int duplicate = 0;
 
@@ -125,21 +125,29 @@ int arc_htable_insert(struct arc_htable * htable, void * key, void * data)
     memcpy(node.key, key, htable->key_size);
     memcpy(node.data, data, htable->data_size);
 
-    /* TODO: Optimize by creating stack iterators */
+    arc_iterator_initialize(&it_prev, list);
+    arc_slist_before_begin(&it_prev);
+
     if (arc_slist_size(list) > 0)
     {
         arc_iterator_initialize(&it, list);
-
         arc_slist_before_begin(&it);
 
         while(arc_slist_next(&it))
         {
             struct arc_htable_node * list_node = arc_slist_data(&it);
-            if(memcmp(list_node->key, key, htable->key_size) == 0)
+            int cmp_res = memcmp(list_node->key, key, htable->key_size);
+            if(cmp_res == 0)
             {
                 duplicate = 1;
                 break;
             }
+            else if (cmp_res > 0)
+            {
+                break;
+            }
+
+            arc_slist_next(&it_prev);
         }
 
         arc_iterator_finalize(&it);
@@ -148,7 +156,7 @@ int arc_htable_insert(struct arc_htable * htable, void * key, void * data)
     if (!duplicate)
     {
         htable->size++;
-        arc_slist_push_front(list, &node);
+        arc_slist_insert_after(&it_prev, &node);
     }
 
     return ARC_SUCCESS;
@@ -257,11 +265,16 @@ void arc_htable_remove(struct arc_htable * htable, void * key)
         while(arc_slist_next(&it))
         {
             struct arc_htable_node * node = arc_slist_data(&it);
-            if(memcmp(node->key, key, htable->key_size) == 0)
+            int cmp_res = memcmp(node->key, key, htable->key_size);
+            if(cmp_res == 0)
             {
                 free(node->key);
                 free(node->data);
                 arc_slist_erase_after(&it_prev);
+                break;
+            }
+            else if (cmp_res > 0)
+            {
                 break;
             }
 
