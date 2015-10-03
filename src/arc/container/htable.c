@@ -187,12 +187,17 @@ void * arc_htable_retrieve(struct arc_htable * htable, void * key)
 
         arc_slist_before_begin(&it);
 
-        while(arc_slist_next(&it))
+        while (arc_slist_next(&it))
         {
             struct arc_htable_node * node = arc_slist_data(&it);
-            if(memcmp(node->key, key, htable->key_size) == 0)
+            int cmp_res = memcmp(node->key, key, htable->key_size);
+            if (cmp_res == 0)
             {
                 data = node->data;
+                break;
+            }
+            else if (cmp_res > 0)
+            {
                 break;
             }
         }
