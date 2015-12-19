@@ -336,7 +336,8 @@ static void arc_bstree_compress(struct arc_bstree_node *node, size_t count)
     for (i = 0; i < count; i++)
     {
         struct arc_bstree_node *child = scanner->right;
-
+        /* Child should never be NULL as we're creating a vine on the right
+           side of the tree and always checking for a tree bigger than one */
         scanner->right = child->right;
         if (child->right != NULL)
         {
@@ -351,10 +352,7 @@ static void arc_bstree_compress(struct arc_bstree_node *node, size_t count)
         }
 
         scanner->left = child;
-        if (child != NULL)
-        {
-            child->parent = scanner;
-        }
+        child->parent = scanner;
     }
 }
 

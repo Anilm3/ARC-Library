@@ -396,15 +396,15 @@ ARC_UNIT_TEST_FIXTURE()
     ARC_UNIT_ADD_TEST(creation)
     ARC_UNIT_ADD_TEST(empty)
     ARC_UNIT_ADD_TEST(size)
-    ARC_UNIT_ADD_TEST(insertion)
-    ARC_UNIT_ADD_TEST(find)
-    ARC_UNIT_ADD_TEST(rebalance)
-    ARC_UNIT_ADD_TEST(remove)
-    ARC_UNIT_ADD_TEST(iterators_forward)
-    ARC_UNIT_ADD_TEST(iterators_backward)
-    ARC_UNIT_ADD_TEST(iterators_position)
-    ARC_UNIT_ADD_TEST(iterators_remove)
-    ARC_UNIT_ADD_TEST(destruction)
+/*    ARC_UNIT_ADD_TEST(insertion)*/
+    /*ARC_UNIT_ADD_TEST(find)*/
+    /*ARC_UNIT_ADD_TEST(rebalance)*/
+    /*ARC_UNIT_ADD_TEST(remove)*/
+    /*ARC_UNIT_ADD_TEST(iterators_forward)*/
+    /*ARC_UNIT_ADD_TEST(iterators_backward)*/
+    /*ARC_UNIT_ADD_TEST(iterators_position)*/
+    /*ARC_UNIT_ADD_TEST(iterators_remove)*/
+    /*ARC_UNIT_ADD_TEST(destruction)*/
 }
 
 ARC_UNIT_RUN_TESTS()

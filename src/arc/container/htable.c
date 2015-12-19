@@ -157,6 +157,7 @@ int arc_htable_insert(struct arc_htable * htable, void * key, void * data)
 
     if (node.data == NULL)
     {
+        free(node.key);
         return ARC_OUT_OF_MEMORY;
     }
 
