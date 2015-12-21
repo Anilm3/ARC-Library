@@ -58,6 +58,12 @@ extern "C"{
 
 /** @brief Used to mark variables as unused */
 #define ARC_UNUSED(x) (void)(x)
+
+#ifndef NDEBUG
+#define ARC_DEBUG(fmt) printf(fmt);fflush(stdout);
+#define ARC_DEBUG1(fmt,param1) printf(fmt,param1);fflush(stdout);
+#endif
+
 #ifdef __cplusplus
 }
 #endif

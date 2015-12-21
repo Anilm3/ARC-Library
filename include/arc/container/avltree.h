@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (C) 2014 Anil Motilal Mahtani Mirchandani(anil.mmm@gmail.com)      *
+* Copyright (C) 2015 Anil Motilal Mahtani Mirchandani(anil.mmm@gmail.com)      *
 *                                                                              *
 * License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>*
 * This is free software: you are free to change and redistribute it.           *
@@ -11,10 +11,10 @@
  * @{
  *
  * @author Anil M. Mahtani Mirchandani
- * @date December, 2014
+ * @date December, 2015
  * @ingroup Container
  *
- * @brief Binary Search Tree
+ * @brief Adelson velsky Landis (AVL) Tree
  *
  * A binary search tree is a data structure in which each node contains a right
  * and a left link. The right link points to a node containing a value bigger
