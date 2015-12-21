@@ -71,7 +71,7 @@ static void arc_avltree_rotate_left(struct arc_avltree_node *node,
 /**
  *
  */
-static void arc_avltree_rotate_left_left(struct arc_avltree_node *node,
+static void arc_avltree_rotate_left_right(struct arc_avltree_node *node,
                                          struct arc_avltree_node **node_ref);
 /**
  *

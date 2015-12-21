@@ -71,7 +71,7 @@ static long arc_avltree_check(struct arc_avltree_node *node)
 
             if (result_left == -1 ||
                 result_right == -1 || 
-                abs(result_right - result_left) > 1 ||
+                labs(result_right - result_left) > 1 ||
                 node->balance_factor != (result_right - result_left))
             {
                 return -1;
@@ -292,7 +292,7 @@ static void arc_avltree_rotate_left(struct arc_avltree_node *node,
 
 /******************************************************************************/
 
-static void arc_avltree_rotate_left_left(struct arc_avltree_node *node,
+static void arc_avltree_rotate_left_right(struct arc_avltree_node *node,
                                          struct arc_avltree_node **node_ref)
 {
     struct arc_avltree_node * child = node->left;
@@ -371,7 +371,7 @@ static void arc_avltree_rotate(struct arc_avltree *avltree,
         
         if (child->balance_factor == 1)
         {
-            arc_avltree_rotate_left_left(node, node_ref);
+            arc_avltree_rotate_left_right(node, node_ref);
         }
         else
         {
@@ -532,7 +532,7 @@ static void arc_avltree_remove_node(struct arc_avltree *avltree,
             *node_ref = NULL;
             if (node->parent != NULL)
             {
-                node->parent->balance_factor = 0;
+                node->parent->balance_factor = 0;;
             }
         }
 
