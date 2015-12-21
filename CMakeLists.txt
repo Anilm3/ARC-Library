@@ -55,7 +55,8 @@ if (BUILD_TYPE STREQUAL "Debug")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ftest-coverage")
 
     # -W, -Werror: , every warning is an error.
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -W -Werror")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -W")
+	#-Werror")
 
     # -Wextra, -Wall: essential.
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wextra -Wall")

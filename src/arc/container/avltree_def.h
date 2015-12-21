@@ -40,6 +40,42 @@ struct arc_avltree
     size_t node_size;
     arc_cmp_fn_t cmp_fn;
 };
+
+/**
+ *
+ */
+/*static int arc_avltree_print_level(struct arc_avltree_node *node, int level);*/
+/**
+ *
+ */
+/*static void arc_avltree_print(struct arc_avltree *tree);*/
+/**
+ *
+ */
+static size_t arc_avltree_height(struct arc_avltree_node * node);
+/**
+ *
+ */
+static void arc_avltree_rotate_right(struct arc_avltree_node *node,
+                                     struct arc_avltree_node **node_ref);
+/**
+ *
+ */
+static void arc_avltree_rotate_right_left(struct arc_avltree_node *node,
+                                          struct arc_avltree_node **node_ref);
+/**
+ *
+ */
+static void arc_avltree_rotate_left(struct arc_avltree_node *node,
+                                     struct arc_avltree_node **node_ref);
+/**
+ *
+ */
+static void arc_avltree_rotate_left_left(struct arc_avltree_node *node,
+                                         struct arc_avltree_node **node_ref);
+/**
+ *
+ */
 static void arc_avltree_rotate(struct arc_avltree *avltree,
                                struct arc_avltree_node *node);
 
