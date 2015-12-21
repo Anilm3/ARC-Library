@@ -207,7 +207,7 @@ static size_t arc_avltree_height(struct arc_avltree_node * node)
 
 /******************************************************************************/
 
-static void arc_avltree_rotate_right(struct arc_avltree_node *node,
+static void arc_avltree_rotate_left(struct arc_avltree_node *node,
                                      struct arc_avltree_node **node_ref)
 {
     struct arc_avltree_node * child = node->right;
@@ -270,7 +270,7 @@ static void arc_avltree_rotate_right_left(struct arc_avltree_node *node,
 
 /******************************************************************************/
 
-static void arc_avltree_rotate_left(struct arc_avltree_node *node,
+static void arc_avltree_rotate_right(struct arc_avltree_node *node,
                                      struct arc_avltree_node **node_ref)
 {
     struct arc_avltree_node * child = node->left;
@@ -358,7 +358,7 @@ static void arc_avltree_rotate(struct arc_avltree *avltree,
 
         if (child->balance_factor == 1)
         {
-            arc_avltree_rotate_right(node, node_ref);
+            arc_avltree_rotate_left(node, node_ref);
         }
         else
         {
@@ -375,7 +375,7 @@ static void arc_avltree_rotate(struct arc_avltree *avltree,
         }
         else
         {
-            arc_avltree_rotate_left(node, node_ref);
+            arc_avltree_rotate_right(node, node_ref);
         }
     }
 }
