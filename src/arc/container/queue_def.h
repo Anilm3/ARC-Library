@@ -6,37 +6,30 @@
 * There is NO WARRANTY, to the extent permitted by law.                        *
 *                                                                              *
 *******************************************************************************/
-#ifndef ARC_BSTREE_DEF_H_
-#define ARC_BSTREE_DEF_H_
+#ifndef ARC_QUEUE_DEF_H_
+#define ARC_QUEUE_DEF_H_
 
+#include <string.h>
 #include <stdlib.h>
 
-/* Sentinel node definition */
-struct arc_bstree_snode
+/* Queue node definition, the data array is a placerholder for the first byte of
+   the user memory, which will be allocated as extra space for the node */
+struct arc_queue_node
 {
-    struct arc_bstree_node * parent;
-    struct arc_bstree_node * left;
-    struct arc_bstree_node * right;
-};
-
-/* Standard node definition */
-struct arc_bstree_node
-{
-    struct arc_bstree_node * parent;
-    struct arc_bstree_node * left;
-    struct arc_bstree_node * right;
+    struct arc_queue_node * next;
     char data[1];
 };
 
-/* Container definition */
-struct arc_bstree
+/* The queue structure contains a pointer to the front and the back of the 
+   stack, the current number of elements (size), the size of the user data and 
+   finally the size of the stack node to avoid recomputations */
+struct arc_queue
 {
-    struct arc_bstree_node *root;
-    struct arc_bstree_snode front;
-    struct arc_bstree_snode back;
-    size_t size;
+    struct arc_queue_node * front;
+    struct arc_queue_node * back;
+    int size;
     size_t data_size;
     size_t node_size;
-    arc_cmp_fn_t cmp_fn;
 };
+
 #endif

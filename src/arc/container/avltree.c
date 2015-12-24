@@ -17,139 +17,6 @@
 #include <arc/container/avltree_def.h>
 #include <arc/container/iterator_def.h>
 
-static long arc_avltree_check(struct arc_avltree_node *node)
-{
-    if (node == NULL) return 0;
-    if (node->left == NULL)
-    {
-        if (node->right == NULL)
-        {
-            if (node->balance_factor != 0)
-            {
-                ARC_DEBUG1("Node %u, Error: 1\n", *((unsigned *)node->data));
-                return -1;
-            }
-
-            return 1;
-        }
-        else
-        {
-            long result;
-
-            if (node->balance_factor != 1)
-            {
-                ARC_DEBUG1("Node %u, Error: 2\n", *((unsigned *)node->data));
-                return -1;
-            }
-    
-            result = arc_avltree_check(node->right);
-
-            if (result == -1 || result > 1)
-            {
-                ARC_DEBUG1("Node %u, Error: 3\n", *((unsigned *)node->data));
-                return -1;
-            }
-
-            return 1 + result;
-        }
-    }
-    else
-    {
-        if (node->right == NULL)
-        {
-            long result;
-
-            if (node->balance_factor != -1)
-            {
-                ARC_DEBUG1("Node %u, Error: 4\n", *((unsigned *)node->data));
-                return -1;
-            }
-
-            result = arc_avltree_check(node->left);
-            
-            if (result == -1 || result > 1)
-            {
-                ARC_DEBUG1("Node %u, Error: 5\n", *((unsigned *)node->data));
-                return -1;
-            }
-            return 1 + result;
-        }
-        else
-        {
-            long result_left = arc_avltree_check(node->left);
-            long result_right = arc_avltree_check(node->right);
-
-            if (result_left == -1 ||
-                result_right == -1 || 
-                labs(result_right - result_left) > 1 ||
-                node->balance_factor != (result_right - result_left))
-            {
-                ARC_DEBUG1("Node %u, Error: 6\n", *((unsigned *)node->data));
-                return -1;
-            }
-
-            return (result_left > result_right ? 1 + result_left : 1 + result_right);
-        }
-    }
-}
-
-/******************************************************************************/
-
-static int arc_avltree_print_level(struct arc_avltree_node *node, int level)
-{
-    int result = 0;
-
-    if (level == 0)
-    {
-        if (node != NULL)
-        {
-            printf("%u(%d) ", *((unsigned *)node->data), node->balance_factor);
-            return 1;
-        }
-        else
-        {
-            printf("N ");
-            return 0;
-        }
-    }
-
-    if (node != NULL)
-    {
-        result += arc_avltree_print_level(node->left, level - 1);
-        result += arc_avltree_print_level(node->right, level - 1);
-    }
-    else
-    {
-        result += arc_avltree_print_level(NULL, level - 1);
-        result += arc_avltree_print_level(NULL, level - 1);
-    }
-
-    return result > 0;
-}
-
-/******************************************************************************/
-
-static void arc_avltree_print(struct arc_avltree *tree)
-{
-    int level = 0;
-    printf("Printing tree\n- %d -\n", level);
-    while (arc_avltree_print_level(tree->root, level++)) printf("\n- %d -\n", level);
-    printf("\n");
-}
-
-/******************************************************************************/
-
-static size_t arc_avltree_height(struct arc_avltree_node * node)
-{
-    if (node != NULL)
-    {
-        size_t height_left = arc_avltree_height(node->left);
-        size_t height_right = arc_avltree_height(node->right);
-        return 1 + (height_left > height_right ? height_left : height_right);
-    }
-
-    return 0;
-}
 
 /******************************************************************************/
 
@@ -188,7 +55,11 @@ struct arc_avltree * arc_avltree_create(size_t data_size, arc_cmp_fn_t cmp_fn)
 }
 
 /******************************************************************************/
-
+/**
+ * @brief Recursively frees a node of the avltree
+ *
+ * @param[in] data node node to be freed
+ */
 static void arc_avltree_free_node(struct arc_avltree_node *node)
 {
     if (node->left != NULL)
@@ -233,7 +104,41 @@ static struct arc_avltree_node ** arc_avltree_node_ref(struct arc_avltree *avltr
 }
 
 /******************************************************************************/
+/**
+ * @brief Finds the minimum element in the subtree
+ *
+ * @param[in] node Binary search tree to perform the operation on
+ */
+static struct arc_avltree_node *arc_avltree_min(struct arc_avltree_node *node)
+{
+    while (node->left != NULL)
+    {
+        node = node->left;
+    }
 
+    return node;
+}
+
+/******************************************************************************/
+/**
+ * @brief Finds the maximum element in the subtree
+ *
+ * @param[in] node Binary search tree to perform the operation on
+ */
+static struct arc_avltree_node *arc_avltree_max(struct arc_avltree_node *node)
+{
+    while (node->right != NULL)
+    {
+        node = node->right;
+    }
+
+    return node;
+}
+
+/******************************************************************************/
+/**
+ *
+ */
 static void arc_avltree_rotate_left(struct arc_avltree_node *node,
                                      struct arc_avltree_node **node_ref)
 {
@@ -263,7 +168,9 @@ static void arc_avltree_rotate_left(struct arc_avltree_node *node,
 }
 
 /******************************************************************************/
-
+/**
+ *
+ */
 static void arc_avltree_rotate_right_left(struct arc_avltree_node *node,
                                           struct arc_avltree_node **node_ref)
 {
@@ -306,7 +213,9 @@ static void arc_avltree_rotate_right_left(struct arc_avltree_node *node,
 }
 
 /******************************************************************************/
-
+/**
+ *
+ */
 static void arc_avltree_rotate_right(struct arc_avltree_node *node,
                                      struct arc_avltree_node **node_ref)
 {
@@ -336,7 +245,9 @@ static void arc_avltree_rotate_right(struct arc_avltree_node *node,
 }
 
 /******************************************************************************/
-
+/**
+ *
+ */
 static void arc_avltree_rotate_left_right(struct arc_avltree_node *node,
                                          struct arc_avltree_node **node_ref)
 {
@@ -381,7 +292,9 @@ static void arc_avltree_rotate_left_right(struct arc_avltree_node *node,
 }
 
 /******************************************************************************/
-
+/**
+ *
+ */
 static void arc_avltree_rotate(struct arc_avltree_node *node,
                                struct arc_avltree_node **node_ref)
 {
@@ -483,7 +396,14 @@ int arc_avltree_insert(struct arc_avltree *avltree, void * data)
 }
 
 /******************************************************************************/
-
+/**
+ * @brief Finds and returns a node in the avltree
+ *
+ * @param[in] avltree Binary search tree to perform the operation on
+ * @param[in] data Data element to be found
+ * @return 0 If the element was not found
+ * @retval 1 If the element was found
+ */
 static struct arc_avltree_node * arc_avltree_find_node(struct arc_avltree *avltree,
                                                        void * data)
 {
@@ -517,7 +437,12 @@ int arc_avltree_find(struct arc_avltree *avltree, void * data)
 }
 
 /******************************************************************************/
-
+/**
+ * @brief Removes a node from the avltree
+ *
+ * @param[in] avltree Binary search tree to perform the operation on
+ * @param[in] data node node to be removed
+ */
 static void arc_avltree_remove_node(struct arc_avltree *avltree,
                                     struct arc_avltree_node *node)
 {
@@ -651,30 +576,6 @@ void arc_avltree_remove(struct arc_avltree *avltree, void * data)
     }
 
     arc_avltree_remove_node(avltree, node);
-}
-
-/******************************************************************************/
-
-static struct arc_avltree_node *arc_avltree_min(struct arc_avltree_node *node)
-{
-    while (node->left != NULL)
-    {
-        node = node->left;
-    }
-
-    return node;
-}
-
-/******************************************************************************/
-
-static struct arc_avltree_node *arc_avltree_max(struct arc_avltree_node *node)
-{
-    while (node->right != NULL)
-    {
-        node = node->right;
-    }
-
-    return node;
 }
 
 /******************************************************************************/

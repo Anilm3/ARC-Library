@@ -25,6 +25,7 @@
 #include <arc/container/slist.h>
 #include <arc/container/htable_def.h>
 #include <arc/container/iterator_def.h>
+
 /******************************************************************************/
 
 size_t arc_htable_max(struct arc_htable * htable)

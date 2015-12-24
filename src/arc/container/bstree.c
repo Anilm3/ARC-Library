@@ -18,48 +18,6 @@
 #include <arc/container/iterator_def.h>
 
 /******************************************************************************/
-/*
-static int arc_bstree_print_num_nodes_level(struct arc_bstree_node * node,
-                                            int level)
-{
-    if (node == NULL) return 0;
-
-    if (level == 0)
-    {
-        return 1;
-    }
-
-    return arc_bstree_print_num_nodes_level(node->left, level - 1) +
-           arc_bstree_print_num_nodes_level(node->right, level - 1);
-}
-*/
-/******************************************************************************/
-/*
-static void arc_bstree_print_num_nodes(struct arc_bstree_node * root)
-{
-    int level = 0;
-    int retval = 1;
-
-    while (retval)
-    {
-        retval = arc_bstree_print_num_nodes_level(root, level++);
-        printf("%d\n", retval);
-    }
-}
-*/
-/******************************************************************************/
-/*
-static int arc_bstree_print(struct arc_bstree_node * root)
-{
-    if (root == NULL)
-    {
-        return 0;
-    }
-
-    return 1 + arc_bstree_print(root->left) + arc_bstree_print(root->right);
-}
-*/
-/******************************************************************************/
 
 struct arc_bstree * arc_bstree_create(size_t data_size, arc_cmp_fn_t cmp_fn)
 {
@@ -96,7 +54,11 @@ struct arc_bstree * arc_bstree_create(size_t data_size, arc_cmp_fn_t cmp_fn)
 }
 
 /******************************************************************************/
-
+/**
+ * @brief Recursively frees a node of the bstree
+ *
+ * @param[in] data node node to be freed
+ */
 static void arc_bstree_free_node(struct arc_bstree_node *node)
 {
     if (node->left != NULL)
@@ -122,6 +84,38 @@ void arc_bstree_destroy(struct arc_bstree *bstree)
     }
 
     free(bstree);
+}
+
+/******************************************************************************/
+/**
+ * @brief Finds the minimum element in the subtree
+ *
+ * @param[in] node Binary search tree to perform the operation on
+ */
+static struct arc_bstree_node *arc_bstree_min(struct arc_bstree_node *node)
+{
+    while (node->left != NULL)
+    {
+        node = node->left;
+    }
+
+    return node;
+}
+
+/******************************************************************************/
+/**
+ * @brief Finds the maximum element in the subtree
+ *
+ * @param[in] node Binary search tree to perform the operation on
+ */
+static struct arc_bstree_node *arc_bstree_max(struct arc_bstree_node *node)
+{
+    while (node->right != NULL)
+    {
+        node = node->right;
+    }
+
+    return node;
 }
 
 /******************************************************************************/
@@ -174,7 +168,14 @@ int arc_bstree_insert(struct arc_bstree *bstree, void * data)
 }
 
 /******************************************************************************/
-
+/**
+ * @brief Finds and returns a node in the bstree
+ *
+ * @param[in] bstree Binary search tree to perform the operation on
+ * @param[in] data Data element to be found
+ * @return 0 If the element was not found
+ * @retval 1 If the element was found
+ */
 static struct arc_bstree_node * arc_bstree_find_node(struct arc_bstree *bstree,
                                                      void * data)
 {
@@ -208,7 +209,12 @@ int arc_bstree_find(struct arc_bstree *bstree, void * data)
 }
 
 /******************************************************************************/
-
+/**
+ * @brief Removes a node from the bstree
+ *
+ * @param[in] bstree Binary search tree to perform the operation on
+ * @param[in] data node node to be removed
+ */
 static void arc_bstree_remove_node(struct arc_bstree *bstree,
                                    struct arc_bstree_node *node)
 {
@@ -286,7 +292,13 @@ static void arc_bstree_remove_node(struct arc_bstree *bstree,
 }
 
 /******************************************************************************/
-
+/**
+ * @brief Transform the tree into a vine and return size
+ *
+ * @see https://en.wikipedia.org/wiki/Day%E2%80%93Stout%E2%80%93Warren_algorithm
+ *
+ * @param[in] node (subtree) to apply the operation on
+ */
 static void arc_bstree_tree_to_vine(struct arc_bstree_node *node)
 {
     struct arc_bstree_node *tail = node;
@@ -311,24 +323,13 @@ static void arc_bstree_tree_to_vine(struct arc_bstree_node *node)
 }
 
 /******************************************************************************/
-
-static void arc_bstree_vine_to_tree(struct arc_bstree_node *node, size_t size)
-{
-    size_t leaves = size + 1 - ((size_t)pow(2, floor(log2((double)size + 1))));
-
-    arc_bstree_compress(node, leaves);
-
-    size = size - leaves;
-
-    while (size > 1)
-    {
-        arc_bstree_compress(node, (size_t)floor((double)size / 2.0));
-        size = (size_t)floor((double)size / 2.0);
-    }
-}
-
-/******************************************************************************/
-
+/**
+ * @brief Compress "count" spine nodes in the tree
+ *
+ * @see https://en.wikipedia.org/wiki/Day%E2%80%93Stout%E2%80%93Warren_algorithm
+ *
+ * @param[in] node (subtree) to apply the operation on
+ */
 static void arc_bstree_compress(struct arc_bstree_node *node, size_t count)
 {
     size_t i;
@@ -354,6 +355,29 @@ static void arc_bstree_compress(struct arc_bstree_node *node, size_t count)
 
         scanner->left = child;
         child->parent = scanner;
+    }
+}
+
+/******************************************************************************/
+/**
+ * @brief Convert the vine into a balanced tree
+ *
+ * @see https://en.wikipedia.org/wiki/Day%E2%80%93Stout%E2%80%93Warren_algorithm
+ *
+ * @param[in] node (subtree) to apply the operation on
+ */
+static void arc_bstree_vine_to_tree(struct arc_bstree_node *node, size_t size)
+{
+    size_t leaves = size + 1 - ((size_t)pow(2, floor(log2((double)size + 1))));
+
+    arc_bstree_compress(node, leaves);
+
+    size = size - leaves;
+
+    while (size > 1)
+    {
+        arc_bstree_compress(node, (size_t)floor((double)size / 2.0));
+        size = (size_t)floor((double)size / 2.0);
     }
 }
 
@@ -387,30 +411,6 @@ void arc_bstree_remove(struct arc_bstree *bstree, void * data)
     }
 
     arc_bstree_remove_node(bstree, node);
-}
-
-/******************************************************************************/
-
-static struct arc_bstree_node *arc_bstree_min(struct arc_bstree_node *node)
-{
-    while (node->left != NULL)
-    {
-        node = node->left;
-    }
-
-    return node;
-}
-
-/******************************************************************************/
-
-static struct arc_bstree_node *arc_bstree_max(struct arc_bstree_node *node)
-{
-    while (node->right != NULL)
-    {
-        node = node->right;
-    }
-
-    return node;
 }
 
 /******************************************************************************/
