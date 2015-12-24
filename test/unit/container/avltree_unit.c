@@ -34,12 +34,20 @@ ARC_UNIT_TEST(random)
     arc_avltree_t avltree = arc_avltree_create(sizeof(int), arc_cmp_int);
     gettimeofday(&tv, NULL);
     srand((unsigned)tv.tv_usec);
-    for (i = 0; i < 50; i++)
+    for (i = 0; i < 200; i++)
     {
-        int value = rand() % 50;
+        int value = rand() % 20000;
         arc_avltree_insert(avltree, (void *)&value);
     }
+
+    while(!arc_avltree_empty(avltree))
+    {
+        int value = rand() % 20000;
+        arc_avltree_remove(avltree, (void *)&value);
+    }
+
 }
+
 ARC_UNIT_TEST(creation)
 {
     arc_avltree_t avltree = arc_avltree_create(sizeof(int), arc_cmp_int);

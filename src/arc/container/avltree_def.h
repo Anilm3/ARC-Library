@@ -76,8 +76,8 @@ static void arc_avltree_rotate_left_right(struct arc_avltree_node *node,
 /**
  *
  */
-static void arc_avltree_rotate(struct arc_avltree *avltree,
-                               struct arc_avltree_node *node);
+static void arc_avltree_rotate(struct arc_avltree_node *node,
+                               struct arc_avltree_node **node_ref);
 
 /**
  * @brief Finds and returns a node in the avltree

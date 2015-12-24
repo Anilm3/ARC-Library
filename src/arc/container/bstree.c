@@ -218,16 +218,12 @@ static void arc_bstree_remove_node(struct arc_bstree *bstree,
     {
         node_ref = &(bstree->root);
     }
-    else if (node == node->parent->left)
-    {
-        node_ref = &(node->parent->left);
-    }
     else
     {
-        node_ref = &(node->parent->right);
+        node_ref = (node == node->parent->left ? &(node->parent->left) :
+                                                 &(node->parent->right));
     }
 
-    /* Leaf node */
     if (node->left == NULL || node->right == NULL)
     {
         if (node->right != NULL)
@@ -248,33 +244,38 @@ static void arc_bstree_remove_node(struct arc_bstree *bstree,
     else
     {
         struct arc_bstree_node * successor = arc_bstree_min(node->right);
-
-        if (successor->parent->left == successor)
+        if (successor->parent == node)
         {
-            successor->parent->left = successor->right;
+            successor->parent = node->parent;
+            successor->left = node->left;
+
+            if (successor->left != NULL)
+            {
+                successor->left->parent = successor;
+            }
         }
         else
         {
-            successor->parent->right = successor->right;
-        }
+            successor->parent->left = successor->right;
 
-        if (successor->right != NULL)
-        {
-            successor->right->parent = successor->parent;
-        }
+            if (successor->right != NULL)
+            {
+                successor->right->parent = successor->parent;
+            }
 
-        successor->parent = node->parent;
-        successor->right = node->right;
-        successor->left = node->left;
+            successor->parent = node->parent;
+            successor->right = node->right;
+            successor->left = node->left;
 
-        if (successor->right != NULL)
-        {
-            successor->right->parent = successor;
-        }
+            if (successor->right != NULL)
+            {
+                successor->right->parent = successor;
+            }
 
-        if (successor->left != NULL)
-        {
-            successor->left->parent = successor;
+            if (successor->left != NULL)
+            {
+                successor->left->parent = successor;
+            }
         }
 
         *node_ref = successor;
