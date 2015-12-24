@@ -6,8 +6,8 @@
 * There is NO WARRANTY, to the extent permitted by law.                        *
 *                                                                              *
 *******************************************************************************/
-#ifndef ARC_avltree_DEF_H_
-#define ARC_avltree_DEF_H_
+#ifndef ARC_AVLTREE_DEF_H_
+#define ARC_AVLTREE_DEF_H_
 
 #include <stdlib.h>
 
