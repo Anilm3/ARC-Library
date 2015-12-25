@@ -62,6 +62,9 @@ extern "C"{
 #ifndef NDEBUG
 #define ARC_DEBUG(fmt) printf(fmt);fflush(stdout);
 #define ARC_DEBUG1(fmt,param1) printf(fmt,param1);fflush(stdout);
+#else
+#define ARC_DEBUG(fmt)
+#define ARC_DEBUG1(fmt,param1)
 #endif
 
 #ifdef __cplusplus
