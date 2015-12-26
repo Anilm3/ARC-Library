@@ -10,14 +10,7 @@
 #define ARC_AVLTREE_DEF_H_
 
 #include <stdlib.h>
-
-/* Sentinel node definition */
-struct arc_avltree_snode
-{
-    struct arc_avltree_node * parent;
-    struct arc_avltree_node * left;
-    struct arc_avltree_node * right;
-};
+#include <arc/container/tree_def.h>
 
 /* Standard node definition */
 struct arc_avltree_node
@@ -30,15 +23,5 @@ struct arc_avltree_node
 };
 
 /* Container definition */
-struct arc_avltree
-{
-    struct arc_avltree_node *root;
-    struct arc_avltree_snode front;
-    struct arc_avltree_snode back;
-    size_t size;
-    size_t data_size;
-    size_t node_size;
-    arc_cmp_fn_t cmp_fn;
-};
-
+typedef struct arc_tree arc_avltree;
 #endif

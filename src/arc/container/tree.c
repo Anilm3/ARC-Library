@@ -17,8 +17,9 @@
 
 /******************************************************************************/
 
-struct arc_tree * arc_tree_create(size_t data_size, size_t node_size, 
-                                  arc_tree_node_data_fn_t node_data_fn,
+struct arc_tree * arc_tree_create(size_t data_size, 
+                                  size_t data_offset,
+                                  size_t node_size, 
                                   arc_tree_insert_fn_t insert_fn,
                                   arc_tree_remove_fn_t remove_fn,
                                   arc_cmp_fn_t cmp_fn)
@@ -35,9 +36,9 @@ struct arc_tree * arc_tree_create(size_t data_size, size_t node_size,
     tree->root = NULL;
     tree->size = 0;
     tree->data_size = data_size;
+    tree->data_offset = data_offset;
     tree->node_size = node_size;
     tree->cmp_fn = cmp_fn;
-    tree->node_data_fn = node_data_fn;
     tree->insert_fn = insert_fn;
     tree->remove_fn = remove_fn;
 
@@ -140,7 +141,8 @@ static struct arc_tree_snode * arc_tree_find_node(struct arc_tree *tree,
 
     while (node != NULL)
     {
-        void * node_data = (*tree->node_data_fn)(node);
+        void * node_data = (void *)((char *)node + tree->data_offset);
+/*(*tree->node_data_fn)(node);*/
         int cmp_result = (*tree->cmp_fn)(node_data, data);
         if (cmp_result == -1)
         {
@@ -365,7 +367,8 @@ void * arc_tree_data(struct arc_iterator * it)
     struct arc_tree * tree = it->container;
     struct arc_tree_snode * current = it->node_ptr;
 
-    return (*tree->node_data_fn)(current);
+    return (void *)((char *)current + tree->data_offset);
+/*(*tree->node_data_fn)(current);*/
 }
 
 /******************************************************************************/

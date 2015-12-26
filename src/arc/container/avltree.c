@@ -22,43 +22,38 @@ static void arc_avltree_remove_internal(struct arc_tree *tree,
 
 static int arc_avltree_insert_internal(struct arc_tree *tree, void * data);
 
-static void * arc_avltree_node_data(struct arc_tree_snode *snode)
-{
-    return (void *)(((struct arc_avltree_node *)snode)->data);
-}
-
 /******************************************************************************/
 
-struct arc_avltree * arc_avltree_create(size_t data_size, arc_cmp_fn_t cmp_fn)
+arc_avltree * arc_avltree_create(size_t data_size, arc_cmp_fn_t cmp_fn)
 {
-    size_t node_size = sizeof(struct arc_avltree_node) -
-                       ARC_OFFSETOF(struct arc_avltree_node, data);
-
+    size_t data_offset = ARC_OFFSETOF(struct arc_avltree_node, data);
+    size_t node_size = sizeof(struct arc_avltree_node) - data_offset;
     node_size = (node_size > data_size ? 0 : data_size - node_size) +
                 sizeof(struct arc_avltree_node);
 
-    return (struct arc_avltree *)arc_tree_create(data_size, node_size, 
-                                                &arc_avltree_node_data,
-                                                &arc_avltree_insert_internal,
-                                                &arc_avltree_remove_internal,
-                                                cmp_fn);
+    return (arc_avltree *)arc_tree_create(data_size,
+                                                 data_offset,
+                                                 node_size, 
+                                                 &arc_avltree_insert_internal,
+                                                 &arc_avltree_remove_internal,
+                                                 cmp_fn);
 }
 
 /******************************************************************************/
 
-void arc_avltree_destroy(struct arc_avltree *avltree)
+void arc_avltree_destroy(arc_avltree *avltree)
 {
     arc_tree_destroy((struct arc_tree *)avltree);
 }
 
 /******************************************************************************/
 
-static struct arc_avltree_node ** arc_avltree_node_ref(struct arc_avltree *avltree,
+static struct arc_avltree_node ** arc_avltree_node_ref(arc_avltree *avltree,
                                                        struct arc_avltree_node *node)
 {
     if (node->parent == NULL)
     {
-        return &(avltree->root);
+        return (struct arc_avltree_node **)&(avltree->root);
     }
     else
     {
@@ -263,10 +258,10 @@ static void arc_avltree_rotate(struct arc_avltree_node *node,
 
 static int arc_avltree_insert_internal(struct arc_tree *tree, void * data)
 {
-    struct arc_avltree *avltree = (struct arc_avltree *)tree;
+    arc_avltree *avltree = (arc_avltree *)tree;
     struct arc_avltree_node *parent = NULL;
-    struct arc_avltree_node *node = avltree->root;
-    struct arc_avltree_node **node_ref = &(avltree->root);
+    struct arc_avltree_node *node = (struct arc_avltree_node *)avltree->root;
+    struct arc_avltree_node **node_ref = (struct arc_avltree_node **)&(avltree->root);
 
     while (node != NULL)
     {
@@ -330,14 +325,14 @@ static int arc_avltree_insert_internal(struct arc_tree *tree, void * data)
 
 /******************************************************************************/
 
-int arc_avltree_insert(struct arc_avltree *avltree, void * data)
+int arc_avltree_insert(arc_avltree *avltree, void * data)
 {
     return arc_tree_insert((struct arc_tree *)avltree, data);
 }
 
 /******************************************************************************/
 
-int arc_avltree_find(struct arc_avltree *avltree, void * data)
+int arc_avltree_find(arc_avltree *avltree, void * data)
 {
     return arc_tree_find((struct arc_tree *)avltree, data);
 }
@@ -353,7 +348,7 @@ static void arc_avltree_remove_internal(struct arc_tree *tree,
                                         struct arc_tree_snode *snode)
 {
     int factor;
-    struct arc_avltree *avltree = (struct arc_avltree *)tree;
+    arc_avltree *avltree = (arc_avltree *)tree;
     struct arc_avltree_node *node = (struct arc_avltree_node *)snode;
     struct arc_avltree_node *parent, *child;
     struct arc_avltree_node **node_ref = arc_avltree_node_ref(avltree, node);
@@ -475,28 +470,28 @@ static void arc_avltree_remove_internal(struct arc_tree *tree,
 
 /******************************************************************************/
 
-void arc_avltree_remove(struct arc_avltree *avltree, void * data)
+void arc_avltree_remove(arc_avltree *avltree, void * data)
 {
     arc_tree_remove((struct arc_tree *)avltree, data);
 }
 
 /******************************************************************************/
 
-int arc_avltree_empty(struct arc_avltree * avltree)
+int arc_avltree_empty(arc_avltree * avltree)
 {
     return arc_tree_empty((struct arc_tree *)avltree);
 }
 
 /******************************************************************************/
 
-size_t arc_avltree_size(struct arc_avltree * avltree)
+size_t arc_avltree_size(arc_avltree * avltree)
 {
     return arc_tree_size((struct arc_tree *)avltree);
 }
 
 /******************************************************************************/
 
-void arc_avltree_clear(struct arc_avltree *avltree)
+void arc_avltree_clear(arc_avltree *avltree)
 {
     arc_tree_clear((struct arc_tree *)avltree);
 }

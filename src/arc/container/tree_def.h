@@ -38,16 +38,17 @@ struct arc_tree
     struct arc_tree_snode back;
     size_t size;
     size_t data_size;
+    size_t data_offset;
     size_t node_size;
     arc_cmp_fn_t cmp_fn;
-    arc_tree_node_data_fn_t node_data_fn;
     arc_tree_insert_fn_t insert_fn;
     arc_tree_remove_fn_t remove_fn;
 };
 
 
-struct arc_tree * arc_tree_create(size_t data_size, size_t node_size, 
-                                  arc_tree_node_data_fn_t node_data_fn,
+struct arc_tree * arc_tree_create(size_t data_size,
+                                  size_t data_offset,
+                                  size_t node_size, 
                                   arc_tree_insert_fn_t insert_fn,
                                   arc_tree_remove_fn_t remove_fn,
                                   arc_cmp_fn_t cmp_fn);

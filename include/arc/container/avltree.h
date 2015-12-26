@@ -43,7 +43,7 @@ extern "C"{
  * @brief Binary search tree definition
  *
  */
-typedef struct arc_avltree * arc_avltree_t;
+typedef struct arc_tree * arc_avltree_t;
 
 /**
  * @brief Creates a new avltree

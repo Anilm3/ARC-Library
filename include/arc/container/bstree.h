@@ -43,7 +43,7 @@ extern "C"{
  * @brief Binary search tree definition
  *
  */
-typedef struct arc_bstree * arc_bstree_t;
+typedef struct arc_tree * arc_bstree_t;
 
 /**
  * @brief Creates a new bstree

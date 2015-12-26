@@ -106,63 +106,6 @@ long arc_avltree_check(struct arc_avltree_node *node)
 
 /******************************************************************************/
 
-int arc_avltree_print_level(struct arc_avltree_node *node, int level)
-{
-    int result = 0;
-
-    if (level == 0)
-    {
-        if (node != NULL)
-        {
-            printf("%u(%d) ", *((unsigned *)node->data), node->balance_factor);
-            return 1;
-        }
-        else
-        {
-            printf("N ");
-            return 0;
-        }
-    }
-
-    if (node != NULL)
-    {
-        result += arc_avltree_print_level(node->left, level - 1);
-        result += arc_avltree_print_level(node->right, level - 1);
-    }
-    else
-    {
-        result += arc_avltree_print_level(NULL, level - 1);
-        result += arc_avltree_print_level(NULL, level - 1);
-    }
-
-    return result > 0;
-}
-
-/******************************************************************************/
-
-void arc_avltree_print(struct arc_avltree *tree)
-{
-    int level = 0;
-    printf("Printing tree\n- %d -\n", level);
-    while (arc_avltree_print_level(tree->root, level++)) printf("\n- %d -\n", level);
-    printf("\n");
-}
-
-/******************************************************************************/
-
-size_t arc_avltree_height(struct arc_avltree_node * node)
-{
-    if (node != NULL)
-    {
-        size_t height_left = arc_avltree_height(node->left);
-        size_t height_right = arc_avltree_height(node->right);
-        return 1 + (height_left > height_right ? height_left : height_right);
-    }
-
-    return 0;
-}
-
-
 ARC_UNIT_TEST(random)
 {
     int i;
