@@ -24,4 +24,11 @@ struct arc_avltree_node
 
 /* Container definition */
 typedef struct arc_tree arc_avltree;
+
+int arc_avltree_initialize(arc_avltree *tree, 
+                           size_t data_size,
+                           arc_cmp_fn_t cmp_fn);
+
+void arc_avltree_finalize(arc_avltree *tree);
+
 #endif

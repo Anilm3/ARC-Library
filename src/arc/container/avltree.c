@@ -17,10 +17,41 @@
 #include <arc/container/avltree_def.h>
 #include <arc/container/iterator_def.h>
 
+/******************************************************************************/
+
 static void arc_avltree_remove_internal(struct arc_tree *tree,
                                        struct arc_tree_snode *snode);
 
+/******************************************************************************/
+
 static int arc_avltree_insert_internal(struct arc_tree *tree, void * data);
+
+/******************************************************************************/
+
+int arc_avltree_initialize(arc_avltree *tree, 
+                           size_t data_size,
+                           arc_cmp_fn_t cmp_fn)
+{
+    size_t data_offset = ARC_OFFSETOF(struct arc_avltree_node, data);
+    size_t node_size = sizeof(struct arc_avltree_node) - data_offset;
+    node_size = (node_size > data_size ? 0 : data_size - node_size) +
+                sizeof(struct arc_avltree_node);
+
+    return arc_tree_initialize(tree,
+                               data_size,
+                               data_offset,
+                               node_size, 
+                               &arc_avltree_insert_internal,
+                               &arc_avltree_remove_internal,
+                               cmp_fn);
+}
+
+/******************************************************************************/
+
+void arc_avltree_finalize(arc_avltree *tree)
+{
+    arc_tree_finalize(tree);
+}
 
 /******************************************************************************/
 

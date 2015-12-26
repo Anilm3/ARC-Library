@@ -16,21 +16,14 @@
 #include <arc/container/tree_def.h>
 
 /******************************************************************************/
-
-struct arc_tree * arc_tree_create(size_t data_size, 
-                                  size_t data_offset,
-                                  size_t node_size, 
-                                  arc_tree_insert_fn_t insert_fn,
-                                  arc_tree_remove_fn_t remove_fn,
-                                  arc_cmp_fn_t cmp_fn)
+int arc_tree_initialize(struct arc_tree *tree,
+                        size_t data_size,
+                        size_t data_offset,
+                        size_t node_size, 
+                        arc_tree_insert_fn_t insert_fn,
+                        arc_tree_remove_fn_t remove_fn,
+                        arc_cmp_fn_t cmp_fn)
 {
-    struct arc_tree * tree = malloc(sizeof(struct arc_tree));
-
-    if (tree == NULL)
-    {
-        return NULL;
-    }
-
     /* The aligned size is the current size of the data block including the
        space occupied by the alignment */
     tree->root = NULL;
@@ -50,7 +43,7 @@ struct arc_tree * arc_tree_create(size_t data_size,
     tree->back.left = NULL;
     tree->back.right = NULL;
 
-    return tree;
+    return ARC_SUCCESS;
 }
 
 /******************************************************************************/
@@ -76,13 +69,42 @@ static void arc_tree_free_node(struct arc_tree_snode *node)
 
 /******************************************************************************/
 
-void arc_tree_destroy(struct arc_tree *tree)
+void arc_tree_finalize(struct arc_tree *tree)
 {
     if (tree->root != NULL)
     {
         arc_tree_free_node(tree->root);
     }
+}
 
+/******************************************************************************/
+
+struct arc_tree * arc_tree_create(size_t data_size, 
+                                  size_t data_offset,
+                                  size_t node_size, 
+                                  arc_tree_insert_fn_t insert_fn,
+                                  arc_tree_remove_fn_t remove_fn,
+                                  arc_cmp_fn_t cmp_fn)
+{
+    struct arc_tree * tree = malloc(sizeof(struct arc_tree));
+
+    if (tree == NULL)
+    {
+        return NULL;
+    }
+
+    arc_tree_initialize(tree,
+                        data_size, data_offset, node_size,
+                        insert_fn, remove_fn, cmp_fn);
+
+    return tree;
+}
+
+/******************************************************************************/
+
+void arc_tree_destroy(struct arc_tree *tree)
+{
+    arc_tree_finalize(tree);
     free(tree);
 }
 

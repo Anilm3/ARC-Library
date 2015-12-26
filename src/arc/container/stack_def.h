@@ -31,4 +31,7 @@ struct arc_stack
     size_t node_size;
 };
 
+int arc_stack_initialize(struct arc_stack *stack, size_t data_size);
+void arc_stack_finalize(struct arc_stack *stack);
+
 #endif

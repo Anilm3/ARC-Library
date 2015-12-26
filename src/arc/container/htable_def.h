@@ -20,7 +20,7 @@
 
 #include <stdlib.h>
 #include <arc/type/function.h>
-#include <arc/container/slist.h>
+#include <arc/container/htable.h>
 #include <arc/container/slist_def.h>
 
 struct arc_htable
@@ -39,7 +39,12 @@ struct arc_htable_node
     void *data;
 };
 
-double arc_htable_variance(struct arc_htable * htable);
-size_t arc_htable_max(struct arc_htable * htable);
+int arc_htable_initialize(struct arc_htable *htable,
+                          size_t num_buckets,
+                          size_t key_size,
+                          size_t data_size,
+                          arc_hash_fn_t hash_fn);
+
+void arc_htable_finalize(struct arc_htable *htable);
 
 #endif

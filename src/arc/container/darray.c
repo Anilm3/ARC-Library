@@ -18,6 +18,31 @@
 
 /******************************************************************************/
 
+int arc_darray_initialize(struct arc_darray *darray, size_t data_size)
+{
+    darray->size = 0;
+    darray->data_size = data_size;
+    darray->allocated_size = INITIAL_BLOCK_SIZE;
+
+    darray->data = malloc(INITIAL_BLOCK_SIZE*darray->data_size);
+
+    if (darray->data == NULL)
+    {
+        return ARC_OUT_OF_MEMORY;
+    }
+
+    return ARC_SUCCESS;
+}
+
+/******************************************************************************/
+
+void arc_darray_finalize(struct arc_darray *darray)
+{
+    free(darray->data);
+}
+
+/******************************************************************************/
+
 struct arc_darray * arc_darray_create(size_t data_size)
 {
     struct arc_darray * darray = malloc(sizeof(struct arc_darray));
@@ -27,13 +52,7 @@ struct arc_darray * arc_darray_create(size_t data_size)
         return NULL;
     }
 
-    darray->size = 0;
-    darray->data_size = data_size;
-    darray->allocated_size = INITIAL_BLOCK_SIZE;
-
-    darray->data = malloc(INITIAL_BLOCK_SIZE*darray->data_size);
-
-    if (darray->data == NULL)
+    if (arc_darray_initialize(darray, data_size) != ARC_SUCCESS)
     {
         free(darray);
         return NULL;
@@ -46,7 +65,7 @@ struct arc_darray * arc_darray_create(size_t data_size)
 
 void arc_darray_destroy(struct arc_darray * darray)
 {
-    free(darray->data);
+    arc_darray_finalize(darray);
     free(darray);
 }
 

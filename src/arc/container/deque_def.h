@@ -31,4 +31,7 @@ struct arc_deque
     void ** data; /**< Pointer array, stores a pointer to each block */
 };
 
+int arc_deque_initialize(struct arc_deque *deque, size_t data_size);
+void arc_deque_finalize(struct arc_deque *deque);
+
 #endif

@@ -17,10 +17,41 @@
 #include <arc/container/bstree_def.h>
 #include <arc/container/iterator_def.h>
 
+/******************************************************************************/
+
 static void arc_bstree_remove_internal(struct arc_tree *tree,
                                        struct arc_tree_snode *snode);
 
+/******************************************************************************/
+
 static int arc_bstree_insert_internal(struct arc_tree *tree, void * data);
+
+/******************************************************************************/
+
+int arc_bstree_initialize(arc_bstree *tree,
+                          size_t data_size,
+                          arc_cmp_fn_t cmp_fn)
+{
+    size_t data_offset = ARC_OFFSETOF(struct arc_bstree_node, data);
+    size_t node_size = sizeof(struct arc_bstree_node) - data_offset;
+    node_size = (node_size > data_size ? 0 : data_size - node_size) +
+                sizeof(struct arc_bstree_node);
+
+    return arc_tree_initialize(tree,
+                               data_size,
+                               data_offset,
+                               node_size, 
+                               &arc_bstree_insert_internal,
+                               &arc_bstree_remove_internal,
+                               cmp_fn);
+}
+
+/******************************************************************************/
+
+void arc_bstree_finalize(arc_bstree *tree)
+{
+    arc_tree_finalize(tree);
+}
 
 /******************************************************************************/
 
@@ -32,11 +63,11 @@ arc_bstree * arc_bstree_create(size_t data_size, arc_cmp_fn_t cmp_fn)
                 sizeof(struct arc_bstree_node);
 
     return (arc_bstree *)arc_tree_create(data_size,
-                                                data_offset,
-                                                node_size, 
-                                                &arc_bstree_insert_internal,
-                                                &arc_bstree_remove_internal,
-                                                cmp_fn);
+                                         data_offset,
+                                         node_size, 
+                                         &arc_bstree_insert_internal,
+                                         &arc_bstree_remove_internal,
+                                         cmp_fn);
 }
 
 /******************************************************************************/

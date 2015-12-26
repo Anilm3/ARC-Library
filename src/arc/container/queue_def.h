@@ -32,4 +32,7 @@ struct arc_queue
     size_t node_size;
 };
 
+int arc_queue_initialize(struct arc_queue *queue, size_t data_size);
+void arc_queue_finalize(struct arc_queue *queue);
+
 #endif

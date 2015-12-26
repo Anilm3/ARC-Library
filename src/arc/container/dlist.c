@@ -16,17 +16,9 @@
 
 /******************************************************************************/
 
-struct arc_dlist * arc_dlist_create(size_t data_size)
+int arc_dlist_initialize(struct arc_dlist *list, size_t data_size)
 {
     size_t aligned_size;
-
-    struct arc_dlist * list = malloc(sizeof(struct arc_dlist));
-
-    if (list == NULL)
-    {
-        return NULL;
-    }
-
     /* The aligned size is the current size of the data block including the 
        space occupied by the alignment */
     aligned_size = sizeof(struct arc_dlist_node) - 
@@ -51,6 +43,29 @@ struct arc_dlist * arc_dlist_create(size_t data_size)
     list->back.next = NULL;
     list->back.prev = (struct arc_dlist_node *) &(list->front);
 
+    return ARC_SUCCESS;
+}
+
+/******************************************************************************/
+
+void arc_dlist_finalize(struct arc_dlist *list)
+{
+    arc_dlist_clear(list);
+}
+
+/******************************************************************************/
+
+struct arc_dlist * arc_dlist_create(size_t data_size)
+{
+    struct arc_dlist * list = malloc(sizeof(struct arc_dlist));
+
+    if (list == NULL)
+    {
+        return NULL;
+    }
+
+    arc_dlist_initialize(list, data_size);
+
     return list;
 }
 
@@ -58,8 +73,7 @@ struct arc_dlist * arc_dlist_create(size_t data_size)
 
 void arc_dlist_destroy(struct arc_dlist * list)
 {
-    arc_dlist_clear(list);
-
+    arc_dlist_finalize(list);
     free(list);
 }
 

@@ -63,15 +63,21 @@ double arc_htable_variance(struct arc_htable * htable)
 
 /******************************************************************************/
 
-struct arc_htable * arc_htable_create(size_t num_buckets,
-                                      size_t key_size,
-                                      size_t data_size,
-                                      arc_hash_fn_t hash_fn)
+int arc_htable_initialize(struct arc_htable *htable,
+                          size_t num_buckets,
+                          size_t key_size,
+                          size_t data_size,
+                          arc_hash_fn_t hash_fn)
 {
     size_t i;
-    struct arc_htable * htable = malloc(sizeof(struct arc_htable));
 
     htable->buckets = malloc(sizeof(struct arc_slist) * num_buckets);
+
+    if (htable->buckets == NULL)
+    {
+        return ARC_OUT_OF_MEMORY;
+    }
+
     htable->num_buckets = num_buckets;
     htable->key_size = key_size;
     htable->data_size = data_size;
@@ -80,8 +86,54 @@ struct arc_htable * arc_htable_create(size_t num_buckets,
 
     for (i = 0; i < num_buckets; i++)
     {
-        arc_slist_initialize(&htable->buckets[i], 
-                             sizeof(struct arc_htable_node));
+        int retval = arc_slist_initialize(&htable->buckets[i], 
+                                          sizeof(struct arc_htable_node));
+
+        if (retval != ARC_SUCCESS)
+        {
+            size_t j;
+
+            for (j = 0; j < i; j++)
+            {
+                arc_slist_finalize(&htable->buckets[i]);
+            }
+
+            free(htable->buckets);
+
+            return retval;
+        }
+    }
+
+    return ARC_SUCCESS;
+}
+
+/******************************************************************************/
+
+void arc_htable_finalize(struct arc_htable *htable)
+{
+    arc_htable_clear(htable);
+    free(htable->buckets);
+}
+
+/******************************************************************************/
+
+struct arc_htable * arc_htable_create(size_t num_buckets,
+                                      size_t key_size,
+                                      size_t data_size,
+                                      arc_hash_fn_t hash_fn)
+{
+    struct arc_htable * htable = malloc(sizeof(struct arc_htable));
+
+    if (htable == NULL)
+    {
+        return htable;
+    }
+
+    if (arc_htable_initialize(htable, num_buckets, 
+                              key_size, data_size, hash_fn) != ARC_SUCCESS)
+    {
+        free(htable);
+        return NULL;
     }
 
     return htable;
@@ -91,8 +143,7 @@ struct arc_htable * arc_htable_create(size_t num_buckets,
 
 void arc_htable_destroy(struct arc_htable * htable)
 {
-    arc_htable_clear(htable);
-    free(htable->buckets);
+    arc_htable_finalize(htable);
     free(htable);
 }
 

@@ -14,16 +14,9 @@
 
 /******************************************************************************/
 
-struct arc_queue * arc_queue_create(size_t data_size)
+int arc_queue_initialize(struct arc_queue *queue, size_t data_size)
 {
     size_t aligned_size;
-
-    struct arc_queue * queue = malloc(sizeof(struct arc_queue));
-
-    if (queue == NULL)
-    {
-        return NULL;
-    }
 
     /* The aligned size is the current size of the data block including the 
        space occupied by the alignment */
@@ -40,15 +33,38 @@ struct arc_queue * arc_queue_create(size_t data_size)
     queue->data_size = data_size;
     queue->node_size = aligned_size + sizeof(struct arc_queue_node);
 
+    return ARC_SUCCESS;
+}
+
+/******************************************************************************/
+
+void arc_queue_finalize(struct arc_queue *queue)
+{
+    arc_queue_clear(queue);
+}
+
+/******************************************************************************/
+
+struct arc_queue * arc_queue_create(size_t data_size)
+{
+
+    struct arc_queue * queue = malloc(sizeof(struct arc_queue));
+
+    if (queue == NULL)
+    {
+        return NULL;
+    }
+
+    arc_queue_initialize(queue, data_size);
+
     return queue;
 }
 
 /******************************************************************************/
 
-void arc_queue_destroy(struct arc_queue * queue)
+void arc_queue_destroy(struct arc_queue *queue)
 {
-    arc_queue_clear(queue);
-    
+    arc_queue_finalize(queue);
     free(queue);
 }
 

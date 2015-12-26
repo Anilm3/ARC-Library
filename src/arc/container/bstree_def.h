@@ -23,4 +23,11 @@ struct arc_bstree_node
 
 typedef struct arc_tree arc_bstree;
 
+int arc_bstree_initialize(arc_bstree *tree,
+                          size_t data_size,
+                          arc_cmp_fn_t cmp_fn);
+
+
+void arc_bstree_finalize(arc_bstree *tree);
+
 #endif

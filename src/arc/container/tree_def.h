@@ -45,6 +45,16 @@ struct arc_tree
     arc_tree_remove_fn_t remove_fn;
 };
 
+int arc_tree_initialize(struct arc_tree *tree,
+                        size_t data_size,
+                        size_t data_offset,
+                        size_t node_size, 
+                        arc_tree_insert_fn_t insert_fn,
+                        arc_tree_remove_fn_t remove_fn,
+                        arc_cmp_fn_t cmp_fn);
+
+
+void arc_tree_finalize(struct arc_tree *tree);
 
 struct arc_tree * arc_tree_create(size_t data_size,
                                   size_t data_offset,

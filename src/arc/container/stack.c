@@ -14,16 +14,9 @@
 
 /******************************************************************************/
 
-struct arc_stack * arc_stack_create(size_t data_size)
+int arc_stack_initialize(struct arc_stack *stack, size_t data_size)
 {
     size_t aligned_size;
-
-    struct arc_stack * stack = malloc(sizeof(struct arc_stack));
-
-    if (stack == NULL)
-    {
-        return NULL;
-    }
 
     /* The aligned size is the current size of the data block including the 
        space occupied by the alignment */
@@ -39,6 +32,30 @@ struct arc_stack * arc_stack_create(size_t data_size)
     stack->data_size = data_size;
     stack->node_size = aligned_size + sizeof(struct arc_stack_node);
 
+    return ARC_SUCCESS;
+}
+
+/******************************************************************************/
+
+void arc_stack_finalize(struct arc_stack *stack)
+{
+    arc_stack_clear(stack);
+}
+
+/******************************************************************************/
+
+struct arc_stack * arc_stack_create(size_t data_size)
+{
+
+    struct arc_stack * stack = malloc(sizeof(struct arc_stack));
+
+    if (stack == NULL)
+    {
+        return NULL;
+    }
+
+    arc_stack_initialize(stack, data_size);
+
     return stack;
 }
 
@@ -46,8 +63,7 @@ struct arc_stack * arc_stack_create(size_t data_size)
 
 void arc_stack_destroy(struct arc_stack * stack)
 {
-    arc_stack_clear(stack);
-    
+    arc_stack_finalize(stack);
     free(stack);
 }
 

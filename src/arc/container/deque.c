@@ -18,15 +18,8 @@
 
 /******************************************************************************/
 
-struct arc_deque * arc_deque_create(size_t data_size)
+int arc_deque_initialize(struct arc_deque *deque, size_t data_size)
 {
-    struct arc_deque * deque = malloc(sizeof(struct arc_deque));
-
-    if (deque == NULL)
-    {
-        return NULL;
-    }
-
     /* Initialise the deque */
     deque->size = 0;
     deque->data_size = data_size;
@@ -42,18 +35,17 @@ struct arc_deque * arc_deque_create(size_t data_size)
 
     if (deque->data == NULL)
     {
-        free(deque);
-        return NULL;
+        return ARC_OUT_OF_MEMORY;
     }
 
     memset(deque->data, 0, INITIAL_NUM_BLOCKS*sizeof(void *));
 
-    return deque;
+    return ARC_SUCCESS;
 }
 
 /******************************************************************************/
 
-void arc_deque_destroy(struct arc_deque * deque)
+void arc_deque_finalize(struct arc_deque *deque)
 {
     unsigned i;
 
@@ -63,6 +55,33 @@ void arc_deque_destroy(struct arc_deque * deque)
     }
 
     free(deque->data);
+}
+
+/******************************************************************************/
+
+struct arc_deque * arc_deque_create(size_t data_size)
+{
+    struct arc_deque * deque = malloc(sizeof(struct arc_deque));
+
+    if (deque == NULL)
+    {
+        return NULL;
+    }
+
+    if (arc_deque_initialize(deque, data_size) != ARC_SUCCESS)
+    {
+        free(deque);
+        return NULL;
+    }
+
+    return deque;
+}
+
+/******************************************************************************/
+
+void arc_deque_destroy(struct arc_deque * deque)
+{
+    arc_deque_finalize(deque);
     free(deque);
 }
 

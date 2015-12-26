@@ -23,4 +23,7 @@ struct arc_darray
     void * data;
 };
 
+int arc_darray_initialize(struct arc_darray *darray, size_t data_size);
+void arc_darray_finalize(struct arc_darray *darray);
+
 #endif
