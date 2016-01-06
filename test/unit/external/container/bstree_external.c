@@ -14,6 +14,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <sys/time.h>
+
 /*
                                16
                08                              24
@@ -21,10 +23,12 @@
    02      06      10      14      18      22      26      30
  01  03  05  07  09  11  13  15  17  19  21  23  25  27  29  31
 */
-static unsigned tree_data[] = {16,  8, 24,  4, 12, 20, 28,  2,
-                                6, 10, 14, 18, 22, 26, 30,  1,
-                                3,  5,  7,  9, 11, 13, 15, 17,
-                               19, 21, 23, 25, 27, 29, 31};
+static const unsigned tree_data[] = {16,  8, 24,  4, 12, 20, 28,  2,
+                                      6, 10, 14, 18, 22, 26, 30,  1,
+                                      3,  5,  7,  9, 11, 13, 15, 17,
+                                     19, 21, 23, 25, 27, 29, 31};
+
+
 ARC_UNIT_TEST(creation)
 {
     arc_bstree_t bstree = arc_bstree_create(sizeof(int), arc_cmp_int);

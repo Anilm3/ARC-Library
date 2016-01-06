@@ -71,10 +71,7 @@ static void arc_tree_free_node(struct arc_tree_snode *node)
 
 void arc_tree_finalize(struct arc_tree *tree)
 {
-    if (tree->root != NULL)
-    {
-        arc_tree_free_node(tree->root);
-    }
+    arc_tree_clear(tree);
 }
 
 /******************************************************************************/
@@ -107,6 +104,39 @@ void arc_tree_destroy(struct arc_tree *tree)
     arc_tree_finalize(tree);
     free(tree);
 }
+
+/******************************************************************************/
+/**
+ * @brief Finds the successor of a node in its subtree
+ *
+ * @param[in] node Binary search tree to perform the operation on
+ */
+struct arc_tree_snode *arc_tree_successor(struct arc_tree_snode *node)
+{
+    if (node->left == NULL)
+    {
+        if (node->right == NULL)
+        {
+            return NULL;
+        }
+
+        return node->right;
+    }
+    else if (node->right == NULL)
+    {
+        return node->left;
+    }
+
+    node = node->right;
+
+    while (node->left != NULL)
+    {
+        node = node->left;
+    }
+
+    return node;
+}
+
 
 /******************************************************************************/
 /**
@@ -224,7 +254,10 @@ size_t arc_tree_size(struct arc_tree * tree)
 
 void arc_tree_clear(struct arc_tree *tree)
 {
-    arc_tree_free_node(tree->root);
+    while (tree->root != NULL)
+    {
+        (*tree->remove_fn)(tree, tree->root);
+    }
 
     tree->root = NULL;
     tree->size = 0;

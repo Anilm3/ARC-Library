@@ -66,6 +66,7 @@ struct arc_tree * arc_tree_create(size_t data_size,
 
 void arc_tree_destroy(struct arc_tree *tree);
 
+struct arc_tree_snode *arc_tree_successor(struct arc_tree_snode *node);
 /**
  * @brief Finds the minimum element in the subtree
  *

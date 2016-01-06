@@ -153,8 +153,9 @@ static void arc_bstree_remove_internal(struct arc_tree *tree,
 {
     arc_bstree *bstree = (arc_bstree *)tree;
     struct arc_bstree_node *node= (struct arc_bstree_node *)snode;
-    struct arc_bstree_node **node_ref;
+    struct arc_bstree_node *successor, *parent, **node_ref;
 
+    /*arc_bstree_print(bstree);*/
     if (node->parent == NULL)
     {
         node_ref = (struct arc_bstree_node **)&(bstree->root);
@@ -165,64 +166,46 @@ static void arc_bstree_remove_internal(struct arc_tree *tree,
                                                  &(node->parent->right));
     }
 
-    if (node->left == NULL || node->right == NULL)
-    {
-        if (node->right != NULL)
-        {
-            *node_ref = node->right;
-            node->right->parent = node->parent;
-        }
-        else if (node->left != NULL)
-        {
-            *node_ref = node->left;
-            node->left->parent = node->parent;
-        }
-        else
-        {
-            *node_ref = NULL;
-        }
-    }
-    else
-    {
-        struct arc_bstree_node * successor;
-        successor = (struct arc_bstree_node * )
-                    arc_tree_min((struct arc_tree_snode *)node->right);
+    successor = (struct arc_bstree_node *)arc_tree_successor((struct arc_tree_snode *)node);
+    *node_ref = successor;
 
-        if (successor->parent == node)
-        {
-            successor->parent = node->parent;
-            successor->left = node->left;
+    if (successor != NULL)
+    {
+        parent = successor->parent;
 
-            if (successor->left != NULL)
+        successor->parent = node->parent;
+
+        if (parent == node)
+        {
+            if(node->right == successor && node->left != NULL)
             {
+                successor->left = node->left;
                 successor->left->parent = successor;
             }
         }
         else
         {
-            successor->parent->left = successor->right;
-
-            if (successor->right != NULL)
+            if (parent != NULL)
             {
-                successor->right->parent = successor->parent;
+                parent->left = successor->right;
+
+                if (parent->left != NULL)
+                {
+                    parent->left->parent = parent;
+                }
             }
 
-            successor->parent = node->parent;
+            successor->left = node->left;
+            
+            if (successor->left != NULL)
+            {
+                successor->left->parent = successor;
+            }
+
+            /* We know for a fact that the right is not NULL */
             successor->right = node->right;
-            successor->left = node->left;
-
-            if (successor->right != NULL)
-            {
-                successor->right->parent = successor;
-            }
-
-            if (successor->left != NULL)
-            {
-                successor->left->parent = successor;
-            }
+            successor->right->parent = successor;
         }
-
-        *node_ref = successor;
     }
 
     free(node);
@@ -253,9 +236,17 @@ static void arc_bstree_tree_to_vine(struct arc_bstree_node *node)
         {
             struct arc_bstree_node *temp = rest->left;
             rest->left = temp->right;
+            if (rest->left != NULL)
+            {
+                rest->left->parent = rest;
+            }
+
             temp->right = rest;
+            temp->right->parent = temp;
+
             rest = temp;
             tail->right = temp;
+            tail->right->parent = tail;
         }
     }
 }

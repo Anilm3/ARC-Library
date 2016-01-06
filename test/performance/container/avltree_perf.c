@@ -11,15 +11,19 @@
 #include <arc/container/avltree.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+#include <time.h>
 
 arc_avltree_t tree;
-int *values;
+int *values, *random_values;
 int num_elems = 20000;
 
 ARC_PERF_FUNCTION(global_set_up)
 {
-    int i;
+    int i, *visited;
     const char * num_elems_str = arc_get_param("-n");
+
+    srand(time(0));
 
     if (num_elems_str != NULL)
     {
@@ -27,11 +31,22 @@ ARC_PERF_FUNCTION(global_set_up)
     }
 
     values = malloc(sizeof(int) * ((size_t)num_elems));
+    random_values = malloc(sizeof(int) * ((size_t)num_elems));
+    visited = malloc(sizeof(int) * ((size_t)num_elems));
+    memset(visited, 0, sizeof(int) * ((size_t)num_elems));
 
     for (i = 0; i < num_elems; i++)
     {
+        int rvalue = rand() % num_elems;
         values[i] = i;
+
+        while (visited[rvalue]) rvalue = rand() % num_elems;
+        random_values[i] = rvalue;
+        visited[rvalue] = 1;
+
     }
+
+    free(visited);
 }
 
 ARC_PERF_FUNCTION(global_tear_down)
@@ -66,11 +81,9 @@ ARC_PERF_TEST(random_insert)
 {
     int i;
 
-    srand(0);
-
     for (i = 0; i < num_elems; i++)
     {
-        arc_avltree_insert(tree, &values[rand() % num_elems]);
+        arc_avltree_insert(tree, &random_values[i]);
     }
 }
 
