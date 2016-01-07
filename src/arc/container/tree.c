@@ -47,25 +47,21 @@ int arc_tree_initialize(struct arc_tree *tree,
 }
 
 /******************************************************************************/
-/**
- * @brief Recursively frees a node of the tree
- *
- * @param[in] data node node to be freed
- */
-static void arc_tree_free_node(struct arc_tree_snode *node)
+
+struct arc_tree_snode ** arc_tree_node_ref(struct arc_tree *tree,
+                                           struct arc_tree_snode *node)
 {
-    if (node->left != NULL)
+    if (node->parent == NULL)
     {
-        arc_tree_free_node(node->left);
+        return (struct arc_tree_snode **)&(tree->root);
     }
-
-    if (node->right != NULL)
+    else
     {
-        arc_tree_free_node(node->right);
+        return (node->parent->left == node ? &(node->parent->left) :
+                                             &(node->parent->right));
     }
-
-    free(node);
 }
+
 
 /******************************************************************************/
 

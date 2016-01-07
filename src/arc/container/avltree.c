@@ -78,22 +78,6 @@ void arc_avltree_destroy(arc_avltree *avltree)
 }
 
 /******************************************************************************/
-
-static struct arc_avltree_node ** arc_avltree_node_ref(arc_avltree *avltree,
-                                                       struct arc_avltree_node *node)
-{
-    if (node->parent == NULL)
-    {
-        return (struct arc_avltree_node **)&(avltree->root);
-    }
-    else
-    {
-        return (node->parent->left == node ? &(node->parent->left) :
-                                             &(node->parent->right));
-    }
-}
-
-/******************************************************************************/
 /**
  *
  */
@@ -217,14 +201,12 @@ static void arc_avltree_rotate_left_right(struct arc_avltree_node *node,
     node->parent = grandchild;
 
     node->left = grandchild->right;
-
     if (node->left)
     {
         node->left->parent = node;
     }
 
     child->right = grandchild->left;
-
     if (child->right)
     {
         child->right->parent = child;
@@ -338,7 +320,10 @@ static int arc_avltree_insert_internal(struct arc_tree *tree, void * data)
         int factor = (parent->right == node ? 1 : -1);
         if (abs(parent->balance_factor + factor) == 2)
         {
-            arc_avltree_rotate(parent, arc_avltree_node_ref(avltree, parent));
+            node_ref = (struct arc_avltree_node **)
+                        arc_tree_node_ref(avltree,
+                                          (struct arc_tree_snode *)parent);
+            arc_avltree_rotate(parent, node_ref);
             break;
         }
         parent->balance_factor += factor;
@@ -381,94 +366,75 @@ static void arc_avltree_remove_internal(struct arc_tree *tree,
     int factor;
     arc_avltree *avltree = (arc_avltree *)tree;
     struct arc_avltree_node *node = (struct arc_avltree_node *)snode;
-    struct arc_avltree_node *parent, *child;
-    struct arc_avltree_node **node_ref = arc_avltree_node_ref(avltree, node);
+    struct arc_avltree_node *parent, *child, *successor, **node_ref;
 
-    if (node->left == NULL || node->right == NULL)
+    node_ref = (struct arc_avltree_node **)arc_tree_node_ref(avltree, snode);
+
+    successor = (struct arc_avltree_node *)
+                arc_tree_successor((struct arc_tree_snode *)node);
+
+    if (successor == NULL)
     {
         parent = node->parent;
-
         if (parent != NULL)
         {
-            factor = (node == parent->left ? 1 : -1);
-        }
-
-        if (node->right != NULL)
-        {
-            *node_ref = node->right;
-            node->right->parent = node->parent;
-            child = node->right;
-        }
-        else if (node->left != NULL)
-        {
-            *node_ref = node->left;
-            node->left->parent = node->parent;
-            child = node->left;
-        }
-        else
-        {
-            *node_ref = NULL;
-            child = NULL;
+            factor = (parent->left == node ? 1 : -1);
         }
     }
     else
     {
-        struct arc_avltree_node * successor;
-        successor = (struct arc_avltree_node * )
-                    arc_tree_min((struct arc_tree_snode *)node->right);
+        parent = successor->parent;
 
-        if (successor->parent == node)
+        successor->parent = node->parent;
+
+        if (parent == node)
         {
+            factor = (parent->left == successor ? 1 : -1);
+            successor->balance_factor = parent->balance_factor;
             parent = successor;
-            child = NULL;
-            factor = -1;
 
-            successor->parent = node->parent;
-            successor->left = node->left;
-            successor->balance_factor = node->balance_factor;
-
-            if (successor->left != NULL)
+            if(node->right == successor && node->left != NULL)
             {
+                successor->left = node->left;
                 successor->left->parent = successor;
             }
         }
         else
         {
-            successor->parent->left = successor->right;
-
-            if (successor->right != NULL)
+            if (parent != NULL)
             {
-                successor->right->parent = successor->parent;
+                parent->left = successor->right;
+
+                if (parent->left != NULL)
+                    {
+                    parent->left->parent = parent;
+                }
             }
 
-            parent = successor->parent;
-            child = successor->parent->left;
             factor = 1;
-
-            successor->parent = node->parent;
-            successor->right = node->right;
-            successor->left = node->left;
             successor->balance_factor = node->balance_factor;
-
-            if (successor->right != NULL)
-            {
-                successor->right->parent = successor;
-            }
-
+            successor->left = node->left;
+            
             if (successor->left != NULL)
             {
                 successor->left->parent = successor;
             }
-        }
 
-        *node_ref = successor;
+            /* We know for a fact that the right is not NULL */
+            successor->right = node->right;
+            successor->right->parent = successor;
+        }
     }
+
+    *node_ref = successor;
 
     while (parent != NULL)
     {
         if (abs(parent->balance_factor + factor) == 2)
         {
-            node_ref = arc_avltree_node_ref(avltree, parent);
+            node_ref = (struct arc_avltree_node **)
+                       arc_tree_node_ref(avltree,
+                                         (struct arc_tree_snode *)parent);
             arc_avltree_rotate(parent, node_ref);
             parent = *node_ref;
         }
@@ -492,7 +458,6 @@ static void arc_avltree_remove_internal(struct arc_tree *tree,
 
         factor = (parent->right == child ? -1 : 1);
     }
-
 
     free(node);
     avltree->size--;

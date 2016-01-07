@@ -155,19 +155,10 @@ static void arc_bstree_remove_internal(struct arc_tree *tree,
     struct arc_bstree_node *node= (struct arc_bstree_node *)snode;
     struct arc_bstree_node *successor, *parent, **node_ref;
 
-    /*arc_bstree_print(bstree);*/
-    if (node->parent == NULL)
-    {
-        node_ref = (struct arc_bstree_node **)&(bstree->root);
-    }
-    else
-    {
-        node_ref = (node == node->parent->left ? &(node->parent->left) :
-                                                 &(node->parent->right));
-    }
+    node_ref = (struct arc_bstree_node **)arc_tree_node_ref(tree, snode);
 
-    successor = (struct arc_bstree_node *)arc_tree_successor((struct arc_tree_snode *)node);
-    *node_ref = successor;
+    successor = (struct arc_bstree_node *)
+                arc_tree_successor((struct arc_tree_snode *)node);
 
     if (successor != NULL)
     {
@@ -208,6 +199,7 @@ static void arc_bstree_remove_internal(struct arc_tree *tree,
         }
     }
 
+    *node_ref = successor;
     free(node);
     bstree->size--;
 }
