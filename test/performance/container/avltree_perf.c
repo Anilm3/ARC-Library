@@ -23,8 +23,6 @@ ARC_PERF_FUNCTION(global_set_up)
     int i, *visited;
     const char * num_elems_str = arc_get_param("-n");
 
-    srand(time(0));
-
     if (num_elems_str != NULL)
     {
         num_elems = atoi(num_elems_str);

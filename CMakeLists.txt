@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 2.8)
 
-set (CMAKE_PROJECT_NAME "ARC")
+set (CMAKE_PROJECT_NAME "libarc")
 set (CMAKE_VERBOSE_MAKEFILE OFF)
 
 option(STATIC "Build static library" OFF)
@@ -18,7 +18,7 @@ set (EXECUTABLE_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/bin/")
 set (LIBRARY_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/lib/")
 
 SET(CPACK_PACKAGE_NAME "${CMAKE_PROJECT_NAME}")
-SET(CPACK_PACKAGE_FILE_NAME "libarc")
+SET(CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}")
 SET(CPACK_PACKAGE_VERSION_MAJOR "0")
 SET(CPACK_PACKAGE_VERSION_MINOR "1")
 SET(CPACK_PACKAGE_VERSION_PATCH "0")
@@ -152,7 +152,7 @@ if(DOXYGEN_FOUND)
 endif(DOXYGEN_FOUND)
 
 install(DIRECTORY ${INCLUDES_DIR}/arc 
-        DESTINATION /usr/local/include)
+        DESTINATION /usr/include)
 
 if (NOT SHARED AND NOT STATIC)
     message( FATAL_ERROR "No library being generated")
@@ -164,7 +164,7 @@ if (SHARED)
     set_target_properties(arc-shared PROPERTIES
                           OUTPUT_NAME arc CLEAN_DIRECT_OUTPUT 1)
     install(TARGETS arc-shared
-            LIBRARY DESTINATION /usr/local/lib)
+            LIBRARY DESTINATION /usr/lib)
 endif()
 
 if (STATIC)
@@ -173,8 +173,8 @@ if (STATIC)
                           OUTPUT_NAME arc CLEAN_DIRECT_OUTPUT 1)
     target_link_libraries(arc-static rt m)
     install(TARGETS arc-static
-            ARCHIVE DESTINATION /usr/local/lib
-            LIBRARY DESTINATION /usr/local/lib)
+            ARCHIVE DESTINATION /usr/lib
+            LIBRARY DESTINATION /usr/lib)
 endif()
 
 file(GLOB_RECURSE TESTS ${UNIT_TEST_DIR}/*.c)
