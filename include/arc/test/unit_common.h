@@ -69,7 +69,7 @@ extern "C"{
                       obtained_fmt, obtained_var, \
                       critical) \
 { \
-    type0 _0 = (type0)(var0);\
+    const type0 _0 = (const type0)(var0);\
     if (!function(_0)) \
     { \
         printf("\n%s:%d: Failure\n", __FILE__, __LINE__); \
@@ -99,8 +99,8 @@ extern "C"{
                       obtained_fmt, obtained_var, \
                       critical) \
 { \
-    type0 _0 = (type0)(var0);\
-    type1 _1 = (type1)(var1);\
+    const type0 _0 = (const type0)(var0);\
+    const type1 _1 = (const type1)(var1);\
     if (!function(_0, _1)) \
     { \
         printf("\n%s:%d: Failure\n", __FILE__, __LINE__); \
@@ -133,9 +133,9 @@ extern "C"{
                       obtained_fmt, obtained_var, \
                       critical) \
 { \
-    type0 _0 = (type0)(var0);\
-    type1 _1 = (type1)(var1);\
-    type2 _2 = (type2)(var2);\
+    const type0 _0 = (const type0)(var0);\
+    const type1 _1 = (const type1)(var1);\
+    const type2 _2 = (const type2)(var2);\
     if (!function(_0, _1, _2)) \
     { \
         printf("\n%s:%d: Failure\n", __FILE__, __LINE__); \
@@ -582,8 +582,8 @@ extern "C"{
  */
 #define ARC_UNIT_STRING_EQ(left, right, critical) \
     ARC_UNIT_GEN2(arc_unit_string_eq, \
-                  const char *, left, \
-                  const char *, right, \
+                  char *, left, \
+                  char *, right, \
                   #left " == %s", _1, \
                   #left " == %s", _0, \
                   critical)
@@ -595,8 +595,8 @@ extern "C"{
  */
 #define ARC_UNIT_STRING_NE(left, right, critical) \
     ARC_UNIT_GEN2(arc_unit_string_ne, \
-                  const char *, left, \
-                  const char *, right, \
+                  char *, left, \
+                  char *, right, \
                   #left " != %s", _1, \
                   #left " == %s", _0, \
                   critical)
@@ -608,7 +608,7 @@ extern "C"{
  */
 #define ARC_UNIT_STRING_CONTAINS(str, c, critical) \
     ARC_UNIT_GEN2(arc_unit_string_contains, \
-                  const char *, str, \
+                  char *, str, \
                   char, c, \
                   #str " contain %c", _1, \
                   #str " !contain %c", _1, \
@@ -621,7 +621,7 @@ extern "C"{
  */
 #define ARC_UNIT_STRING_NOT_CONTAIN(str, c, critical) \
     ARC_UNIT_GEN2(arc_unit_string_not_contain, \
-                  const char *, str, \
+                  char *, str, \
                   char, c, \
                   #str " !contain %c", _1, \
                   #str " contain %c", _1, \
@@ -634,7 +634,7 @@ extern "C"{
  */
 #define ARC_UNIT_STRING_STARTS(str, c, critical) \
     ARC_UNIT_GEN2(arc_unit_string_starts, \
-                  const char *, str, \
+                  char *, str, \
                   char, c, \
                   #str"[0] == %c", _1, \
                   #str"[0] == %c", (char)((str)[0]), \
@@ -647,59 +647,59 @@ extern "C"{
  */
 #define ARC_UNIT_STRING_ENDS(str, c, critical) \
     ARC_UNIT_GEN2(arc_unit_string_ends, \
-                  const char *, str, \
+                  char *, str, \
                   char, c, \
                   #str"[last] == %c", _1, \
                   #str"[last] == %c", (char)((str)[strlen(str) - 1]), \
                   critical)
 
 /* Operators */
-int arc_unit_true(int exp);
-int arc_unit_false(int exp);
+int arc_unit_true(const int exp);
+int arc_unit_false(const int exp);
 
-int arc_unit_pointer_null(void * pointer);
-int arc_unit_pointer_not_null(void * pointer);
-int arc_unit_pointer_eq(void * left, void * right);
+int arc_unit_pointer_null(const void * pointer);
+int arc_unit_pointer_not_null(const void * pointer);
+int arc_unit_pointer_eq(const void * left, const void * right);
 
-int arc_unit_int_eq(int left, int right);
-int arc_unit_ulong_eq(unsigned long left, unsigned long right);
-int arc_unit_float_eq(float left, float right, double delta);
-int arc_unit_double_eq(double left, double right, double delta);
+int arc_unit_int_eq(const int left, const int right);
+int arc_unit_ulong_eq(const unsigned long left, const unsigned long right);
+int arc_unit_float_eq(const float left, const float right, const double delta);
+int arc_unit_double_eq(const double left, const double right, const double delta);
 
-int arc_unit_int_ne(int left, int right);
-int arc_unit_ulong_ne(unsigned long left, unsigned long right);
-int arc_unit_float_ne(float left, float right, double delta);
-int arc_unit_double_ne(double left, double right, double delta);
+int arc_unit_int_ne(const int left, const int right);
+int arc_unit_ulong_ne(const unsigned long left, const unsigned long right);
+int arc_unit_float_ne(const float left, const float right, const double delta);
+int arc_unit_double_ne(const double left, const double right, const double delta);
 
-int arc_unit_int_lt(int left, int right);
-int arc_unit_ulong_lt(unsigned long left, unsigned long right);
-int arc_unit_float_lt(float left, float right, double delta);
-int arc_unit_double_lt(double left, double right, double delta);
+int arc_unit_int_lt(const int left, const int right);
+int arc_unit_ulong_lt(const unsigned long left, const unsigned long right);
+int arc_unit_float_lt(const float left, const float right, const double delta);
+int arc_unit_double_lt(const double left, const double right, const double delta);
 
-int arc_unit_int_le(int left, int right);
-int arc_unit_ulong_le(unsigned long left, unsigned long right);
-int arc_unit_float_le(float left, float right, double delta);
-int arc_unit_double_le(double left, double right, double delta);
+int arc_unit_int_le(const int left, const int right);
+int arc_unit_ulong_le(const unsigned long left, const unsigned long right);
+int arc_unit_float_le(const float left, const float right, const double delta);
+int arc_unit_double_le(const double left, const double right, const double delta);
 
-int arc_unit_int_gt(int left, int right);
-int arc_unit_ulong_gt(unsigned long left, unsigned long right);
-int arc_unit_float_gt(float left, float right, double delta);
-int arc_unit_double_gt(double left, double right, double delta);
+int arc_unit_int_gt(const int left, const int right);
+int arc_unit_ulong_gt(const unsigned long left, const unsigned long right);
+int arc_unit_float_gt(const float left, const float right, const double delta);
+int arc_unit_double_gt(const double left, const double right, const double delta);
 
-int arc_unit_int_ge(int left, int right);
-int arc_unit_ulong_ge(unsigned long left, unsigned long right);
-int arc_unit_float_ge(float left, float right, double delta);
-int arc_unit_double_ge(double left, double right, double delta);
+int arc_unit_int_ge(const int left, const int right);
+int arc_unit_ulong_ge(const unsigned long left, const unsigned long right);
+int arc_unit_float_ge(const float left, const float right, const double delta);
+int arc_unit_double_ge(const double left, const double right, const double delta);
 
-int arc_unit_bit_set(unsigned long num, int bit);
-int arc_unit_bit_not_set(unsigned long num, int bit);
+int arc_unit_bit_set(const unsigned long num, const int bit);
+int arc_unit_bit_not_set(const unsigned long num, const int bit);
 
 int arc_unit_string_eq(const char * left, const char * right);
 int arc_unit_string_ne(const char * left, const char * right);
-int arc_unit_string_contains(const char * str, char c);
-int arc_unit_string_not_contain(const char * str, char c);
-int arc_unit_string_starts(const char * str, char c);
-int arc_unit_string_ends(const char * str, char c);
+int arc_unit_string_contains(const char * str, const char c);
+int arc_unit_string_not_contain(const char * str, const char c);
+int arc_unit_string_starts(const char * str, const char c);
+int arc_unit_string_ends(const char * str, const char c);
 
 void arc_unit_add_test(const char * name, void (*fn)(void));
 void arc_unit_add_function(void (*fn)(void));

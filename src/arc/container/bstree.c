@@ -24,7 +24,7 @@ static void arc_bstree_remove_internal(struct arc_tree *tree,
 
 /******************************************************************************/
 
-static int arc_bstree_insert_internal(struct arc_tree *tree, void * data);
+static int arc_bstree_insert_internal(struct arc_tree *tree, const void * data);
 
 /******************************************************************************/
 
@@ -79,7 +79,7 @@ void arc_bstree_destroy(arc_bstree *bstree)
 
 /******************************************************************************/
 
-static int arc_bstree_insert_internal(struct arc_tree *tree, void * data)
+static int arc_bstree_insert_internal(struct arc_tree *tree, const void * data)
 {
     arc_bstree *bstree = (arc_bstree *)tree;
     struct arc_bstree_node *parent = NULL;
@@ -129,14 +129,14 @@ static int arc_bstree_insert_internal(struct arc_tree *tree, void * data)
 
 /******************************************************************************/
 
-int arc_bstree_insert(arc_bstree *bstree, void * data)
+int arc_bstree_insert(arc_bstree *bstree, const  void * data)
 {
     return arc_tree_insert((struct arc_tree *)bstree, data);
 }
 
 /******************************************************************************/
 
-int arc_bstree_find(arc_bstree *bstree, void * data)
+int arc_bstree_find(arc_bstree *bstree, const void * data)
 {
     return arc_tree_find((struct arc_tree *)bstree, data);
 }
@@ -320,7 +320,7 @@ void arc_bstree_rebalance(arc_bstree_t bstree)
 
 /******************************************************************************/
 
-void arc_bstree_remove(arc_bstree *bstree, void * data)
+void arc_bstree_remove(arc_bstree *bstree, const void * data)
 {
     arc_tree_remove((struct arc_tree *)bstree, data);
 }
@@ -397,7 +397,7 @@ void * arc_bstree_data(struct arc_iterator * it)
 
 /******************************************************************************/
 
-int arc_bstree_position(struct arc_iterator * it, void * data)
+int arc_bstree_position(struct arc_iterator * it, const void * data)
 {
     return arc_tree_position(it, data);
 }

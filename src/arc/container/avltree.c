@@ -24,7 +24,7 @@ static void arc_avltree_remove_internal(struct arc_tree *tree,
 
 /******************************************************************************/
 
-static int arc_avltree_insert_internal(struct arc_tree *tree, void * data);
+static int arc_avltree_insert_internal(struct arc_tree *tree, const void * data);
 
 /******************************************************************************/
 
@@ -269,7 +269,7 @@ static void arc_avltree_rotate(struct arc_avltree_node *node,
 
 /******************************************************************************/
 
-static int arc_avltree_insert_internal(struct arc_tree *tree, void * data)
+static int arc_avltree_insert_internal(struct arc_tree *tree, const void * data)
 {
     arc_avltree *avltree = (arc_avltree *)tree;
     struct arc_avltree_node *parent = NULL;
@@ -341,14 +341,14 @@ static int arc_avltree_insert_internal(struct arc_tree *tree, void * data)
 
 /******************************************************************************/
 
-int arc_avltree_insert(arc_avltree *avltree, void * data)
+int arc_avltree_insert(arc_avltree *avltree, const void * data)
 {
     return arc_tree_insert((struct arc_tree *)avltree, data);
 }
 
 /******************************************************************************/
 
-int arc_avltree_find(arc_avltree *avltree, void * data)
+int arc_avltree_find(arc_avltree *avltree, const void * data)
 {
     return arc_tree_find((struct arc_tree *)avltree, data);
 }
@@ -466,7 +466,7 @@ static void arc_avltree_remove_internal(struct arc_tree *tree,
 
 /******************************************************************************/
 
-void arc_avltree_remove(arc_avltree *avltree, void * data)
+void arc_avltree_remove(arc_avltree *avltree, const void * data)
 {
     arc_tree_remove((struct arc_tree *)avltree, data);
 }
@@ -543,7 +543,7 @@ void * arc_avltree_data(struct arc_iterator * it)
 
 /******************************************************************************/
 
-int arc_avltree_position(struct arc_iterator * it, void * data)
+int arc_avltree_position(struct arc_iterator * it, const void * data)
 {
     return arc_tree_position(it, data);
 }

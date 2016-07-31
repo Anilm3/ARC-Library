@@ -168,7 +168,7 @@ struct arc_tree_snode *arc_tree_max(struct arc_tree_snode *node)
 
 /******************************************************************************/
 
-int arc_tree_insert(struct arc_tree *tree, void * data)
+int arc_tree_insert(struct arc_tree *tree, const void * data)
 {
      return (*tree->insert_fn)(tree, data);
 }
@@ -183,7 +183,7 @@ int arc_tree_insert(struct arc_tree *tree, void * data)
  * @retval 1 If the element was found
  */
 static struct arc_tree_snode * arc_tree_find_node(struct arc_tree *tree,
-                                                     void * data)
+                                                  const void * data)
 {
     struct arc_tree_snode *node = tree->root;
 
@@ -211,14 +211,14 @@ static struct arc_tree_snode * arc_tree_find_node(struct arc_tree *tree,
 
 /******************************************************************************/
 
-int arc_tree_find(struct arc_tree *tree, void * data)
+int arc_tree_find(struct arc_tree *tree, const void * data)
 {
     return (arc_tree_find_node(tree, data) != NULL);
 }
 
 /******************************************************************************/
 
-void arc_tree_remove(struct arc_tree *tree, void * data)
+void arc_tree_remove(struct arc_tree *tree, const void * data)
 {
     struct arc_tree_snode *node;
 
@@ -424,7 +424,7 @@ void * arc_tree_data(struct arc_iterator * it)
 
 /******************************************************************************/
 
-int arc_tree_position(struct arc_iterator * it, void * data)
+int arc_tree_position(struct arc_iterator * it, const void * data)
 {
     struct arc_tree * tree = it->container;
     struct arc_tree_snode * node = arc_tree_find_node(tree, data);

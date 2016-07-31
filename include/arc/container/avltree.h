@@ -69,7 +69,7 @@ void arc_avltree_destroy(arc_avltree_t avltree);
  * @retval ARC_DUPLICATE If the element is already in the avltree
  * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
  */
-int arc_avltree_insert(arc_avltree_t avltree, void * data);
+int arc_avltree_insert(arc_avltree_t avltree, const void * data);
 /**
  * @brief Finds an element in the avltree
  *
@@ -78,7 +78,7 @@ int arc_avltree_insert(arc_avltree_t avltree, void * data);
  * @retval 0 If the element was not found
  * @retval 1 If the element was found
  */
-int arc_avltree_find(arc_avltree_t avltree, void * data);
+int arc_avltree_find(arc_avltree_t avltree, const void * data);
 /**
  * @brief Returns whether the avltree is empty or not
  *
@@ -106,7 +106,7 @@ void arc_avltree_clear(arc_avltree_t avltree);
  * @param[in] avltree Binary search tree to perform the operation on
  * @param[in] data Data element to be removed
  */
-void arc_avltree_remove(arc_avltree_t avltree, void * data);
+void arc_avltree_remove(arc_avltree_t avltree, const void * data);
 /**
  * @brief Sets an iterator to the element before the beginning of the avltree
  *
@@ -154,7 +154,7 @@ void * arc_avltree_data(arc_iterator_t it);
  * @retval 0 If the avltree is not empty
  * @retval 1 If the avltree is empty
  */
-int arc_avltree_position(arc_iterator_t it, void * data);
+int arc_avltree_position(arc_iterator_t it, const void * data);
 /**
  * @brief Removes the iterator position from the avltree
  *

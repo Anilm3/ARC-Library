@@ -28,17 +28,17 @@ extern "C"{
  * @typedef arc_compare_fn_t
  * @brief Comparison function
  */
-typedef int (*arc_cmp_fn_t)(void *, void *);
+typedef int (*arc_cmp_fn_t)(const void *, const void *);
 
-int arc_cmp_char(void * a, void * b);
-int arc_cmp_schar(void * a, void * b);
-int arc_cmp_uchar(void * a, void * b);
-int arc_cmp_int(void * a, void * b);
-int arc_cmp_uint(void * a, void * b);
-int arc_cmp_long(void * a, void * b);
-int arc_cmp_ulong(void * a, void * b);
-int arc_cmp_float(void * a, void * b);
-int arc_cmp_double(void * a, void * b);
+int arc_cmp_char(const void * a, const void * b);
+int arc_cmp_schar(const void * a, const void * b);
+int arc_cmp_uchar(const void * a, const void * b);
+int arc_cmp_int(const void * a, const void * b);
+int arc_cmp_uint(const void * a, const void * b);
+int arc_cmp_long(const void * a, const void * b);
+int arc_cmp_ulong(const void * a, const void * b);
+int arc_cmp_float(const void * a, const void * b);
+int arc_cmp_double(const void * a, const void * b);
 
 #ifdef __cplusplus
 }

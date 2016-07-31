@@ -23,10 +23,10 @@
    02      06      10      14      18      22      26      30
  01  03  05  07  09  11  13  15  17  19  21  23  25  27  29  31
 */
-static unsigned tree_data[] = {16,  8, 24,  4, 12, 20, 28,  2,
-                                6, 10, 14, 18, 22, 26, 30,  1,
-                                3,  5,  7,  9, 11, 13, 15, 17,
-                               19, 21, 23, 25, 27, 29, 31};
+static const unsigned tree_data[] = {16,  8, 24,  4, 12, 20, 28,  2,
+                                      6, 10, 14, 18, 22, 26, 30,  1,
+                                      3,  5,  7,  9, 11, 13, 15, 17,
+                                     19, 21, 23, 25, 27, 29, 31};
 
 
 ARC_UNIT_TEST(creation)
@@ -81,7 +81,7 @@ ARC_UNIT_TEST(insertion)
 
     for (i = 0; i < sizeof(tree_data)/sizeof(unsigned); i++)
     {
-        ARC_ASSERT_INT_EQ(arc_bstree_insert(bstree, (void *)&tree_data[i]),
+        ARC_ASSERT_INT_EQ(arc_bstree_insert(bstree, &tree_data[i]),
                           ARC_SUCCESS);
     }
 
@@ -107,7 +107,7 @@ ARC_UNIT_TEST(find)
 
     for (i = 0; i < sizeof(tree_data)/sizeof(unsigned); i++)
     {
-        ARC_ASSERT_INT_EQ(arc_bstree_insert(bstree, (void *)&tree_data[i]),
+        ARC_ASSERT_INT_EQ(arc_bstree_insert(bstree, &tree_data[i]),
                           ARC_SUCCESS);
     }
 
@@ -162,7 +162,7 @@ ARC_UNIT_TEST(remove)
 
     for (i = 0; i < sizeof(tree_data)/sizeof(unsigned); i++)
     {
-        ARC_ASSERT_INT_EQ(arc_bstree_insert(bstree, (void *)&tree_data[i]),
+        ARC_ASSERT_INT_EQ(arc_bstree_insert(bstree, &tree_data[i]),
                           ARC_SUCCESS);
     }
 
@@ -226,7 +226,7 @@ ARC_UNIT_TEST(iterators_forward)
 
     for (i = 0; i < sizeof(tree_data)/sizeof(unsigned); i++)
     {
-        ARC_ASSERT_INT_EQ(arc_bstree_insert(bstree, (void *)&tree_data[i]),
+        ARC_ASSERT_INT_EQ(arc_bstree_insert(bstree, &tree_data[i]),
                           ARC_SUCCESS);
     }
 
@@ -257,7 +257,7 @@ ARC_UNIT_TEST(iterators_backward)
 
     for (i = 0; i < sizeof(tree_data)/sizeof(unsigned); i++)
     {
-        ARC_ASSERT_INT_EQ(arc_bstree_insert(bstree, (void *)&tree_data[i]),
+        ARC_ASSERT_INT_EQ(arc_bstree_insert(bstree, &tree_data[i]),
                           ARC_SUCCESS);
     }
 
@@ -288,7 +288,7 @@ ARC_UNIT_TEST(iterators_position)
 
     for (i = 0; i < sizeof(tree_data)/sizeof(unsigned); i++)
     {
-        ARC_ASSERT_INT_EQ(arc_bstree_insert(bstree, (void *)&tree_data[i]),
+        ARC_ASSERT_INT_EQ(arc_bstree_insert(bstree, &tree_data[i]),
                           ARC_SUCCESS);
     }
 
@@ -317,7 +317,7 @@ ARC_UNIT_TEST(iterators_remove)
 
     for (i = 0; i < sizeof(tree_data)/sizeof(unsigned); i++)
     {
-        ARC_ASSERT_INT_EQ(arc_bstree_insert(bstree, (void *)&tree_data[i]),
+        ARC_ASSERT_INT_EQ(arc_bstree_insert(bstree, &tree_data[i]),
                           ARC_SUCCESS);
     }
 
@@ -388,7 +388,7 @@ ARC_UNIT_TEST(destruction)
 
     for (i = 0; i < sizeof(tree_data)/sizeof(unsigned); i++)
     {
-        ARC_ASSERT_INT_EQ(arc_bstree_insert(bstree, (void *)&tree_data[i]),
+        ARC_ASSERT_INT_EQ(arc_bstree_insert(bstree, &tree_data[i]),
                           ARC_SUCCESS);
     }
 

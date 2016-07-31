@@ -206,7 +206,7 @@ void arc_unit_print_report(void)
         printf("\n");
     }
 
-    printf("Test result : %d/%d : %s\n", 
+    printf("Test result : %d/%d : %s\n",
            info.passed,
            info.passed + info.failed,
            (info.failed > 0 ? "Failure" :"OK"));
@@ -229,63 +229,63 @@ void arc_unit_set_test_failed(void)
 
 /******************************************************************************/
 
-int arc_unit_true(int expression)
+int arc_unit_true(const int expression)
 {
     return expression;
 }
 
 /******************************************************************************/
 
-int arc_unit_false(int expression)
+int arc_unit_false(const int expression)
 {
     return !expression;
 }
 
 /******************************************************************************/
 
-int arc_unit_pointer_null(void * pointer)
+int arc_unit_pointer_null(const void * pointer)
 {
     return (pointer == NULL);
 }
 
 /******************************************************************************/
 
-int arc_unit_pointer_not_null(void * pointer)
+int arc_unit_pointer_not_null(const void * pointer)
 {
     return (pointer != NULL);
 }
 
 /******************************************************************************/
 
-int arc_unit_pointer_eq(void * left, void * right)
+int arc_unit_pointer_eq(const void * left, const void * right)
 {
     return (left == right);
 }
 
 /******************************************************************************/
 
-int arc_unit_int_eq(int left, int right)
+int arc_unit_int_eq(const int left, const int right)
 {
     return (left == right);
 }
 
 /******************************************************************************/
 
-int arc_unit_ulong_eq(unsigned long left, unsigned long right)
+int arc_unit_ulong_eq(const unsigned long left, const unsigned long right)
 {
     return (left == right);
 }
 
 /******************************************************************************/
 
-int arc_unit_float_eq(float left, float right, double delta)
+int arc_unit_float_eq(const float left, const float right, const double delta)
 {
     return (fabsf(left - right) < delta);
 }
 
 /******************************************************************************/
 
-int arc_unit_double_eq(double left, double right, double delta)
+int arc_unit_double_eq(const double left, const double right, const double delta)
 {
     return (fabs(left - right) < delta);
 }
@@ -293,154 +293,154 @@ int arc_unit_double_eq(double left, double right, double delta)
 
 /******************************************************************************/
 
-int arc_unit_int_ne(int left, int right)
+int arc_unit_int_ne(const int left, const int right)
 {
     return (left != right);
 }
 
 /******************************************************************************/
 
-int arc_unit_ulong_ne(unsigned long left, unsigned long right)
+int arc_unit_ulong_ne(const unsigned long left, const unsigned long right)
 {
     return (left != right);
 }
 
 /******************************************************************************/
 
-int arc_unit_float_ne(float left, float right, double delta)
+int arc_unit_float_ne(const float left, const float right, const double delta)
 {
     return (fabsf(left - right) > delta);
 }
 
 /******************************************************************************/
 
-int arc_unit_double_ne(double left, double right, double delta)
+int arc_unit_double_ne(const double left, const double right, const double delta)
 {
     return (fabs(left - right) > delta);
 }
 
 /******************************************************************************/
 
-int arc_unit_int_lt(int left, int right)
+int arc_unit_int_lt(const int left, const int right)
 {
     return (left < right);
 }
 
 /******************************************************************************/
 
-int arc_unit_ulong_lt(unsigned long left, unsigned long right)
+int arc_unit_ulong_lt(const unsigned long left, const unsigned long right)
 {
     return (left < right);
 }
 
 /******************************************************************************/
 
-int arc_unit_float_lt(float left, float right, double delta)
+int arc_unit_float_lt(const float left, const float right, const double delta)
 {
     return(fabsf(left - right) > delta) && (left < right);
 }
 
 /******************************************************************************/
 
-int arc_unit_double_lt(double left, double right, double delta)
+int arc_unit_double_lt(const double left, const double right, const double delta)
 {
     return(fabs(left - right) > delta) && (left < right);
 }
 
 /******************************************************************************/
 
-int arc_unit_int_le(int left, int right)
+int arc_unit_int_le(const int left, const int right)
 {
     return (left <= right);
 }
 
 /******************************************************************************/
 
-int arc_unit_ulong_le(unsigned long left, unsigned long right)
+int arc_unit_ulong_le(const unsigned long left, const unsigned long right)
 {
     return (left <= right);
 }
 
 /******************************************************************************/
 
-int arc_unit_float_le(float left, float right, double delta)
+int arc_unit_float_le(const float left, const float right, const double delta)
 {
     return(fabsf(left - right) < delta) || (left < right);
 }
 
 /******************************************************************************/
 
-int arc_unit_double_le(double left, double right, double delta)
+int arc_unit_double_le(const double left, const double right, const double delta)
 {
     return(fabs(left - right) < delta) || (left < right);
 }
 
 /******************************************************************************/
 
-int arc_unit_int_gt(int left, int right)
+int arc_unit_int_gt(const int left, const int right)
 {
     return (left > right);
 }
 
 /******************************************************************************/
 
-int arc_unit_ulong_gt(unsigned long left, unsigned long right)
+int arc_unit_ulong_gt(const unsigned long left, const unsigned long right)
 {
     return (left > right);
 }
 
 /******************************************************************************/
 
-int arc_unit_float_gt(float left, float right, double delta)
+int arc_unit_float_gt(const float left, const float right, const double delta)
 {
     return(fabsf(left - right) > delta) && (left > right);
 }
 
 /******************************************************************************/
 
-int arc_unit_double_gt(double left, double right, double delta)
+int arc_unit_double_gt(const double left, const double right, const double delta)
 {
     return(fabs(left - right) > delta) && (left > right);
 }
 
 /******************************************************************************/
 
-int arc_unit_int_ge(int left, int right)
+int arc_unit_int_ge(const int left, const int right)
 {
     return (left >= right);
 }
 
 /******************************************************************************/
 
-int arc_unit_ulong_ge(unsigned long left, unsigned long right)
+int arc_unit_ulong_ge(const unsigned long left, const unsigned long right)
 {
     return (left >= right);
 }
 
 /******************************************************************************/
 
-int arc_unit_float_ge(float left, float right, double delta)
+int arc_unit_float_ge(const float left, const float right, const double delta)
 {
     return(fabsf(left - right) < delta) || (left >= right);
 }
 
 /******************************************************************************/
 
-int arc_unit_double_ge(double left, double right, double delta)
+int arc_unit_double_ge(const double left, const double right, const double delta)
 {
     return(fabs(left - right) < delta) || (left >= right);
 }
 
 /******************************************************************************/
 
-int arc_unit_bit_set(unsigned long num, int bit)
+int arc_unit_bit_set(const unsigned long num, const int bit)
 {
     return ((num >> bit) & 1);
 }
 
 /******************************************************************************/
 
-int arc_unit_bit_not_set(unsigned long num, int bit)
+int arc_unit_bit_not_set(const unsigned long num, const int bit)
 {
     return !((num >> bit) & 1);
 }
@@ -461,28 +461,28 @@ int arc_unit_string_ne(const char * left, const char * right)
 
 /******************************************************************************/
 
-int arc_unit_string_contains(const char * str, char c)
+int arc_unit_string_contains(const char * str, const char c)
 {
     return (strchr(str, c) != NULL);
 }
 
 /******************************************************************************/
 
-int arc_unit_string_not_contain(const char * str, char c)
+int arc_unit_string_not_contain(const char * str, const char c)
 {
     return (strchr(str, c) == NULL);
 }
 
 /******************************************************************************/
 
-int arc_unit_string_starts(const char * str, char c)
+int arc_unit_string_starts(const char * str, const char c)
 {
     return (str[0] == c);
 }
 
 /******************************************************************************/
 
-int arc_unit_string_ends(const char * str, char c)
+int arc_unit_string_ends(const char * str, const char c)
 {
     return (str[strlen(str) - 1] == c);
 }

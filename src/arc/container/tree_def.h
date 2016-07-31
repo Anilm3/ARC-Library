@@ -27,7 +27,7 @@ struct arc_tree;
  * @brief Function to get a value from a tree specific node
  */
 typedef void * (*arc_tree_node_data_fn_t)(struct arc_tree_snode *);
-typedef int (*arc_tree_insert_fn_t)(struct arc_tree *, void *);
+typedef int (*arc_tree_insert_fn_t)(struct arc_tree *, const void *);
 typedef void (*arc_tree_remove_fn_t)(struct arc_tree *, struct arc_tree_snode *);
 
 /* Container definition */
@@ -84,11 +84,11 @@ struct arc_tree_snode *arc_tree_min(struct arc_tree_snode *node);
  */
 struct arc_tree_snode *arc_tree_max(struct arc_tree_snode *node);
 
-int arc_tree_insert(struct arc_tree *tree, void * data);
+int arc_tree_insert(struct arc_tree *tree, const void * data);
 
-int arc_tree_find(struct arc_tree *tree, void * data);
+int arc_tree_find(struct arc_tree *tree, const void * data);
 
-void arc_tree_remove(struct arc_tree *tree, void * data);
+void arc_tree_remove(struct arc_tree *tree, const void * data);
 
 int arc_tree_empty(struct arc_tree * tree);
 
@@ -110,7 +110,7 @@ int arc_tree_next(struct arc_iterator * it);
 
 void * arc_tree_data(struct arc_iterator * it);
 
-int arc_tree_position(struct arc_iterator * it, void * data);
+int arc_tree_position(struct arc_iterator * it, const void * data);
 
 void arc_tree_erase(struct arc_iterator * it);
 

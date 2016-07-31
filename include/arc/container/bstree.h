@@ -69,7 +69,7 @@ void arc_bstree_destroy(arc_bstree_t bstree);
  * @retval ARC_DUPLICATE If the element is already in the bstree
  * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
  */
-int arc_bstree_insert(arc_bstree_t bstree, void * data);
+int arc_bstree_insert(arc_bstree_t bstree, const void * data);
 /**
  * @brief Finds an element in the bstree
  *
@@ -78,7 +78,7 @@ int arc_bstree_insert(arc_bstree_t bstree, void * data);
  * @retval 0 If the element was not found
  * @retval 1 If the element was found
  */
-int arc_bstree_find(arc_bstree_t bstree, void * data);
+int arc_bstree_find(arc_bstree_t bstree, const void * data);
 /**
  * @brief Returns whether the bstree is empty or not
  *
@@ -114,7 +114,7 @@ void arc_bstree_rebalance(arc_bstree_t bstree);
  * @param[in] bstree Binary search tree to perform the operation on
  * @param[in] data Data element to be removed
  */
-void arc_bstree_remove(arc_bstree_t bstree, void * data);
+void arc_bstree_remove(arc_bstree_t bstree, const void * data);
 /**
  * @brief Sets an iterator to the element before the beginning of the bstree
  *
@@ -162,7 +162,7 @@ void * arc_bstree_data(arc_iterator_t it);
  * @retval 0 If the bstree is not empty
  * @retval 1 If the bstree is empty
  */
-int arc_bstree_position(arc_iterator_t it, void * data);
+int arc_bstree_position(arc_iterator_t it, const void * data);
 /**
  * @brief Removes the iterator position from the bstree
  *

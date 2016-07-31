@@ -9,70 +9,74 @@
 
 /******************************************************************************/
 
-int arc_cmp_char(void * a, void * b)
+int arc_cmp_char(const void * a, const void * b)
 {
-    return *((char *)a) < *((char *)b) ? -1 : *((char *)a) > *((char *)b);
+    return *((const char *)a) < *((const char *)b) ? 
+                -1 : *((const char *)a) > *((const char *)b);
 }
 
 /******************************************************************************/
 
-int arc_cmp_schar(void * a, void * b)
+int arc_cmp_schar(const void * a, const void * b)
 {
-    return *((signed char *)a) < *((signed char *)b) ?
-                -1 : *((signed char *)a) > *((signed char *)b);
+    return *((const signed char *)a) < *((const signed char *)b) ?
+                -1 : *((const signed char *)a) > *((const signed char *)b);
 }
 
 /******************************************************************************/
 
-int arc_cmp_uchar(void * a, void * b)
+int arc_cmp_uchar(const void * a, const void * b)
 {
-    return *((unsigned char *)a) < *((unsigned char *)b) ?
-                -1 : *((unsigned char *)a) > *((unsigned char *)b);
+    return *((const unsigned char *)a) < *((const unsigned char *)b) ?
+                -1 : *((const unsigned char *)a) > *((const unsigned char *)b);
 }
 
 /******************************************************************************/
 
-int arc_cmp_int(void * a, void * b)
+int arc_cmp_int(const void * a, const void * b)
 {
-    return *((int *)a) < *((int *)b) ? -1 : *((int *)a) > *((int *)b);
+    return *((const int *)a) < *((const int *)b) ?
+                -1 : *((const int *)a) > *((const int *)b);
 }
 
 /******************************************************************************/
 
-int arc_cmp_uint(void * a, void * b)
+int arc_cmp_uint(const void * a, const void * b)
 {
-    return *((unsigned *)a) < *((unsigned *)b) ?
-                -1 : *((unsigned *)a) > *((unsigned *)b);
+    return *((const unsigned *)a) < *((const unsigned *)b) ?
+                -1 : *((const unsigned *)a) > *((const unsigned *)b);
 }
 
 /******************************************************************************/
 
-int arc_cmp_long(void * a, void * b)
+int arc_cmp_long(const void * a, const void * b)
 {
-    return *((long *)a) < *((long *)b) ? -1 : *((long *)a) > *((long *)b);
+    return *((const long *)a) < *((const long *)b) ?
+                -1 : *((const long *)a) > *((const long *)b);
 }
 
 /******************************************************************************/
 
-int arc_cmp_ulong(void * a, void * b)
+int arc_cmp_ulong(const void * a, const void * b)
 {
-    return *((unsigned long *)a) < *((unsigned long *)b) ?
-                -1 : *((unsigned long *)a) > *((unsigned long *)b);
+    return *((const unsigned long *)a) < *((const unsigned long *)b) ?
+                -1 : *((const unsigned long *)a) > *((const unsigned long *)b);
 }
 
 /******************************************************************************/
 
-int arc_cmp_float(void * a, void * b)
+int arc_cmp_float(const void * a, const void * b)
 {
-    return *((float *)a) < *((float *)b) ? -1 : *((float *)a) > *((float *)b);
+    return *((const float *)a) < *((const float *)b) ?
+                -1 : *((const float *)a) > *((const float *)b);
 }
 
 /******************************************************************************/
 
-int arc_cmp_double(void * a, void * b)
+int arc_cmp_double(const void * a, const void * b)
 {
-    return *((double *)a) < *((double *)b) ?
-                -1 : *((double *)a) > *((double *)b);
+    return *((const double *)a) < *((const double *)b) ?
+                -1 : *((const double *)a) > *((const double *)b);
 }
 
 /******************************************************************************/
