@@ -150,10 +150,17 @@ void arc_htable_destroy(struct arc_htable * htable)
 
 int arc_htable_insert(struct arc_htable *htable, void *data)
 {
+    int retval;
     arc_hkey_t hvalue;
     hvalue = htable->hash_fn(data, htable->data_size) % htable->num_buckets;
 
-    return arc_avltree_insert(&htable->buckets[hvalue], data);
+    retval = arc_avltree_insert(&htable->buckets[hvalue], data);
+
+    if (retval != ARC_SUCCESS) { return retval; }
+
+    htable->size++;
+
+    return ARC_SUCCESS;
 }
 
 /******************************************************************************/
@@ -203,6 +210,8 @@ void arc_htable_remove(struct arc_htable * htable, void *data)
     hvalue = htable->hash_fn(data, htable->data_size) % htable->num_buckets;
 
     arc_avltree_remove(&htable->buckets[hvalue], data);
+
+    htable->size--;
 }
 
 /******************************************************************************/
