@@ -21,13 +21,11 @@ struct arc_bstree_node
     char data[1];
 };
 
-typedef struct arc_tree arc_bstree;
-
-int arc_bstree_initialize(arc_bstree *tree,
+int arc_bstree_initialize(struct arc_tree *tree,
                           size_t data_size,
                           arc_cmp_fn_t cmp_fn);
 
 
-void arc_bstree_finalize(arc_bstree *tree);
+void arc_bstree_finalize(struct arc_tree *tree);
 
 #endif

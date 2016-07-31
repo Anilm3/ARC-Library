@@ -31,6 +31,7 @@
 
 #include <stdlib.h>
 #include <arc/container/iterator.h>
+#include <arc/type/function.h>
 
 #ifdef __cplusplus
 extern "C"{

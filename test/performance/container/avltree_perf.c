@@ -66,12 +66,12 @@ ARC_PERF_TEST(insert)
     }
 }
 
-ARC_PERF_TEST(find)
+ARC_PERF_TEST(retrieve)
 {
     int i;
     for (i = num_elems - 1; i >= 0; i--)
     {
-        arc_avltree_find(tree, &i);
+        arc_avltree_retrieve(tree, &i);
     }
 }
 
@@ -97,12 +97,12 @@ ARC_PERF_TEST_FIXTURE()
 
     ARC_PERF_ADD_FUNCTION(set_up)
     ARC_PERF_ADD_TEST(insert)
-    ARC_PERF_ADD_TEST(find)
+    ARC_PERF_ADD_TEST(retrieve)
     ARC_PERF_ADD_FUNCTION(tear_down)
 
     ARC_PERF_ADD_FUNCTION(set_up)
     ARC_PERF_ADD_TEST(random_insert)
-    ARC_PERF_ADD_TEST(find)
+    ARC_PERF_ADD_TEST(retrieve)
     ARC_PERF_ADD_FUNCTION(tear_down)
 
     ARC_PERF_ADD_FUNCTION(global_tear_down)

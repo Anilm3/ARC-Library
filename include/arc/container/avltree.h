@@ -78,7 +78,7 @@ int arc_avltree_insert(arc_avltree_t avltree, const void * data);
  * @retval 0 If the element was not found
  * @retval 1 If the element was found
  */
-int arc_avltree_find(arc_avltree_t avltree, const void * data);
+void *arc_avltree_retrieve(arc_avltree_t avltree, const void * data);
 /**
  * @brief Returns whether the avltree is empty or not
  *

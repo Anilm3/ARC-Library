@@ -28,7 +28,7 @@ static int arc_bstree_insert_internal(struct arc_tree *tree, const void * data);
 
 /******************************************************************************/
 
-int arc_bstree_initialize(arc_bstree *tree,
+int arc_bstree_initialize(struct arc_tree *tree,
                           size_t data_size,
                           arc_cmp_fn_t cmp_fn)
 {
@@ -48,21 +48,21 @@ int arc_bstree_initialize(arc_bstree *tree,
 
 /******************************************************************************/
 
-void arc_bstree_finalize(arc_bstree *tree)
+void arc_bstree_finalize(struct arc_tree *tree)
 {
     arc_tree_finalize(tree);
 }
 
 /******************************************************************************/
 
-arc_bstree * arc_bstree_create(size_t data_size, arc_cmp_fn_t cmp_fn)
+struct arc_tree * arc_bstree_create(size_t data_size, arc_cmp_fn_t cmp_fn)
 {
     size_t data_offset = ARC_OFFSETOF(struct arc_bstree_node, data);
     size_t node_size = sizeof(struct arc_bstree_node) - data_offset;
     node_size = (node_size > data_size ? 0 : data_size - node_size) +
                 sizeof(struct arc_bstree_node);
 
-    return (arc_bstree *)arc_tree_create(data_size,
+    return (struct arc_tree *)arc_tree_create(data_size,
                                          data_offset,
                                          node_size, 
                                          &arc_bstree_insert_internal,
@@ -72,7 +72,7 @@ arc_bstree * arc_bstree_create(size_t data_size, arc_cmp_fn_t cmp_fn)
 
 /******************************************************************************/
 
-void arc_bstree_destroy(arc_bstree *bstree)
+void arc_bstree_destroy(struct arc_tree *bstree)
 {
     arc_tree_destroy((struct arc_tree *)bstree);
 }
@@ -81,14 +81,20 @@ void arc_bstree_destroy(arc_bstree *bstree)
 
 static int arc_bstree_insert_internal(struct arc_tree *tree, const void * data)
 {
-    arc_bstree *bstree = (arc_bstree *)tree;
+    struct arc_tree *bstree = (struct arc_tree *)tree;
     struct arc_bstree_node *parent = NULL;
     struct arc_bstree_node *node = (struct arc_bstree_node *)bstree->root;
     struct arc_bstree_node **node_ref = (struct arc_bstree_node **)&(bstree->root);
 
     while (node != NULL)
     {
-        int cmp_result = (*bstree->cmp_fn)(node->data, data);
+        int cmp_result;
+       
+        if (bstree->cmp_fn == NULL) {
+            cmp_result = memcmp(node->data, data, tree->data_size);
+        } else {
+            cmp_result = (*bstree->cmp_fn)(node->data, data);
+        }
 
         if (cmp_result == -1)
         {
@@ -129,16 +135,16 @@ static int arc_bstree_insert_internal(struct arc_tree *tree, const void * data)
 
 /******************************************************************************/
 
-int arc_bstree_insert(arc_bstree *bstree, const  void * data)
+int arc_bstree_insert(struct arc_tree *bstree, const  void * data)
 {
     return arc_tree_insert((struct arc_tree *)bstree, data);
 }
 
 /******************************************************************************/
 
-int arc_bstree_find(arc_bstree *bstree, const void * data)
+void *arc_bstree_retrieve(struct arc_tree *bstree, const void * data)
 {
-    return arc_tree_find((struct arc_tree *)bstree, data);
+    return arc_tree_retrieve((struct arc_tree *)bstree, data);
 }
 
 /******************************************************************************/
@@ -151,7 +157,7 @@ int arc_bstree_find(arc_bstree *bstree, const void * data)
 static void arc_bstree_remove_internal(struct arc_tree *tree,
                                        struct arc_tree_snode *snode)
 {
-    arc_bstree *bstree = (arc_bstree *)tree;
+    struct arc_tree *bstree = (struct arc_tree *)tree;
     struct arc_bstree_node *node= (struct arc_bstree_node *)snode;
     struct arc_bstree_node *successor, *parent, **node_ref;
 
@@ -320,28 +326,28 @@ void arc_bstree_rebalance(arc_bstree_t bstree)
 
 /******************************************************************************/
 
-void arc_bstree_remove(arc_bstree *bstree, const void * data)
+void arc_bstree_remove(struct arc_tree *bstree, const void * data)
 {
     arc_tree_remove((struct arc_tree *)bstree, data);
 }
 
 /******************************************************************************/
 
-int arc_bstree_empty(arc_bstree * bstree)
+int arc_bstree_empty(struct arc_tree * bstree)
 {
     return arc_tree_empty((struct arc_tree *)bstree);
 }
 
 /******************************************************************************/
 
-size_t arc_bstree_size(arc_bstree * bstree)
+size_t arc_bstree_size(struct arc_tree * bstree)
 {
     return arc_tree_size((struct arc_tree *)bstree);
 }
 
 /******************************************************************************/
 
-void arc_bstree_clear(arc_bstree *bstree)
+void arc_bstree_clear(struct arc_tree *bstree)
 {
     arc_tree_clear((struct arc_tree *)bstree);
 }

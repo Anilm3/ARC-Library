@@ -78,7 +78,7 @@ int arc_bstree_insert(arc_bstree_t bstree, const void * data);
  * @retval 0 If the element was not found
  * @retval 1 If the element was found
  */
-int arc_bstree_find(arc_bstree_t bstree, const void * data);
+void *arc_bstree_retrieve(arc_bstree_t bstree, const void * data);
 /**
  * @brief Returns whether the bstree is empty or not
  *

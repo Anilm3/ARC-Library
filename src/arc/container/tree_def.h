@@ -86,7 +86,7 @@ struct arc_tree_snode *arc_tree_max(struct arc_tree_snode *node);
 
 int arc_tree_insert(struct arc_tree *tree, const void * data);
 
-int arc_tree_find(struct arc_tree *tree, const void * data);
+void *arc_tree_retrieve(struct arc_tree *tree, const void * data);
 
 void arc_tree_remove(struct arc_tree *tree, const void * data);
 

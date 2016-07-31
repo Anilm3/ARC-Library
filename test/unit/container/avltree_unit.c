@@ -117,7 +117,7 @@ ARC_UNIT_TEST(insertion)
     arc_avltree_destroy(avltree);
 }
 
-ARC_UNIT_TEST(find)
+ARC_UNIT_TEST(retrieve)
 {
     unsigned i;
     arc_avltree_t avltree = arc_avltree_create(sizeof(int), arc_cmp_int);
@@ -132,12 +132,12 @@ ARC_UNIT_TEST(find)
 
     for (i = 1; i < 32; i++)
     {
-        ARC_ASSERT_TRUE(arc_avltree_find(avltree, (void *)&i));
+       ARC_ASSERT_POINTER_NOT_NULL(arc_avltree_retrieve(avltree, (void *)&i));
     }
 
     for (i = 32; i < 64; i++)
     {
-        ARC_ASSERT_FALSE(arc_avltree_find(avltree, (void *)&i));
+        ARC_ASSERT_POINTER_NULL(arc_avltree_retrieve(avltree, (void *)&i));
     }
 
     arc_avltree_destroy(avltree);
@@ -393,7 +393,7 @@ ARC_UNIT_TEST_FIXTURE()
     ARC_UNIT_ADD_TEST(empty)
     ARC_UNIT_ADD_TEST(size)
     ARC_UNIT_ADD_TEST(insertion)
-    ARC_UNIT_ADD_TEST(find)
+    ARC_UNIT_ADD_TEST(retrieve)
     ARC_UNIT_ADD_TEST(remove)
     ARC_UNIT_ADD_TEST(iterators_forward)
     ARC_UNIT_ADD_TEST(iterators_backward)

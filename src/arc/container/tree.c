@@ -190,8 +190,14 @@ static struct arc_tree_snode * arc_tree_find_node(struct arc_tree *tree,
     while (node != NULL)
     {
         void * node_data = (void *)((char *)node + tree->data_offset);
-/*(*tree->node_data_fn)(node);*/
-        int cmp_result = (*tree->cmp_fn)(node_data, data);
+        int cmp_result;
+       
+        if (tree->cmp_fn == NULL) {
+            cmp_result = memcmp(node_data, data, tree->data_size);
+        } else {
+            cmp_result = (*tree->cmp_fn)(node_data, data);
+        }
+
         if (cmp_result == -1)
         {
             node = node->right;
@@ -211,9 +217,10 @@ static struct arc_tree_snode * arc_tree_find_node(struct arc_tree *tree,
 
 /******************************************************************************/
 
-int arc_tree_find(struct arc_tree *tree, const void * data)
+void *arc_tree_retrieve(struct arc_tree *tree, const void * data)
 {
-    return (arc_tree_find_node(tree, data) != NULL);
+    struct arc_tree_snode *node = arc_tree_find_node(tree, data);
+    return (node == NULL ? NULL : (void *)((char *)node + tree->data_offset));
 }
 
 /******************************************************************************/

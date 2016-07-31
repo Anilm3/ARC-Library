@@ -29,6 +29,7 @@
 
 #include <stdlib.h>
 #include <arc/type/hash.h>
+#include <arc/type/function.h>
 #include <arc/container/iterator.h>
 
 #ifdef __cplusplus
@@ -53,8 +54,8 @@ typedef struct arc_htable * arc_htable_t;
  * @retval NULL if memory cannot be allocated
  */
 arc_htable_t arc_htable_create(size_t num_buckets,
-                               size_t key_size,
                                size_t data_size,
+                               arc_cmp_fn_t cmp_fn,
                                arc_hash_fn_t hash_fn);
 /**
  * @brief Destroys the memory associated to a htable
@@ -73,7 +74,7 @@ void arc_htable_destroy(arc_htable_t htable);
  * @retval ARC_DUPLICATE If the element is already in the htable
  * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
  */
-int arc_htable_insert(arc_htable_t htable, void * key, void * data);
+int arc_htable_insert(arc_htable_t htable, void *data);
 /**
  * @brief Retrieves the data associated to a key in the hash table
  *
@@ -82,7 +83,7 @@ int arc_htable_insert(arc_htable_t htable, void * key, void * data);
  * @return Data element associated to the key
  * @retval NULL If the element was not found
  */
-void * arc_htable_retrieve(arc_htable_t htable, void * key);
+void *arc_htable_retrieve(arc_htable_t htable, void *data);
 /**
  * @brief Returns whether the htable is empty or not
  *
@@ -110,7 +111,7 @@ void arc_htable_clear(arc_htable_t htable);
  * @param[in] htable Hash table to perform the operation on
  * @param[in] key Key of the data element to be removed
  */
-void arc_htable_remove(arc_htable_t htable, void * key);
+void arc_htable_remove(arc_htable_t htable, void *data);
 /**
  * @brief Reestructures the table to contain the specified number of buckets
  *

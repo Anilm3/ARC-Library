@@ -49,7 +49,7 @@ ARC_PERF_FUNCTION(global_tear_down)
 
 ARC_PERF_FUNCTION(set_up)
 {
-    htable = arc_htable_create(100, sizeof(int), sizeof(int), hash_function);
+    htable = arc_htable_create(100, sizeof(int), arc_cmp_int, hash_function);
 }
 
 ARC_PERF_TEST(insert)
@@ -57,7 +57,7 @@ ARC_PERF_TEST(insert)
     int i;
     for (i = 0; i < num_elems; i++)
     {
-        arc_htable_insert(htable, &i, &i);
+        arc_htable_insert(htable, &i);
     }
 }
 
@@ -69,15 +69,15 @@ ARC_PERF_TEST(random_insert)
 
     for (i = 0; i < num_elems; i++)
     {
-        arc_htable_insert(htable, &values[rand() % num_elems], &i);
+        arc_htable_insert(htable, &values[rand() % num_elems]);
     }
 }
 
 
-ARC_PERF_TEST(rehash)
-{
-    arc_htable_rehash(htable, (size_t)num_elems);
-}
+/*ARC_PERF_TEST(rehash)*/
+/*{*/
+    /*arc_htable_rehash(htable, (size_t)num_elems);*/
+/*}*/
 
 ARC_PERF_TEST(retrieve)
 {
@@ -117,7 +117,7 @@ ARC_PERF_TEST_FIXTURE()
 
     ARC_PERF_ADD_FUNCTION(set_up)
     ARC_PERF_ADD_TEST(insert)
-    ARC_PERF_ADD_TEST(rehash)
+    /*ARC_PERF_ADD_TEST(rehash)*/
     ARC_PERF_ADD_TEST(retrieve)
     ARC_PERF_ADD_FUNCTION(tear_down)
 
@@ -128,7 +128,7 @@ ARC_PERF_TEST_FIXTURE()
 
     ARC_PERF_ADD_FUNCTION(set_up)
     ARC_PERF_ADD_TEST(random_insert)
-    ARC_PERF_ADD_TEST(rehash)
+    /*ARC_PERF_ADD_TEST(rehash)*/
     ARC_PERF_ADD_TEST(random_retrieve)
     ARC_PERF_ADD_FUNCTION(tear_down)
 
