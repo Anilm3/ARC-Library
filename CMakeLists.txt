@@ -180,6 +180,9 @@ endif()
 file(GLOB_RECURSE TESTS ${UNIT_TEST_DIR}/*.c)
 enable_testing()
 
+
+include(Dart)
+
 foreach(TEST ${TESTS}) 
     get_filename_component(TEST_EXEC ${TEST} NAME_WE)
     add_executable(${TEST_EXEC} ${TEST})
