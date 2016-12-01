@@ -16,7 +16,7 @@
 
 /******************************************************************************/
 
-int arc_slist_initialize(struct arc_slist *list, size_t data_size)
+int arc_slist_init(struct arc_slist *list, size_t data_size)
 {
     size_t aligned_size;
 
@@ -47,7 +47,7 @@ int arc_slist_initialize(struct arc_slist *list, size_t data_size)
 
 /******************************************************************************/
 
-void arc_slist_finalize(struct arc_slist *list)
+void arc_slist_fini(struct arc_slist *list)
 {
     arc_slist_clear(list);
 }
@@ -63,7 +63,7 @@ struct arc_slist * arc_slist_create(size_t data_size)
         return NULL;
     }
 
-    arc_slist_initialize(list, data_size);
+    arc_slist_init(list, data_size);
 
     return list;
 }
@@ -72,7 +72,7 @@ struct arc_slist * arc_slist_create(size_t data_size)
 
 void arc_slist_destroy(struct arc_slist * list)
 {
-    arc_slist_finalize(list);
+    arc_slist_fini(list);
     free(list);
 }
 
@@ -178,7 +178,50 @@ int arc_slist_push_front(struct arc_slist * list, void *data)
 
 /******************************************************************************/
 
-void arc_slist_before_begin(struct arc_iterator * it)
+int arc_slist_iterator_init(struct arc_slist_iterator *it,
+                            struct arc_slist *list)
+{
+    it->container = list;
+    it->node_ptr = NULL;
+
+    return ARC_SUCCESS;
+}
+
+/******************************************************************************/
+
+void arc_iterator_fini(struct arc_slist_iterator *it)
+{
+    it->container = NULL;
+    it->node_ptr = NULL;
+}
+
+/******************************************************************************/
+
+struct arc_slist_iterator *arc_slist_iterator_create(struct arc_slist *list)
+{
+    struct arc_slist_iterator *it = malloc(sizeof(struct arc_slist_iterator));
+
+    if (it == NULL)
+    {
+        return NULL;
+    }
+
+    arc_slist_iterator_init(it, list);
+
+    return it;
+}
+
+/******************************************************************************/
+
+void arc_slist_iterator_destroy(struct arc_slist_iterator *it)
+{
+    arc_iterator_fini(it);
+    free(it);
+}
+
+/******************************************************************************/
+
+void arc_slist_before_begin(struct arc_slist_iterator * it)
 {
     struct arc_slist * list = it->container;
     it->node_ptr = &(list->front);
@@ -186,7 +229,7 @@ void arc_slist_before_begin(struct arc_iterator * it)
 
 /******************************************************************************/
 
-void arc_slist_begin(struct arc_iterator * it)
+void arc_slist_begin(struct arc_slist_iterator * it)
 {
     struct arc_slist * list = it->container;
     it->node_ptr = list->front.next;
@@ -194,7 +237,7 @@ void arc_slist_begin(struct arc_iterator * it)
 
 /******************************************************************************/
 
-void arc_slist_after_end(struct arc_iterator * it)
+void arc_slist_after_end(struct arc_slist_iterator * it)
 {
     struct arc_slist * list = it->container;
     it->node_ptr = &(list->back);
@@ -202,7 +245,7 @@ void arc_slist_after_end(struct arc_iterator * it)
 
 /******************************************************************************/
 
-int arc_slist_insert_after(struct arc_iterator * it, void * data)
+int arc_slist_insert_after(struct arc_slist_iterator * it, void * data)
 {
 
     return arc_slist_insert_node_after(it->container, it->node_ptr, data);
@@ -210,14 +253,14 @@ int arc_slist_insert_after(struct arc_iterator * it, void * data)
 
 /******************************************************************************/
 
-void arc_slist_erase_after(struct arc_iterator * it)
+void arc_slist_erase_after(struct arc_slist_iterator * it)
 {
     arc_slist_erase_node_after(it->container, it->node_ptr);
 }
 
 /******************************************************************************/
 
-void * arc_slist_data(struct arc_iterator * it)
+void * arc_slist_data(struct arc_slist_iterator * it)
 {
     struct arc_slist_node * current = it->node_ptr;
 
@@ -226,7 +269,7 @@ void * arc_slist_data(struct arc_iterator * it)
 
 /******************************************************************************/
 
-int arc_slist_next(struct arc_iterator * it)
+int arc_slist_next(struct arc_slist_iterator * it)
 {
     struct arc_slist_node * current = it->node_ptr;
     struct arc_slist * list = it->container;

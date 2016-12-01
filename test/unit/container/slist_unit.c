@@ -9,7 +9,6 @@
 
 #include <stdio.h>
 #include <arc/container/slist.h>
-#include <arc/container/iterator.h>
 #include <arc/test/unit.h>
 #include <arc/common/defines.h>
 
@@ -67,7 +66,7 @@ ARC_UNIT_TEST(iterators)
 {
     int i;
     arc_slist_t list = arc_slist_create(sizeof(int));
-    arc_iterator_t it = arc_iterator_create(list);
+    arc_slist_iterator_t it = arc_slist_iterator_create(list);
 
     ARC_ASSERT_POINTER_NOT_NULL(list);
 
@@ -85,7 +84,7 @@ ARC_UNIT_TEST(iterators)
         ARC_ASSERT_INT_EQ(*((int *)arc_slist_data(it)), i--);
     }
 
-    arc_iterator_destroy(it);
+    arc_slist_iterator_destroy(it);
     arc_slist_destroy(list);
 }
 

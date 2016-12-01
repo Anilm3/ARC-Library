@@ -17,14 +17,12 @@ struct arc_slist_snode
 {
     struct arc_slist_node * next;
 };
-
 /* Standard node definition */
 struct arc_slist_node
 {
     struct arc_slist_node * next;
     char data[1];
 };
-
 /* Container definition */
 struct arc_slist
 {
@@ -34,7 +32,22 @@ struct arc_slist
     size_t data_size;
     size_t node_size;
 };
+/**
+ * @struct arc_slist_iterator
+ * @brief Iterator definition
+ */
+struct arc_slist_iterator
+{
+    void * container;
+    void * node_ptr;
+    unsigned long node_num;
+    unsigned long node_idx;
+};
 
-int arc_slist_initialize(struct arc_slist *list, size_t data_size);
-void arc_slist_finalize(struct arc_slist *list);
+
+int arc_slist_init(struct arc_slist *list, size_t data_size);
+void arc_slist_fini(struct arc_slist *list);
+int arc_slist_iterator_init(struct arc_slist_iterator *it,
+                            struct arc_slist *list);
+void arc_iterator_fini(struct arc_slist_iterator *it);
 #endif
