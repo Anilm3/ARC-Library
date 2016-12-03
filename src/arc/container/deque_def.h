@@ -30,8 +30,22 @@ struct arc_deque
     size_t data_size; /**< Size of the data to be inserted */
     void ** data; /**< Pointer array, stores a pointer to each block */
 };
+/**
+ * @struct arc_deque_iterator
+ * @brief Iterator definition
+ */
+struct arc_deque_iterator
+{
+    void * container;
+    void * node_ptr;
+    unsigned long node_num;
+    unsigned long node_idx;
+};
 
-int arc_deque_initialize(struct arc_deque *deque, size_t data_size);
-void arc_deque_finalize(struct arc_deque *deque);
+int arc_deque_init(struct arc_deque *deque, size_t data_size);
+void arc_deque_fini(struct arc_deque *deque);
+int arc_deque_iterator_init(struct arc_deque_iterator *it,
+                            struct arc_deque *list);
+void arc_deque_iterator_fini(struct arc_deque_iterator *it);
 
 #endif

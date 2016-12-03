@@ -16,7 +16,7 @@
 
 /******************************************************************************/
 
-int arc_dlist_initialize(struct arc_dlist *list, size_t data_size)
+int arc_dlist_init(struct arc_dlist *list, size_t data_size)
 {
     size_t aligned_size;
     /* The aligned size is the current size of the data block including the 
@@ -48,7 +48,7 @@ int arc_dlist_initialize(struct arc_dlist *list, size_t data_size)
 
 /******************************************************************************/
 
-void arc_dlist_finalize(struct arc_dlist *list)
+void arc_dlist_fini(struct arc_dlist *list)
 {
     arc_dlist_clear(list);
 }
@@ -64,7 +64,7 @@ struct arc_dlist * arc_dlist_create(size_t data_size)
         return NULL;
     }
 
-    arc_dlist_initialize(list, data_size);
+    arc_dlist_init(list, data_size);
 
     return list;
 }
@@ -73,7 +73,7 @@ struct arc_dlist * arc_dlist_create(size_t data_size)
 
 void arc_dlist_destroy(struct arc_dlist * list)
 {
-    arc_dlist_finalize(list);
+    arc_dlist_fini(list);
     free(list);
 }
 
@@ -216,7 +216,50 @@ int arc_dlist_push_back(arc_dlist_t list, void * data)
 
 /******************************************************************************/
 
-void arc_dlist_before_begin(struct arc_iterator * it)
+int arc_dlist_iterator_init(struct arc_dlist_iterator *it,
+                            struct arc_dlist *list)
+{
+    it->container = list;
+    it->node_ptr = NULL;
+
+    return ARC_SUCCESS;
+}
+
+/******************************************************************************/
+
+void arc_dlist_iterator_fini(struct arc_dlist_iterator *it)
+{
+    it->container = NULL;
+    it->node_ptr = NULL;
+}
+
+/******************************************************************************/
+
+struct arc_dlist_iterator *arc_dlist_iterator_create(struct arc_dlist *list)
+{
+    struct arc_dlist_iterator *it = malloc(sizeof(struct arc_dlist_iterator));
+
+    if (it == NULL)
+    {
+        return NULL;
+    }
+
+    arc_dlist_iterator_init(it, list);
+
+    return it;
+}
+
+/******************************************************************************/
+
+void arc_dlist_iterator_destroy(struct arc_dlist_iterator *it)
+{
+    arc_dlist_iterator_fini(it);
+    free(it);
+}
+
+/******************************************************************************/
+
+void arc_dlist_before_begin(struct arc_dlist_iterator * it)
 {
     struct arc_dlist * list = it->container;
     it->node_ptr = &(list->front);
@@ -224,7 +267,7 @@ void arc_dlist_before_begin(struct arc_iterator * it)
 
 /******************************************************************************/
 
-void arc_dlist_begin(struct arc_iterator * it)
+void arc_dlist_begin(struct arc_dlist_iterator * it)
 {
     struct arc_dlist * list = it->container;
     it->node_ptr = list->front.next;
@@ -232,7 +275,7 @@ void arc_dlist_begin(struct arc_iterator * it)
 
 /******************************************************************************/
 
-void arc_dlist_end(struct arc_iterator * it)
+void arc_dlist_end(struct arc_dlist_iterator * it)
 {
     struct arc_dlist * list = it->container;
     it->node_ptr = list->back.prev;
@@ -240,7 +283,7 @@ void arc_dlist_end(struct arc_iterator * it)
 
 /******************************************************************************/
 
-void arc_dlist_after_end(struct arc_iterator * it)
+void arc_dlist_after_end(struct arc_dlist_iterator * it)
 {
     struct arc_dlist * list = it->container;
     it->node_ptr = &(list->back);
@@ -248,28 +291,28 @@ void arc_dlist_after_end(struct arc_iterator * it)
 
 /******************************************************************************/
 
-int arc_dlist_insert_before(struct arc_iterator * it, void * data)
+int arc_dlist_insert_before(struct arc_dlist_iterator * it, void * data)
 {
     return arc_dlist_insert_node_before(it->container, it->node_ptr, data);
 }
 
 /******************************************************************************/
 
-int arc_dlist_insert_after(struct arc_iterator * it, void * data)
+int arc_dlist_insert_after(struct arc_dlist_iterator * it, void * data)
 {
     return arc_dlist_insert_node_after(it->container, it->node_ptr, data);
 }
 
 /******************************************************************************/
 
-void arc_dlist_erase(struct arc_iterator * it)
+void arc_dlist_erase(struct arc_dlist_iterator * it)
 {
     arc_dlist_erase_node(it->container, it->node_ptr);
 }
 
 /******************************************************************************/
 
-void * arc_dlist_data(struct arc_iterator * it)
+void * arc_dlist_data(struct arc_dlist_iterator * it)
 {
     struct arc_dlist_node * current = it->node_ptr;
 
@@ -278,7 +321,7 @@ void * arc_dlist_data(struct arc_iterator * it)
 
 /******************************************************************************/
 
-int arc_dlist_next(struct arc_iterator * it)
+int arc_dlist_next(struct arc_dlist_iterator * it)
 {
     struct arc_dlist_node * current = it->node_ptr;
     struct arc_dlist * list = it->container;
@@ -295,7 +338,7 @@ int arc_dlist_next(struct arc_iterator * it)
 
 /******************************************************************************/
 
-int arc_dlist_previous(struct arc_iterator * it)
+int arc_dlist_previous(struct arc_dlist_iterator * it)
 {
     struct arc_dlist_node * current = it->node_ptr;
     struct arc_dlist * list = it->container;

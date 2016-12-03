@@ -44,7 +44,7 @@ extern "C"{
  * functions, direct stack allocations are not allowed.
  */
 typedef struct arc_dlist * arc_dlist_t;
-
+typedef struct arc_dlist_iterator * arc_dlist_iterator_t;
 /**
  * @brief Creates a new list
  *
@@ -129,6 +129,22 @@ void arc_dlist_pop_back(arc_dlist_t list);
  */
 int arc_dlist_push_back(arc_dlist_t list, void * data);
 /**
+ * @brief Creates a new iterator
+ *
+ * The memory is allocated in the heap and has to be destroyed by the user.
+ *
+ * @param[in] container Container to iterate through
+ * @return New iterator for the specified container
+ * @retval NULL if memory cannot be allocated
+ */
+arc_dlist_iterator_t arc_dlist_iterator_create(arc_dlist_t list);
+/**
+ * @brief Destroys the memory associated to a iterator
+ *
+ * @param[in] it Iterator to delete
+ */
+void arc_dlist_iterator_destroy(arc_dlist_iterator_t it);
+/**
  * @brief Sets an iterator to the element before the beginning of the list
  *
  * @warning The data pointer of this iterator must not be requested, the
@@ -137,19 +153,19 @@ int arc_dlist_push_back(arc_dlist_t list, void * data);
  *
  * @param[in] it Iterator
  */
-void arc_dlist_before_begin(arc_iterator_t it);
+void arc_dlist_before_begin(arc_dlist_iterator_t it);
 /**
  * @brief Sets an iterator to the initial element of the list
  *
  * @param[in] it Iterator
  */
-void arc_dlist_begin(arc_iterator_t it);
+void arc_dlist_begin(arc_dlist_iterator_t it);
 /**
  * @brief Sets an iterator to the last element of the list
  *
  * @param[in] it Iterator
  */
-void arc_dlist_end(arc_iterator_t it);
+void arc_dlist_end(arc_dlist_iterator_t it);
 /**
  * @brief Sets an iterator to the element after the end of the list
  *
@@ -159,7 +175,7 @@ void arc_dlist_end(arc_iterator_t it);
  *
  * @param[in] it Iterator
  */
-void arc_dlist_after_end(arc_iterator_t it);
+void arc_dlist_after_end(arc_dlist_iterator_t it);
 /**
  * @brief Adds an element before the iterator position
  *
@@ -168,7 +184,7 @@ void arc_dlist_after_end(arc_iterator_t it);
  * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
  * @retval ARC_SUCCESS If the element was added successfully
  */
-int arc_dlist_insert_before(arc_iterator_t it, void * data);
+int arc_dlist_insert_before(arc_dlist_iterator_t it, void * data);
 /**
  * @brief Adds an element after the iterator position
  *
@@ -177,20 +193,20 @@ int arc_dlist_insert_before(arc_iterator_t it, void * data);
  * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
  * @retval ARC_SUCCESS If the element was added successfully
  */
-int arc_dlist_insert_after(arc_iterator_t it, void * data);
+int arc_dlist_insert_after(arc_dlist_iterator_t it, void * data);
 /**
  * @brief Removes the iterator position from the list
  *
  * @param[in] it Iterator
  */
-void arc_dlist_erase(arc_iterator_t it);
+void arc_dlist_erase(arc_dlist_iterator_t it);
 /**
  * @brief Returns the data associated to the Iterator
  *
  * @param[in] it Iterator
  * @return Data pointer of the node
  */
-void * arc_dlist_data(arc_iterator_t it);
+void * arc_dlist_data(arc_dlist_iterator_t it);
 /**
  * @brief Sets the iterator to the next node in the list
  *
@@ -198,7 +214,7 @@ void * arc_dlist_data(arc_iterator_t it);
  * @retval 0 If the element after the end of the list has been reached
  * @retval 1 If the current element is in the list
  */
-int arc_dlist_next(arc_iterator_t it);
+int arc_dlist_next(arc_dlist_iterator_t it);
 /**
  * @brief Sets the iterator to the previous node in the list
  *
@@ -206,7 +222,7 @@ int arc_dlist_next(arc_iterator_t it);
  * @retval 0 If the element before the beginning of the list has been reached
  * @retval 1 If the current element is in the list
  */
-int arc_dlist_previous(arc_iterator_t it);
+int arc_dlist_previous(arc_dlist_iterator_t it);
 
 #ifdef __cplusplus
 }

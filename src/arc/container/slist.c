@@ -189,7 +189,7 @@ int arc_slist_iterator_init(struct arc_slist_iterator *it,
 
 /******************************************************************************/
 
-void arc_iterator_fini(struct arc_slist_iterator *it)
+void arc_slist_iterator_fini(struct arc_slist_iterator *it)
 {
     it->container = NULL;
     it->node_ptr = NULL;
@@ -215,7 +215,7 @@ struct arc_slist_iterator *arc_slist_iterator_create(struct arc_slist *list)
 
 void arc_slist_iterator_destroy(struct arc_slist_iterator *it)
 {
-    arc_iterator_fini(it);
+    arc_slist_iterator_fini(it);
     free(it);
 }
 

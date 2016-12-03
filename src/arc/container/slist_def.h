@@ -49,5 +49,5 @@ int arc_slist_init(struct arc_slist *list, size_t data_size);
 void arc_slist_fini(struct arc_slist *list);
 int arc_slist_iterator_init(struct arc_slist_iterator *it,
                             struct arc_slist *list);
-void arc_iterator_fini(struct arc_slist_iterator *it);
+void arc_slist_iterator_fini(struct arc_slist_iterator *it);
 #endif

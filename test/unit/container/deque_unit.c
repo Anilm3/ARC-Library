@@ -234,7 +234,7 @@ ARC_UNIT_TEST(iterators_forward)
 {
     int i;
     arc_deque_t deque = arc_deque_create(sizeof(int));
-    arc_iterator_t it = arc_iterator_create(deque);
+    arc_deque_iterator_t it = arc_deque_iterator_create(deque);
 
     ARC_ASSERT_POINTER_NOT_NULL(deque);
 
@@ -252,7 +252,7 @@ ARC_UNIT_TEST(iterators_forward)
         ARC_ASSERT_INT_EQ(*((int *)arc_deque_data(it)), i--);
     }
 
-    arc_iterator_destroy(it);
+    arc_deque_iterator_destroy(it);
     arc_deque_destroy(deque);
 }
 
@@ -260,7 +260,7 @@ ARC_UNIT_TEST(iterators_backward)
 {
     int i;
     arc_deque_t deque = arc_deque_create(sizeof(int));
-    arc_iterator_t it = arc_iterator_create(deque);
+    arc_deque_iterator_t it = arc_deque_iterator_create(deque);
 
     ARC_ASSERT_POINTER_NOT_NULL(deque);
 
@@ -278,7 +278,7 @@ ARC_UNIT_TEST(iterators_backward)
         ARC_ASSERT_INT_EQ(*((int *)arc_deque_data(it)), i++);
     }
 
-    arc_iterator_destroy(it);
+    arc_deque_iterator_destroy(it);
     arc_deque_destroy(deque);
 }
 
@@ -286,7 +286,7 @@ ARC_UNIT_TEST(iterators_position)
 {
     unsigned i = 0;
     arc_deque_t deque = arc_deque_create(sizeof(int));
-    arc_iterator_t it = arc_iterator_create(deque);
+    arc_deque_iterator_t it = arc_deque_iterator_create(deque);
 
     ARC_ASSERT_POINTER_NOT_NULL(deque);
 
@@ -302,7 +302,7 @@ ARC_UNIT_TEST(iterators_position)
         ARC_ASSERT_INT_EQ(*((int *)arc_deque_data(it)), i);
     }
 
-    arc_iterator_destroy(it);
+    arc_deque_iterator_destroy(it);
     arc_deque_destroy(deque);
 }
 
@@ -310,7 +310,7 @@ ARC_UNIT_TEST(iterators_insertion_front)
 {
     int i = 0;
     arc_deque_t deque = arc_deque_create(sizeof(int));
-    arc_iterator_t it = arc_iterator_create(deque);
+    arc_deque_iterator_t it = arc_deque_iterator_create(deque);
 
     ARC_ASSERT_POINTER_NOT_NULL(deque);
 
@@ -336,7 +336,7 @@ ARC_UNIT_TEST(iterators_insertion_front)
 
     ARC_ASSERT_INT_EQ(i, -1);
 
-    arc_iterator_destroy(it);
+    arc_deque_iterator_destroy(it);
     arc_deque_destroy(deque);
 }
 
@@ -344,7 +344,7 @@ ARC_UNIT_TEST(iterators_insertion_back)
 {
     int i;
     arc_deque_t deque = arc_deque_create(sizeof(int));
-    arc_iterator_t it = arc_iterator_create(deque);
+    arc_deque_iterator_t it = arc_deque_iterator_create(deque);
 
     ARC_ASSERT_POINTER_NOT_NULL(deque);
 
@@ -370,7 +370,7 @@ ARC_UNIT_TEST(iterators_insertion_back)
 
     ARC_ASSERT_INT_EQ(i, -1);
 
-    arc_iterator_destroy(it);
+    arc_deque_iterator_destroy(it);
     arc_deque_destroy(deque);
 }
 
@@ -378,7 +378,7 @@ ARC_UNIT_TEST(iterators_insertion_middle)
 {
     unsigned i;
     arc_deque_t deque = arc_deque_create(sizeof(int));
-    arc_iterator_t it = arc_iterator_create(deque);
+    arc_deque_iterator_t it = arc_deque_iterator_create(deque);
 
     ARC_ASSERT_POINTER_NOT_NULL(deque);
 
@@ -456,7 +456,7 @@ ARC_UNIT_TEST(iterators_insertion_middle)
         ARC_ASSERT_INT_EQ(*((unsigned *)arc_deque_at(deque, i)), i);
     }
 
-    arc_iterator_destroy(it);
+    arc_deque_iterator_destroy(it);
     arc_deque_destroy(deque);
 }
 
@@ -464,7 +464,7 @@ ARC_UNIT_TEST(iterators_erase)
 {
     unsigned i;
     arc_deque_t deque = arc_deque_create(sizeof(int));
-    arc_iterator_t it = arc_iterator_create(deque);
+    arc_deque_iterator_t it = arc_deque_iterator_create(deque);
 
     ARC_ASSERT_POINTER_NOT_NULL(deque);
 
@@ -521,7 +521,7 @@ ARC_UNIT_TEST(iterators_erase)
         ARC_ASSERT_INT_EQ(*((unsigned *)arc_deque_at(deque, i)), i*2);
     }
 
-    arc_iterator_destroy(it);
+    arc_deque_iterator_destroy(it);
     arc_deque_destroy(deque);
 }
 

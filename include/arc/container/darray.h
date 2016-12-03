@@ -45,7 +45,7 @@ extern "C"{
  * functions, direct darray allocations are not allowed.
  */
 typedef struct arc_darray * arc_darray_t;
-
+typedef struct arc_darray_iterator * arc_darray_iterator_t;
 /**
  * @brief Creates a new darray
  *
@@ -138,6 +138,23 @@ size_t arc_darray_size(arc_darray_t darray);
  */
 void arc_darray_clear(arc_darray_t darray);
 /**
+ * @brief Creates a new iterator
+ *
+ * The memory is allocated in the heap and has to be destroyed by the user.
+ *
+ * @param[in] container Container to iterate through
+ * @return New iterator for the specified container
+ * @retval NULL if memory cannot be allocated
+ */
+arc_darray_iterator_t arc_darray_iterator_create(arc_darray_t darray);
+/**
+ * @brief Destroys the memory associated to a iterator
+ *
+ * @param[in] it Iterator to delete
+ */
+void arc_darray_iterator_destroy(arc_darray_iterator_t it);
+
+/**
  * @brief Sets an iterator to the element before the beginning of the darray
  *
  * @warning The data pointer of this iterator must not be requested, the
@@ -146,13 +163,13 @@ void arc_darray_clear(arc_darray_t darray);
  *
  * @param[in] it Iterator
  */
-void arc_darray_before_begin(arc_iterator_t it);
+void arc_darray_before_begin(arc_darray_iterator_t it);
 /**
  * @brief Sets an iterator to the initial element of the darray
  *
  * @param[in] it Iterator
  */
-void arc_darray_begin(arc_iterator_t it);
+void arc_darray_begin(arc_darray_iterator_t it);
 /**
  * @brief Sets an iterator to the specified element of the darray
  *
@@ -161,13 +178,13 @@ void arc_darray_begin(arc_iterator_t it);
  * @retval ARC_ERROR If the specified index is out of range
  * @retval ARC_SUCCESS If the iterator was set successfully
  */
-int arc_darray_position(arc_iterator_t it, unsigned long idx);
+int arc_darray_position(arc_darray_iterator_t it, unsigned long idx);
 /**
  * @brief Sets an iterator to the last element of the darray
  *
  * @param[in] it Iterator
  */
-void arc_darray_end(arc_iterator_t it);
+void arc_darray_end(arc_darray_iterator_t it);
 /**
  * @brief Sets an iterator to the element after the end of the darray
  *
@@ -177,7 +194,7 @@ void arc_darray_end(arc_iterator_t it);
  *
  * @param[in] it Iterator
  */
-void arc_darray_after_end(arc_iterator_t it);
+void arc_darray_after_end(arc_darray_iterator_t it);
 /**
  * @brief Adds an element before the iterator position
  *
@@ -186,7 +203,7 @@ void arc_darray_after_end(arc_iterator_t it);
  * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
  * @retval ARC_SUCCESS If the element was added successfully
  */
-int arc_darray_insert_before(arc_iterator_t it, void * data);
+int arc_darray_insert_before(arc_darray_iterator_t it, void * data);
 /**
  * @brief Adds an element after the iterator position
  *
@@ -195,20 +212,20 @@ int arc_darray_insert_before(arc_iterator_t it, void * data);
  * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
  * @retval ARC_SUCCESS If the element was added successfully
  */
-int arc_darray_insert_after(arc_iterator_t it, void * data);
+int arc_darray_insert_after(arc_darray_iterator_t it, void * data);
 /**
  * @brief Removes the iterator position from the darray
  *
  * @param[in] it Iterator
  */
-void arc_darray_erase(arc_iterator_t it);
+void arc_darray_erase(arc_darray_iterator_t it);
 /**
  * @brief Returns the data associated to the Iterator
  *
  * @param[in] it Iterator
  * @return Data pointer of the node
  */
-void * arc_darray_data(arc_iterator_t it);
+void * arc_darray_data(arc_darray_iterator_t it);
 /**
  * @brief Sets the iterator to the next node in the darray
  *
@@ -216,7 +233,7 @@ void * arc_darray_data(arc_iterator_t it);
  * @retval 0 If the element after the end of the darray has been reached
  * @retval 1 If the current element is in the darray
  */
-int arc_darray_next(arc_iterator_t it);
+int arc_darray_next(arc_darray_iterator_t it);
 /**
  * @brief Sets the iterator to the previous node in the darray
  *
@@ -224,7 +241,7 @@ int arc_darray_next(arc_iterator_t it);
  * @retval 0 If the element before the beginning of the darray has been reached
  * @retval 1 If the current element is in the darray
  */
-int arc_darray_previous(arc_iterator_t it);
+int arc_darray_previous(arc_darray_iterator_t it);
 
 #ifdef __cplusplus
 }

@@ -136,7 +136,7 @@ ARC_UNIT_TEST(iterators_forward)
 {
     int i;
     arc_dlist_t list = arc_dlist_create(sizeof(int));
-    arc_iterator_t it = arc_iterator_create(list);
+    arc_dlist_iterator_t it = arc_dlist_iterator_create(list);
 
     ARC_ASSERT_POINTER_NOT_NULL(list);
 
@@ -154,7 +154,7 @@ ARC_UNIT_TEST(iterators_forward)
         ARC_ASSERT_INT_EQ(*((int *)arc_dlist_data(it)), i--);
     }
 
-    arc_iterator_destroy(it);
+    arc_dlist_iterator_destroy(it);
     arc_dlist_destroy(list);
 }
 
@@ -162,7 +162,7 @@ ARC_UNIT_TEST(iterators_backward)
 {
     int i;
     arc_dlist_t list = arc_dlist_create(sizeof(int));
-    arc_iterator_t it = arc_iterator_create(list);
+    arc_dlist_iterator_t it = arc_dlist_iterator_create(list);
 
     ARC_ASSERT_POINTER_NOT_NULL(list);
 
@@ -180,7 +180,7 @@ ARC_UNIT_TEST(iterators_backward)
         ARC_ASSERT_INT_EQ(*((int *)arc_dlist_data(it)), i++);
     }
 
-    arc_iterator_destroy(it);
+    arc_dlist_iterator_destroy(it);
     arc_dlist_destroy(list);
 }
 
@@ -188,7 +188,7 @@ ARC_UNIT_TEST(iterators_insertion_front)
 {
     int i;
     arc_dlist_t list = arc_dlist_create(sizeof(int));
-    arc_iterator_t it = arc_iterator_create(list);
+    arc_dlist_iterator_t it = arc_dlist_iterator_create(list);
 
     ARC_ASSERT_POINTER_NOT_NULL(list);
 
@@ -210,7 +210,7 @@ ARC_UNIT_TEST(iterators_insertion_front)
 
     ARC_ASSERT_INT_EQ(i, -1);
 
-    arc_iterator_destroy(it);
+    arc_dlist_iterator_destroy(it);
     arc_dlist_destroy(list);
 }
 
@@ -218,7 +218,7 @@ ARC_UNIT_TEST(iterators_insertion_back)
 {
     int i;
     arc_dlist_t list = arc_dlist_create(sizeof(int));
-    arc_iterator_t it = arc_iterator_create(list);
+    arc_dlist_iterator_t it = arc_dlist_iterator_create(list);
 
     ARC_ASSERT_POINTER_NOT_NULL(list);
 
@@ -240,7 +240,7 @@ ARC_UNIT_TEST(iterators_insertion_back)
 
     ARC_ASSERT_INT_EQ(i, -1);
 
-    arc_iterator_destroy(it);
+    arc_dlist_iterator_destroy(it);
     arc_dlist_destroy(list);
 }
 

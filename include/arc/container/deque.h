@@ -45,7 +45,7 @@ extern "C"{
  * functions, direct deque allocations are not allowed.
  */
 typedef struct arc_deque * arc_deque_t;
-
+typedef struct arc_deque_iterator * arc_deque_iterator_t;
 /**
  * @brief Creates a new deque
  *
@@ -138,6 +138,22 @@ unsigned long arc_deque_size(arc_deque_t deque);
  */
 void arc_deque_clear(arc_deque_t deque);
 /**
+ * @brief Creates a new iterator
+ *
+ * The memory is allocated in the heap and has to be destroyed by the user.
+ *
+ * @param[in] container Container to iterate through
+ * @return New iterator for the specified container
+ * @retval NULL if memory cannot be allocated
+ */
+arc_deque_iterator_t arc_deque_iterator_create(arc_deque_t deque);
+/**
+ * @brief Destroys the memory associated to a iterator
+ *
+ * @param[in] it Iterator to delete
+ */
+void arc_deque_iterator_destroy(arc_deque_iterator_t it);
+/**
  * @brief Sets an iterator to the element before the beginning of the deque
  *
  * @warning The data pointer of this iterator must not be requested, the
@@ -146,13 +162,13 @@ void arc_deque_clear(arc_deque_t deque);
  *
  * @param[in] it Iterator
  */
-void arc_deque_before_begin(arc_iterator_t it);
+void arc_deque_before_begin(arc_deque_iterator_t it);
 /**
  * @brief Sets an iterator to the initial element of the deque
  *
  * @param[in] it Iterator
  */
-void arc_deque_begin(arc_iterator_t it);
+void arc_deque_begin(arc_deque_iterator_t it);
 /**
  * @brief Sets an iterator to the specified element of the deque
  *
@@ -161,13 +177,13 @@ void arc_deque_begin(arc_iterator_t it);
  * @retval ARC_ERROR If the specified index is out of range
  * @retval ARC_SUCCESS If the iterator was set successfully
  */
-int arc_deque_position(arc_iterator_t it, unsigned long idx);
+int arc_deque_position(arc_deque_iterator_t it, unsigned long idx);
 /**
  * @brief Sets an iterator to the last element of the deque
  *
  * @param[in] it Iterator
  */
-void arc_deque_end(arc_iterator_t it);
+void arc_deque_end(arc_deque_iterator_t it);
 /**
  * @brief Sets an iterator to the element after the end of the deque
  *
@@ -177,7 +193,7 @@ void arc_deque_end(arc_iterator_t it);
  *
  * @param[in] it Iterator
  */
-void arc_deque_after_end(arc_iterator_t it);
+void arc_deque_after_end(arc_deque_iterator_t it);
 /**
  * @brief Adds an element before the iterator position
  *
@@ -186,7 +202,7 @@ void arc_deque_after_end(arc_iterator_t it);
  * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
  * @retval ARC_SUCCESS If the element was added successfully
  */
-int arc_deque_insert_before(arc_iterator_t it, void * data);
+int arc_deque_insert_before(arc_deque_iterator_t it, void * data);
 /**
  * @brief Adds an element after the iterator position
  *
@@ -195,20 +211,20 @@ int arc_deque_insert_before(arc_iterator_t it, void * data);
  * @retval ARC_OUT_OF_MEMORY If memory could not be allocated
  * @retval ARC_SUCCESS If the element was added successfully
  */
-int arc_deque_insert_after(arc_iterator_t it, void * data);
+int arc_deque_insert_after(arc_deque_iterator_t it, void * data);
 /**
  * @brief Removes the iterator position from the deque
  *
  * @param[in] it Iterator
  */
-void arc_deque_erase(arc_iterator_t it);
+void arc_deque_erase(arc_deque_iterator_t it);
 /**
  * @brief Returns the data associated to the Iterator
  *
  * @param[in] it Iterator
  * @return Data pointer of the node
  */
-void * arc_deque_data(arc_iterator_t it);
+void * arc_deque_data(arc_deque_iterator_t it);
 /**
  * @brief Sets the iterator to the next node in the deque
  *
@@ -216,7 +232,7 @@ void * arc_deque_data(arc_iterator_t it);
  * @retval 0 If the element after the end of the deque has been reached
  * @retval 1 If the current element is in the deque
  */
-int arc_deque_next(arc_iterator_t it);
+int arc_deque_next(arc_deque_iterator_t it);
 /**
  * @brief Sets the iterator to the previous node in the deque
  *
@@ -224,7 +240,7 @@ int arc_deque_next(arc_iterator_t it);
  * @retval 0 If the element before the beginning of the deque has been reached
  * @retval 1 If the current element is in the deque
  */
-int arc_deque_previous(arc_iterator_t it);
+int arc_deque_previous(arc_deque_iterator_t it);
 
 #ifdef __cplusplus
 }

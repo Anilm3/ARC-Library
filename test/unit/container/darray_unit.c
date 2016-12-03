@@ -233,7 +233,7 @@ ARC_UNIT_TEST(iterators_forward)
 {
     int i;
     arc_darray_t darray = arc_darray_create(sizeof(int));
-    arc_iterator_t it = arc_iterator_create(darray);
+    arc_darray_iterator_t it = arc_darray_iterator_create(darray);
 
     ARC_ASSERT_POINTER_NOT_NULL(darray);
 
@@ -251,7 +251,7 @@ ARC_UNIT_TEST(iterators_forward)
         ARC_ASSERT_INT_EQ(*((int *)arc_darray_data(it)), i--);
     }
 
-    arc_iterator_destroy(it);
+    arc_darray_iterator_destroy(it);
     arc_darray_destroy(darray);
 }
 
@@ -259,7 +259,7 @@ ARC_UNIT_TEST(iterators_backward)
 {
     int i;
     arc_darray_t darray = arc_darray_create(sizeof(int));
-    arc_iterator_t it = arc_iterator_create(darray);
+    arc_darray_iterator_t it = arc_darray_iterator_create(darray);
 
     ARC_ASSERT_POINTER_NOT_NULL(darray);
 
@@ -277,7 +277,7 @@ ARC_UNIT_TEST(iterators_backward)
         ARC_ASSERT_INT_EQ(*((int *)arc_darray_data(it)), i++);
     }
 
-    arc_iterator_destroy(it);
+    arc_darray_iterator_destroy(it);
     arc_darray_destroy(darray);
 }
 
@@ -285,7 +285,7 @@ ARC_UNIT_TEST(iterators_position)
 {
     unsigned i = 0;
     arc_darray_t darray = arc_darray_create(sizeof(int));
-    arc_iterator_t it = arc_iterator_create(darray);
+    arc_darray_iterator_t it = arc_darray_iterator_create(darray);
 
     ARC_ASSERT_POINTER_NOT_NULL(darray);
 
@@ -301,7 +301,7 @@ ARC_UNIT_TEST(iterators_position)
         ARC_ASSERT_INT_EQ(*((int *)arc_darray_data(it)), i);
     }
 
-    arc_iterator_destroy(it);
+    arc_darray_iterator_destroy(it);
     arc_darray_destroy(darray);
 }
 
@@ -309,7 +309,7 @@ ARC_UNIT_TEST(iterators_insertion_front)
 {
     int i = 0;
     arc_darray_t darray = arc_darray_create(sizeof(int));
-    arc_iterator_t it = arc_iterator_create(darray);
+    arc_darray_iterator_t it = arc_darray_iterator_create(darray);
 
     ARC_ASSERT_POINTER_NOT_NULL(darray);
 
@@ -331,7 +331,7 @@ ARC_UNIT_TEST(iterators_insertion_front)
 
     ARC_ASSERT_INT_EQ(i, -1);
 
-    arc_iterator_destroy(it);
+    arc_darray_iterator_destroy(it);
     arc_darray_destroy(darray);
 }
 
@@ -339,7 +339,7 @@ ARC_UNIT_TEST(iterators_insertion_back)
 {
     int i;
     arc_darray_t darray = arc_darray_create(sizeof(int));
-    arc_iterator_t it = arc_iterator_create(darray);
+    arc_darray_iterator_t it = arc_darray_iterator_create(darray);
 
     ARC_ASSERT_POINTER_NOT_NULL(darray);
 
@@ -364,7 +364,7 @@ ARC_UNIT_TEST(iterators_insertion_back)
 
     ARC_ASSERT_INT_EQ(i, -1);
 
-    arc_iterator_destroy(it);
+    arc_darray_iterator_destroy(it);
     arc_darray_destroy(darray);
 }
 
@@ -372,7 +372,7 @@ ARC_UNIT_TEST(iterators_insertion_middle)
 {
     unsigned i;
     arc_darray_t darray = arc_darray_create(sizeof(int));
-    arc_iterator_t it = arc_iterator_create(darray);
+    arc_darray_iterator_t it = arc_darray_iterator_create(darray);
 
     ARC_ASSERT_POINTER_NOT_NULL(darray);
 
@@ -450,7 +450,7 @@ ARC_UNIT_TEST(iterators_insertion_middle)
         ARC_ASSERT_INT_EQ(*((unsigned *)arc_darray_at(darray, i)), i);
     }
 
-    arc_iterator_destroy(it);
+    arc_darray_iterator_destroy(it);
     arc_darray_destroy(darray);
 }
 
@@ -458,7 +458,7 @@ ARC_UNIT_TEST(iterators_erase)
 {
     unsigned i;
     arc_darray_t darray = arc_darray_create(sizeof(int));
-    arc_iterator_t it = arc_iterator_create(darray);
+    arc_darray_iterator_t it = arc_darray_iterator_create(darray);
 
     ARC_ASSERT_POINTER_NOT_NULL(darray);
 
@@ -515,7 +515,7 @@ ARC_UNIT_TEST(iterators_erase)
         ARC_ASSERT_INT_EQ(*((unsigned *)arc_darray_at(darray, i)), i*2);
     }
 
-    arc_iterator_destroy(it);
+    arc_darray_iterator_destroy(it);
     arc_darray_destroy(darray);
 }
 

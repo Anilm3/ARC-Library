@@ -22,8 +22,22 @@ struct arc_darray
     size_t data_size;
     void * data;
 };
+/**
+ * @struct arc_darray_iterator
+ * @brief Iterator definition
+ */
+struct arc_darray_iterator
+{
+    void * container;
+    void * node_ptr;
+    unsigned long node_num;
+    unsigned long node_idx;
+};
 
-int arc_darray_initialize(struct arc_darray *darray, size_t data_size);
-void arc_darray_finalize(struct arc_darray *darray);
+int arc_darray_init(struct arc_darray *darray, size_t data_size);
+void arc_darray_fini(struct arc_darray *darray);
+int arc_darray_iterator_init(struct arc_darray_iterator *it,
+                            struct arc_darray *list);
+void arc_darray_iterator_fini(struct arc_darray_iterator *it);
 
 #endif

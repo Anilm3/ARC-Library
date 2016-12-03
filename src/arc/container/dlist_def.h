@@ -36,8 +36,22 @@ struct arc_dlist
     size_t data_size;
     size_t node_size;
 };
+/**
+ * @struct arc_dlist_iterator
+ * @brief Iterator definition
+ */
+struct arc_dlist_iterator
+{
+    void * container;
+    void * node_ptr;
+    unsigned long node_num;
+    unsigned long node_idx;
+};
 
-int arc_dlist_initialize(struct arc_dlist *list, size_t data_size);
-void arc_dlist_finalize(struct arc_dlist *list);
+int arc_dlist_init(struct arc_dlist *list, size_t data_size);
+void arc_dlist_fini(struct arc_dlist *list);
+int arc_dlist_iterator_init(struct arc_dlist_iterator *it,
+                            struct arc_dlist *list);
+void arc_dlist_iterator_fini(struct arc_dlist_iterator *it);
 
 #endif
