@@ -9,7 +9,6 @@
 
 #include <stdio.h>
 #include <arc/container/darray.h>
-#include <arc/container/iterator.h>
 #include <arc/test/unit.h>
 #include <arc/common/defines.h>
 

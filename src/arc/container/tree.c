@@ -16,13 +16,13 @@
 #include <arc/container/tree_def.h>
 
 /******************************************************************************/
-int arc_tree_initialize(struct arc_tree *tree,
-                        size_t data_size,
-                        size_t data_offset,
-                        size_t node_size, 
-                        arc_tree_insert_fn_t insert_fn,
-                        arc_tree_remove_fn_t remove_fn,
-                        arc_cmp_fn_t cmp_fn)
+int arc_tree_init(struct arc_tree *tree,
+                  size_t data_size,
+                  size_t data_offset,
+                  size_t node_size, 
+                  arc_tree_insert_fn_t insert_fn,
+                  arc_tree_remove_fn_t remove_fn,
+                  arc_cmp_fn_t cmp_fn)
 {
     /* The aligned size is the current size of the data block including the
        space occupied by the alignment */
@@ -65,7 +65,7 @@ struct arc_tree_snode ** arc_tree_node_ref(struct arc_tree *tree,
 
 /******************************************************************************/
 
-void arc_tree_finalize(struct arc_tree *tree)
+void arc_tree_fini(struct arc_tree *tree)
 {
     arc_tree_clear(tree);
 }
@@ -86,9 +86,9 @@ struct arc_tree * arc_tree_create(size_t data_size,
         return NULL;
     }
 
-    arc_tree_initialize(tree,
-                        data_size, data_offset, node_size,
-                        insert_fn, remove_fn, cmp_fn);
+    arc_tree_init(tree,
+                  data_size, data_offset, node_size,
+                  insert_fn, remove_fn, cmp_fn);
 
     return tree;
 }
@@ -97,7 +97,7 @@ struct arc_tree * arc_tree_create(size_t data_size,
 
 void arc_tree_destroy(struct arc_tree *tree)
 {
-    arc_tree_finalize(tree);
+    arc_tree_fini(tree);
     free(tree);
 }
 
@@ -268,7 +268,55 @@ void arc_tree_clear(struct arc_tree *tree)
 
 /******************************************************************************/
 
-void arc_tree_before_begin(struct arc_iterator * it)
+int arc_tree_iterator_init(struct arc_tree_iterator *it,
+                           struct arc_tree *tree)
+{
+    it->container = tree;
+    it->node_ptr = NULL;
+    it->node_num = 0;
+    it->node_idx = 0;
+
+    return ARC_SUCCESS;
+}
+
+/******************************************************************************/
+
+void arc_tree_iterator_fini(struct arc_tree_iterator *it)
+{
+    it->container = NULL;
+    it->node_ptr = NULL;
+    it->node_num = 0;
+    it->node_idx = 0;
+}
+
+/******************************************************************************/
+
+struct arc_tree_iterator *arc_tree_iterator_create(struct arc_tree *tree)
+{
+    struct arc_tree_iterator *it = malloc(sizeof(struct arc_tree_iterator));
+
+    if (it == NULL)
+    {
+        return NULL;
+    }
+
+    arc_tree_iterator_init(it, tree);
+
+    return it;
+}
+
+/******************************************************************************/
+
+void arc_tree_iterator_destroy(struct arc_tree_iterator *it)
+{
+    arc_tree_iterator_fini(it);
+    free(it);
+}
+
+
+/******************************************************************************/
+
+void arc_tree_before_begin(struct arc_tree_iterator * it)
 {
     struct arc_tree * tree = it->container;
 
@@ -280,7 +328,7 @@ void arc_tree_before_begin(struct arc_iterator * it)
 
 /******************************************************************************/
 
-void arc_tree_begin(struct arc_iterator * it)
+void arc_tree_begin(struct arc_tree_iterator * it)
 {
     struct arc_tree * tree = it->container;
 
@@ -292,7 +340,7 @@ void arc_tree_begin(struct arc_iterator * it)
 
 /******************************************************************************/
 
-void arc_tree_end(struct arc_iterator * it)
+void arc_tree_end(struct arc_tree_iterator * it)
 {
     struct arc_tree * tree = it->container;
 
@@ -304,7 +352,7 @@ void arc_tree_end(struct arc_iterator * it)
 
 /******************************************************************************/
 
-void arc_tree_after_end(struct arc_iterator * it)
+void arc_tree_after_end(struct arc_tree_iterator * it)
 {
     struct arc_tree * tree = it->container;
 
@@ -316,7 +364,7 @@ void arc_tree_after_end(struct arc_iterator * it)
 
 /******************************************************************************/
 
-int arc_tree_previous(struct arc_iterator * it)
+int arc_tree_previous(struct arc_tree_iterator * it)
 {
     struct arc_tree * tree = it->container;
     struct arc_tree_snode * node = it->node_ptr;
@@ -368,7 +416,7 @@ int arc_tree_previous(struct arc_iterator * it)
 
 /******************************************************************************/
 
-int arc_tree_next(struct arc_iterator * it)
+int arc_tree_next(struct arc_tree_iterator * it)
 {
     struct arc_tree * tree = it->container;
     struct arc_tree_snode * node = it->node_ptr;
@@ -420,7 +468,7 @@ int arc_tree_next(struct arc_iterator * it)
 
 /******************************************************************************/
 
-void * arc_tree_data(struct arc_iterator * it)
+void * arc_tree_data(struct arc_tree_iterator * it)
 {
     struct arc_tree * tree = it->container;
     struct arc_tree_snode * current = it->node_ptr;
@@ -431,7 +479,7 @@ void * arc_tree_data(struct arc_iterator * it)
 
 /******************************************************************************/
 
-int arc_tree_position(struct arc_iterator * it, const void * data)
+int arc_tree_position(struct arc_tree_iterator * it, const void * data)
 {
     struct arc_tree * tree = it->container;
     struct arc_tree_snode * node = arc_tree_find_node(tree, data);
@@ -442,7 +490,7 @@ int arc_tree_position(struct arc_iterator * it, const void * data)
 }
 
 /******************************************************************************/
-void arc_tree_erase(struct arc_iterator * it)
+void arc_tree_erase(struct arc_tree_iterator * it)
 {
     struct arc_tree * tree = it->container;
     struct arc_tree_snode * current = it->node_ptr;

@@ -31,7 +31,6 @@
 #define ARC_DARRAY_H_
 
 #include <stdlib.h>
-#include <arc/container/iterator.h>
 
 #ifdef __cplusplus
 extern "C"{

@@ -22,10 +22,13 @@ struct arc_avltree_node
     char data[1];
 };
 
-int arc_avltree_initialize(struct arc_tree *tree, 
-                           size_t data_size,
-                           arc_cmp_fn_t cmp_fn);
+int arc_avltree_init(struct arc_tree *tree, 
+                     size_t data_size,
+                     arc_cmp_fn_t cmp_fn);
 
-void arc_avltree_finalize(struct arc_tree *tree);
+void arc_avltree_fini(struct arc_tree *tree);
+int arc_avltree_iterator_init(struct arc_tree_iterator *it,
+                              struct arc_tree *tree);
+void arc_avltree_iterator_fini(struct arc_tree_iterator *it);
 
 #endif

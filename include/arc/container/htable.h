@@ -30,7 +30,6 @@
 #include <stdlib.h>
 #include <arc/type/hash.h>
 #include <arc/type/function.h>
-#include <arc/container/iterator.h>
 
 #ifdef __cplusplus
 extern "C"{

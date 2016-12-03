@@ -94,7 +94,7 @@ ARC_UNIT_TEST(insertion)
 {
     unsigned i;
     arc_avltree_t avltree = arc_avltree_create(sizeof(int), arc_cmp_int);
-    arc_iterator_t it = arc_iterator_create(avltree);
+    arc_avltree_iterator_t it = arc_avltree_iterator_create(avltree);
 
     ARC_ASSERT_POINTER_NOT_NULL(avltree);
 
@@ -113,7 +113,7 @@ ARC_UNIT_TEST(insertion)
         i++;
     }
 
-    arc_iterator_destroy(it);
+    arc_avltree_iterator_destroy(it);
     arc_avltree_destroy(avltree);
 }
 
@@ -147,7 +147,7 @@ ARC_UNIT_TEST(remove)
 {
     unsigned i, val;
     arc_avltree_t avltree = arc_avltree_create(sizeof(int), arc_cmp_int);
-    arc_iterator_t it = arc_iterator_create(avltree);
+    arc_avltree_iterator_t it = arc_avltree_iterator_create(avltree);
     unsigned result[] = { 3,  4,  5,  8,  9, 11, 13, 14, 15, 17, 18,
                          19, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31};
 
@@ -202,7 +202,7 @@ ARC_UNIT_TEST(remove)
         i++;
     }
 
-    arc_iterator_destroy(it);
+    arc_avltree_iterator_destroy(it);
     arc_avltree_destroy(avltree);
 }
 
@@ -211,7 +211,7 @@ ARC_UNIT_TEST(iterators_forward)
     /* this test generates the equivalent of a list, so we need to be smarter */
     unsigned i;
     arc_avltree_t avltree = arc_avltree_create(sizeof(int), arc_cmp_int);
-    arc_iterator_t it = arc_iterator_create(avltree);
+    arc_avltree_iterator_t it = arc_avltree_iterator_create(avltree);
 
     ARC_ASSERT_POINTER_NOT_NULL(avltree);
 
@@ -233,7 +233,7 @@ ARC_UNIT_TEST(iterators_forward)
 
     ARC_ASSERT_INT_EQ(i, 32);
 
-    arc_iterator_destroy(it);
+    arc_avltree_iterator_destroy(it);
     arc_avltree_destroy(avltree);
 }
 
@@ -242,7 +242,7 @@ ARC_UNIT_TEST(iterators_backward)
     /* this test generates the equivalent of a list, so we need to be smarter */
     unsigned i;
     arc_avltree_t avltree = arc_avltree_create(sizeof(int), arc_cmp_int);
-    arc_iterator_t it = arc_iterator_create(avltree);
+    arc_avltree_iterator_t it = arc_avltree_iterator_create(avltree);
 
     ARC_ASSERT_POINTER_NOT_NULL(avltree);
 
@@ -264,7 +264,7 @@ ARC_UNIT_TEST(iterators_backward)
 
     ARC_ASSERT_INT_EQ(i, 0);
 
-    arc_iterator_destroy(it);
+    arc_avltree_iterator_destroy(it);
     arc_avltree_destroy(avltree);
 }
 
@@ -273,7 +273,7 @@ ARC_UNIT_TEST(iterators_position)
     /* this test generates the equivalent of a list, so we need to be smarter */
     unsigned i;
     arc_avltree_t avltree = arc_avltree_create(sizeof(int), arc_cmp_int);
-    arc_iterator_t it = arc_iterator_create(avltree);
+    arc_avltree_iterator_t it = arc_avltree_iterator_create(avltree);
 
     ARC_ASSERT_POINTER_NOT_NULL(avltree);
 
@@ -294,7 +294,7 @@ ARC_UNIT_TEST(iterators_position)
         ARC_ASSERT_FALSE(arc_avltree_position(it, (void *)&i));
     }
 
-    arc_iterator_destroy(it);
+    arc_avltree_iterator_destroy(it);
     arc_avltree_destroy(avltree);
 }
 
@@ -302,7 +302,7 @@ ARC_UNIT_TEST(iterators_remove)
 {
     unsigned i, val;
     arc_avltree_t avltree = arc_avltree_create(sizeof(int), arc_cmp_int);
-    arc_iterator_t it = arc_iterator_create(avltree);
+    arc_avltree_iterator_t it = arc_avltree_iterator_create(avltree);
     unsigned result[] = { 3,  4,  5,  8,  9, 11, 13, 14, 15, 17, 18,
                          19, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31};
 
@@ -367,7 +367,7 @@ ARC_UNIT_TEST(iterators_remove)
     }
 
 
-    arc_iterator_destroy(it);
+    arc_avltree_iterator_destroy(it);
     arc_avltree_destroy(avltree);
 }
 

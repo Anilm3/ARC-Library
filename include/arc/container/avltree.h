@@ -32,7 +32,6 @@
 
 #include <stdlib.h>
 #include <arc/type/function.h>
-#include <arc/container/iterator.h>
 
 #ifdef __cplusplus
 extern "C"{
@@ -44,6 +43,7 @@ extern "C"{
  *
  */
 typedef struct arc_tree * arc_avltree_t;
+typedef struct arc_tree_iterator * arc_avltree_iterator_t;
 
 /**
  * @brief Creates a new avltree
@@ -108,6 +108,23 @@ void arc_avltree_clear(arc_avltree_t avltree);
  */
 void arc_avltree_remove(arc_avltree_t avltree, const void * data);
 /**
+ * @brief Creates a new iterator
+ *
+ * The memory is allocated in the heap and has to be destroyed by the user.
+ *
+ * @param[in] container Container to iterate through
+ * @return New iterator for the specified container
+ * @retval NULL if memory cannot be allocated
+ */
+arc_avltree_iterator_t arc_avltree_iterator_create(arc_avltree_t avltree);
+/**
+ * @brief Destroys the memory associated to a iterator
+ *
+ * @param[in] it Iterator to delete
+ */
+void arc_avltree_iterator_destroy(arc_avltree_iterator_t it);
+
+/**
  * @brief Sets an iterator to the element before the beginning of the avltree
  *
  * @warning The data pointer of this iterator must not be requested, the
@@ -116,19 +133,19 @@ void arc_avltree_remove(arc_avltree_t avltree, const void * data);
  *
  * @param[in] it Iterator
  */
-void arc_avltree_before_begin(arc_iterator_t it);
+void arc_avltree_before_begin(arc_avltree_iterator_t it);
 /**
  * @brief Sets an iterator to the initial element of the avltree
  *
  * @param[in] it Iterator
  */
-void arc_avltree_begin(arc_iterator_t it);
+void arc_avltree_begin(arc_avltree_iterator_t it);
 /**
  * @brief Sets an iterator to the last element of the avltree
  *
  * @param[in] it Iterator
  */
-void arc_avltree_end(arc_iterator_t it);
+void arc_avltree_end(arc_avltree_iterator_t it);
 /**
  * @brief Sets an iterator to the element after the end of the avltree
  *
@@ -138,14 +155,14 @@ void arc_avltree_end(arc_iterator_t it);
  *
  * @param[in] it Iterator
  */
-void arc_avltree_after_end(arc_iterator_t it);
+void arc_avltree_after_end(arc_avltree_iterator_t it);
 /**
  * @brief Returns the data associated to the Iterator
  *
  * @param[in] it Iterator
  * @return Data pointer of the node
  */
-void * arc_avltree_data(arc_iterator_t it);
+void * arc_avltree_data(arc_avltree_iterator_t it);
 /**
  * @brief Sets an iterator to the specified element of the avltree
  *
@@ -154,13 +171,13 @@ void * arc_avltree_data(arc_iterator_t it);
  * @retval 0 If the avltree is not empty
  * @retval 1 If the avltree is empty
  */
-int arc_avltree_position(arc_iterator_t it, const void * data);
+int arc_avltree_position(arc_avltree_iterator_t it, const void * data);
 /**
  * @brief Removes the iterator position from the avltree
  *
  * @param[in] it Iterator
  */
-void arc_avltree_erase(arc_iterator_t it);
+void arc_avltree_erase(arc_avltree_iterator_t it);
 /**
  * @brief Sets the iterator to the next node in the avltree
  *
@@ -168,7 +185,7 @@ void arc_avltree_erase(arc_iterator_t it);
  * @retval 0 If the element after the end of the avltree has been reached
  * @retval 1 If the current element is in the avltree
  */
-int arc_avltree_next(arc_iterator_t it);
+int arc_avltree_next(arc_avltree_iterator_t it);
 /**
  * @brief Sets the iterator to the previous node in the avltree
  *
@@ -176,7 +193,7 @@ int arc_avltree_next(arc_iterator_t it);
  * @retval 0 If the element before the beginning of the avltree has been reached
  * @retval 1 If the current element is in the avltree
  */
-int arc_avltree_previous(arc_iterator_t it);
+int arc_avltree_previous(arc_avltree_iterator_t it);
 
 #ifdef __cplusplus
 }

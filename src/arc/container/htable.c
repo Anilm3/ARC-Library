@@ -86,7 +86,7 @@ int arc_htable_initialize(struct arc_htable *htable,
 
     for (i = 0; i < num_buckets; i++)
     {
-        int retval = arc_avltree_initialize(&htable->buckets[i], data_size, cmp_fn);
+        int retval = arc_avltree_init(&htable->buckets[i], data_size, cmp_fn);
 
         if (retval != ARC_SUCCESS)
         {
@@ -94,7 +94,7 @@ int arc_htable_initialize(struct arc_htable *htable,
 
             for (j = 0; j < i; j++)
             {
-                arc_avltree_finalize(&htable->buckets[i]);
+                arc_avltree_fini(&htable->buckets[i]);
             }
 
             free(htable->buckets);

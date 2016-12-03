@@ -28,7 +28,7 @@ static int arc_avltree_insert_internal(struct arc_tree *tree, const void * data)
 
 /******************************************************************************/
 
-int arc_avltree_initialize(struct arc_tree *tree, 
+int arc_avltree_init(struct arc_tree *tree, 
                            size_t data_size,
                            arc_cmp_fn_t cmp_fn)
 {
@@ -37,20 +37,20 @@ int arc_avltree_initialize(struct arc_tree *tree,
     node_size = (node_size > data_size ? 0 : data_size - node_size) +
                 sizeof(struct arc_avltree_node);
 
-    return arc_tree_initialize(tree,
-                               data_size,
-                               data_offset,
-                               node_size, 
-                               &arc_avltree_insert_internal,
-                               &arc_avltree_remove_internal,
-                               cmp_fn);
+    return arc_tree_init(tree,
+                         data_size,
+                         data_offset,
+                         node_size, 
+                         &arc_avltree_insert_internal,
+                         &arc_avltree_remove_internal,
+                         cmp_fn);
 }
 
 /******************************************************************************/
 
-void arc_avltree_finalize(struct arc_tree *tree)
+void arc_avltree_fini(struct arc_tree *tree)
 {
-    arc_tree_finalize(tree);
+    arc_tree_fini(tree);
 }
 
 /******************************************************************************/
@@ -500,62 +500,91 @@ void arc_avltree_clear(struct arc_tree *avltree)
 
 /******************************************************************************/
 
-void arc_avltree_before_begin(struct arc_iterator * it)
+int arc_avltree_iterator_init(struct arc_tree_iterator *it,
+                              struct arc_tree *tree)
+{
+    return arc_tree_iterator_init(it, tree);
+}
+
+/******************************************************************************/
+
+void arc_avltree_iterator_fini(struct arc_tree_iterator *it)
+{
+    arc_tree_iterator_fini(it);
+}
+
+/******************************************************************************/
+
+struct arc_tree_iterator * arc_avltree_iterator_create(struct arc_tree *tree)
+{
+    return arc_tree_iterator_create(tree);
+}
+
+/******************************************************************************/
+
+void arc_avltree_iterator_destroy(struct arc_tree_iterator *it)
+{
+    arc_tree_iterator_destroy(it);
+}
+
+/******************************************************************************/
+
+void arc_avltree_before_begin(struct arc_tree_iterator * it)
 {
     arc_tree_before_begin(it);
 }
 
 /******************************************************************************/
 
-void arc_avltree_begin(struct arc_iterator * it)
+void arc_avltree_begin(struct arc_tree_iterator * it)
 {
     arc_tree_begin(it);
 }
 
 /******************************************************************************/
 
-void arc_avltree_end(struct arc_iterator * it)
+void arc_avltree_end(struct arc_tree_iterator * it)
 {
     arc_tree_end(it);
 }
 
 /******************************************************************************/
 
-void arc_avltree_after_end(struct arc_iterator * it)
+void arc_avltree_after_end(struct arc_tree_iterator * it)
 {
     arc_tree_after_end(it);
 }
 
 /******************************************************************************/
 
-int arc_avltree_previous(struct arc_iterator * it)
+int arc_avltree_previous(struct arc_tree_iterator * it)
 {
     return arc_tree_previous(it);
 }
 
 /******************************************************************************/
 
-int arc_avltree_next(struct arc_iterator * it)
+int arc_avltree_next(struct arc_tree_iterator * it)
 {
     return arc_tree_next(it);
 }
 
 /******************************************************************************/
 
-void * arc_avltree_data(struct arc_iterator * it)
+void * arc_avltree_data(struct arc_tree_iterator * it)
 {
     return arc_tree_data(it);
 }
 
 /******************************************************************************/
 
-int arc_avltree_position(struct arc_iterator * it, const void * data)
+int arc_avltree_position(struct arc_tree_iterator * it, const void * data)
 {
     return arc_tree_position(it, data);
 }
 
 /******************************************************************************/
-void arc_avltree_erase(struct arc_iterator * it)
+void arc_avltree_erase(struct arc_tree_iterator * it)
 {
     arc_tree_erase(it);
 }

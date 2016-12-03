@@ -211,9 +211,9 @@ void arc_darray_clear(struct arc_darray * darray)
 /******************************************************************************/
 
 int arc_darray_iterator_init(struct arc_darray_iterator *it,
-                             struct arc_darray *list)
+                             struct arc_darray *darray)
 {
-    it->container = list;
+    it->container = darray;
     it->node_ptr = NULL;
     it->node_num = 0;
     it->node_idx = 0;
@@ -233,7 +233,7 @@ void arc_darray_iterator_fini(struct arc_darray_iterator *it)
 
 /******************************************************************************/
 
-struct arc_darray_iterator *arc_darray_iterator_create(struct arc_darray *list)
+struct arc_darray_iterator *arc_darray_iterator_create(struct arc_darray *darray)
 {
     struct arc_darray_iterator *it = malloc(sizeof(struct arc_darray_iterator));
 
@@ -242,7 +242,7 @@ struct arc_darray_iterator *arc_darray_iterator_create(struct arc_darray *list)
         return NULL;
     }
 
-    arc_darray_iterator_init(it, list);
+    arc_darray_iterator_init(it, darray);
 
     return it;
 }
