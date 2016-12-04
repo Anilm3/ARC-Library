@@ -107,7 +107,7 @@ int arc_htable_init(struct arc_htable *htable,
 
 /******************************************************************************/
 
-void arc_htable_finalize(struct arc_htable *htable)
+void arc_htable_fini(struct arc_htable *htable)
 {
     arc_htable_clear(htable);
     free(htable->buckets);
@@ -141,7 +141,7 @@ struct arc_htable * arc_htable_create(size_t num_buckets,
 
 void arc_htable_destroy(struct arc_htable * htable)
 {
-    arc_htable_finalize(htable);
+    arc_htable_fini(htable);
     free(htable);
 }
 
@@ -251,10 +251,10 @@ void arc_htable_remove(struct arc_htable * htable, void *data)
 /*[>                arc_slist_push_front(&buckets[hvalue], node); <]*/
             /*}*/
 
-            /*arc_iterator_finalize(&it);*/
+            /*arc_iterator_fini(&it);*/
         /*}*/
 
-        /*arc_slist_finalize(&htable->buckets[i]);*/
+        /*arc_slist_fini(&htable->buckets[i]);*/
     /*}*/
 
     /*free(htable->buckets);*/

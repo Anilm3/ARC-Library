@@ -38,7 +38,7 @@ int arc_queue_init(struct arc_queue *queue, size_t data_size)
 
 /******************************************************************************/
 
-void arc_queue_finalize(struct arc_queue *queue)
+void arc_queue_fini(struct arc_queue *queue)
 {
     arc_queue_clear(queue);
 }
@@ -64,7 +64,7 @@ struct arc_queue * arc_queue_create(size_t data_size)
 
 void arc_queue_destroy(struct arc_queue *queue)
 {
-    arc_queue_finalize(queue);
+    arc_queue_fini(queue);
     free(queue);
 }
 

@@ -37,7 +37,7 @@ int arc_stack_init(struct arc_stack *stack, size_t data_size)
 
 /******************************************************************************/
 
-void arc_stack_finalize(struct arc_stack *stack)
+void arc_stack_fini(struct arc_stack *stack)
 {
     arc_stack_clear(stack);
 }
@@ -63,7 +63,7 @@ struct arc_stack * arc_stack_create(size_t data_size)
 
 void arc_stack_destroy(struct arc_stack * stack)
 {
-    arc_stack_finalize(stack);
+    arc_stack_fini(stack);
     free(stack);
 }
 
