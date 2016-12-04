@@ -29,8 +29,6 @@ struct arc_darray
 struct arc_darray_iterator
 {
     void * container;
-    void * node_ptr;
-    unsigned long node_num;
     unsigned long node_idx;
 };
 

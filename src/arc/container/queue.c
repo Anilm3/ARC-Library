@@ -14,7 +14,7 @@
 
 /******************************************************************************/
 
-int arc_queue_initialize(struct arc_queue *queue, size_t data_size)
+int arc_queue_init(struct arc_queue *queue, size_t data_size)
 {
     size_t aligned_size;
 
@@ -55,7 +55,7 @@ struct arc_queue * arc_queue_create(size_t data_size)
         return NULL;
     }
 
-    arc_queue_initialize(queue, data_size);
+    arc_queue_init(queue, data_size);
 
     return queue;
 }

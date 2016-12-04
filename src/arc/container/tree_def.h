@@ -11,7 +11,6 @@
 
 #include <stdlib.h>
 #include <arc/type/function.h>
-#include <arc/container/iterator_def.h>
 
 /* Sentinel node definition */
 struct arc_tree_snode
@@ -52,8 +51,6 @@ struct arc_tree_iterator
 {
     void * container;
     void * node_ptr;
-    unsigned long node_num;
-    unsigned long node_idx;
 };
 
 int arc_tree_init(struct arc_tree *tree,

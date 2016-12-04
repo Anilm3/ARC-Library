@@ -14,7 +14,7 @@
 
 /******************************************************************************/
 
-int arc_stack_initialize(struct arc_stack *stack, size_t data_size)
+int arc_stack_init(struct arc_stack *stack, size_t data_size)
 {
     size_t aligned_size;
 
@@ -54,7 +54,7 @@ struct arc_stack * arc_stack_create(size_t data_size)
         return NULL;
     }
 
-    arc_stack_initialize(stack, data_size);
+    arc_stack_init(stack, data_size);
 
     return stack;
 }

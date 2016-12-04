@@ -14,8 +14,6 @@
 #include <arc/container/darray_def.h>
 #include <arc/common/defines.h>
 
-#include <arc/container/iterator_def.h>
-
 /******************************************************************************/
 
 int arc_darray_init(struct arc_darray *darray, size_t data_size)
@@ -214,8 +212,6 @@ int arc_darray_iterator_init(struct arc_darray_iterator *it,
                              struct arc_darray *darray)
 {
     it->container = darray;
-    it->node_ptr = NULL;
-    it->node_num = 0;
     it->node_idx = 0;
 
     return ARC_SUCCESS;
@@ -226,8 +222,6 @@ int arc_darray_iterator_init(struct arc_darray_iterator *it,
 void arc_darray_iterator_fini(struct arc_darray_iterator *it)
 {
     it->container = NULL;
-    it->node_ptr = NULL;
-    it->node_num = 0;
     it->node_idx = 0;
 }
 

@@ -44,8 +44,6 @@ struct arc_dlist_iterator
 {
     void * container;
     void * node_ptr;
-    unsigned long node_num;
-    unsigned long node_idx;
 };
 
 int arc_dlist_init(struct arc_dlist *list, size_t data_size);

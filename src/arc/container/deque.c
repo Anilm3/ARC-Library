@@ -14,7 +14,6 @@
 #include <arc/common/defines.h>
 
 #include <arc/container/deque_def.h>
-#include <arc/container/iterator_def.h>
 
 /******************************************************************************/
 
@@ -671,7 +670,6 @@ int arc_deque_iterator_init(struct arc_deque_iterator *it,
                             struct arc_deque *list)
 {
     it->container = list;
-    it->node_ptr = NULL;
     it->node_num = 0;
     it->node_idx = 0;
 
@@ -683,7 +681,6 @@ int arc_deque_iterator_init(struct arc_deque_iterator *it,
 void arc_deque_iterator_fini(struct arc_deque_iterator *it)
 {
     it->container = NULL;
-    it->node_ptr = NULL;
     it->node_num = 0;
     it->node_idx = 0;
 }

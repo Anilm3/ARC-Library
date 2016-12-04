@@ -24,7 +24,6 @@
 #include <arc/container/htable.h>
 #include <arc/container/avltree.h>
 #include <arc/container/htable_def.h>
-#include <arc/container/iterator_def.h>
 
 /******************************************************************************/
 
@@ -63,7 +62,7 @@
 
 /******************************************************************************/
 
-int arc_htable_initialize(struct arc_htable *htable,
+int arc_htable_init(struct arc_htable *htable,
                           size_t num_buckets,
                           size_t data_size,
                           arc_cmp_fn_t cmp_fn,
@@ -128,7 +127,7 @@ struct arc_htable * arc_htable_create(size_t num_buckets,
         return htable;
     }
 
-    if (arc_htable_initialize(htable, num_buckets, 
+    if (arc_htable_init(htable, num_buckets, 
                               data_size, cmp_fn, hash_fn) != ARC_SUCCESS)
     {
         free(htable);
@@ -228,7 +227,7 @@ void arc_htable_remove(struct arc_htable * htable, void *data)
 
     /*for (i = 0; i < num_buckets; i++)*/
     /*{*/
-        /*arc_slist_initialize(&buckets[i], sizeof(struct arc_htable_node));*/
+        /*arc_slist_init(&buckets[i], sizeof(struct arc_htable_node));*/
     /*}*/
 
     /*for (i = 0; i < htable->num_buckets; i++)*/
@@ -238,7 +237,7 @@ void arc_htable_remove(struct arc_htable * htable, void *data)
         /*if (arc_slist_size(&htable->buckets[i]) > 0)*/
         /*{*/
             /*struct arc_iterator it;*/
-            /*arc_iterator_initialize(&it, &htable->buckets[i]);*/
+            /*arc_iterator_init(&it, &htable->buckets[i]);*/
 
             /*arc_slist_before_begin(&it);*/
 

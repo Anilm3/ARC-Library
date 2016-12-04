@@ -12,8 +12,6 @@
 #include <arc/container/slist_def.h>
 #include <arc/common/defines.h>
 
-#include <arc/container/iterator_def.h>
-
 /******************************************************************************/
 
 int arc_slist_init(struct arc_slist *list, size_t data_size)

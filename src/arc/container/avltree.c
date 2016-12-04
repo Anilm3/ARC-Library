@@ -15,7 +15,6 @@
 #include <arc/common/defines.h>
 #include <arc/container/tree_def.h>
 #include <arc/container/avltree_def.h>
-#include <arc/container/iterator_def.h>
 
 /******************************************************************************/
 

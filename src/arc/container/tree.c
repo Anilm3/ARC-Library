@@ -273,8 +273,6 @@ int arc_tree_iterator_init(struct arc_tree_iterator *it,
 {
     it->container = tree;
     it->node_ptr = NULL;
-    it->node_num = 0;
-    it->node_idx = 0;
 
     return ARC_SUCCESS;
 }
@@ -285,8 +283,6 @@ void arc_tree_iterator_fini(struct arc_tree_iterator *it)
 {
     it->container = NULL;
     it->node_ptr = NULL;
-    it->node_num = 0;
-    it->node_idx = 0;
 }
 
 /******************************************************************************/

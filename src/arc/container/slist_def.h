@@ -40,8 +40,6 @@ struct arc_slist_iterator
 {
     void * container;
     void * node_ptr;
-    unsigned long node_num;
-    unsigned long node_idx;
 };
 
 

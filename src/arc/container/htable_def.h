@@ -39,12 +39,12 @@ struct arc_htable_node
     void *data;
 };
 
-int arc_htable_initialize(struct arc_htable *htable,
+int arc_htable_init(struct arc_htable *htable,
                           size_t num_buckets,
                           size_t data_size,
                           arc_cmp_fn_t cmp_fn,
                           arc_hash_fn_t hash_fn);
 
-void arc_htable_finalize(struct arc_htable *htable);
+void arc_htable_fini(struct arc_htable *htable);
 
 #endif
